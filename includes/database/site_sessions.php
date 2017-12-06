@@ -22,5 +22,25 @@
 
       $stmt->close();
     }
+
+    public static function create_and_save($sql_conn, $session_id, $user_id, $created_at, $expires_at) {
+      $usable_created_at = $created_at;
+      $usable_expires_at = $expires_at;
+
+      if($usable_created_at !== null) {
+        $usable_created_at = date('Y-m-d H:i:s', $usable_created_at);
+      }
+
+      if($usable_expires_at !== null) {
+        $usable_expires_at = date('Y-m-d H:i:s', $usable_expires_at);
+      }
+
+      $err_prefix = 'SiteSessionMapping::create_and_save';
+      check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare('INSERT INTO site_sessions (session_id, user_id, created_at, expires_at) VALUES (?, ?, ?, ?)'));
+      check_db_error($sql_conn, $err_prefix, $stmt->bind_param('siss', $session_id, $user_id, $usable_created_at, $usable_expires_at));
+      check_db_error($sql_conn, $err_prefix, $stmt->execute());
+
+      $stmt->close();
+    }
   }
 ?>
