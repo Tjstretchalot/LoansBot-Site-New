@@ -6,6 +6,11 @@
     'name' => 'Index'
   );
 
+  $pages[] = array(
+    'link' => '/statistics.php',
+    'name' => 'Statistics'
+  );
+
   if($logged_in_user === null) {
     $pages[] = array(
       'link' => '/login.php',
