@@ -1,5 +1,6 @@
 <?php
 require_once 'api/common.php';
+require_once 'database/common.php';
 require_once 'database/users.php';
 require_once 'database/site_sessions.php';
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
