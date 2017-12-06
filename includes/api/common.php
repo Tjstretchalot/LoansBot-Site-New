@@ -19,7 +19,7 @@
     http_response_code(200);
     header('Content-Type: application/json');
     echo(json_encode(array(
-      'result_type' => $result_type
+      'result_type' => $result_type,
       'success' => true,
     ) + $data));
   }
