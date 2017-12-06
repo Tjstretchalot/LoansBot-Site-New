@@ -1,18 +1,18 @@
 <?php
-  $links = array();
+  $pages = array();
 
-  $links[] = array(
+  $pages[] = array(
     'link' => '/index.php',
     'name' => 'Index'
   );
 
   if($logged_in_user === null) {
-    $links[] = array(
+    $pages[] = array(
       'link' => '/login.php',
       'name' => 'Login'
     );
   }else {
-    $links[] = array(
+    $pages[] = array(
       'link' => '/logout.php',
       'name' => 'Logout'
     );
@@ -22,7 +22,7 @@
 
 <div class="container-fluid">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">USL</a>
+    <a class="navbar-brand" href="#">RedditLoans</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle Navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
