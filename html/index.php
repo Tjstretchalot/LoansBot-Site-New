@@ -9,9 +9,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <?php include('bootstrap_css.php') ?>
+    <?php include('bootstrap_css.php'); ?>
   </head>
   <body>
+    <?php include('navigation.php'); ?>
     <div class="container px-2">
       <section>
         <h1>What is this?</h1>
