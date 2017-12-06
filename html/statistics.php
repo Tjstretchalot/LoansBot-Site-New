@@ -13,7 +13,6 @@
     <?php include('navigation.php'); ?>
     <div class="container px-2 py-5">
       <section>
-        <h1>Statistics</h1>
         <div id="loansbot-pulse">
           <h1>Statistics<!-- and Graphs <small>WIP</small> <button type="btn btn-default" role="button" id="fetch-data-button">Load Statistics</button>--></h1> 
           <div id="fetch-data-status-text" class="status-text" hidden></div>
