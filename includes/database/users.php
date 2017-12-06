@@ -21,19 +21,23 @@
       check_db_error($sql_conn, $err_prefix, $stmt->execute());
       check_db_error($sql_conn, $err_prefix, $res = $stmt->get_result());
 
-      $row = $res->fetch_assoc();
+      $username_row = $res->fetch_assoc();
       $res->close();
       $stmt->close();
-      if($row === null) { return null; }
+      if($username_row === null) { return null; }
 
       check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare('SELECT * FROM users WHERE id=?'));
-      check_db_error($sql_conn, $err_prefix, $stmt->bind_param('i', $row->user_id));
+      check_db_error($sql_conn, $err_prefix, $stmt->bind_param('i', $username_row->user_id));
       check_db_error($sql_conn, $err_prefix, $stmt->execute());
       check_db_error($sql_conn, $err_prefix, $res = $stmt->get_result());
 
       $row = $res->fetch_assoc();
       $res->close();
       $stmt->close();
+      if($row === null) {
+        error_log('no corresponding user for username=' . $username . ', user_id=' . $username_row->user_id);
+        return null; 
+      }
       return new ArrayObject($row); 
     }
   }
