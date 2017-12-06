@@ -6,11 +6,11 @@
   require('database/site_sessions.php');
   require('database/users.php');
 
-  if($sql_conn === null) {
+  if(!isset($sql_conn) || $sql_conn === null) {
     $sql_conn = create_db_connection();
   }
 
-  if($_COOKIE['session_id']) {
+  if(isset($_COOKIE['session_id'])) {
     $row = SiteSessionMapping::fetch_by_session_id($sql_conn, $_COOKIE['session_id']);
 
 

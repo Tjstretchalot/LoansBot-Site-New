@@ -11,7 +11,7 @@
     'name' => 'Statistics'
   );
 
-  if($logged_in_user === null) {
+  if(!isset($logged_in_user) || $logged_in_user === null) {
     $pages[] = array(
       'link' => '/login.php',
       'name' => 'Login'
