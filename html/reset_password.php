@@ -14,7 +14,7 @@
     <div class="container px-2 py-5">
       <section>
         <div class="container-fluid alert" id="statusText" style="display: none"></div>
-        <form id="create-account-form">
+        <form id="reset-password-form">
           <div class="form-group row">
             <input type="text" class="form-control" id="user-id" aria-label="Username" placeholder="Username" aria-describedby="usernameHelpBlock">
             <small id="usernameHelpBlock" class="form-text text-muted">What is the username of your reddit account?</small>
