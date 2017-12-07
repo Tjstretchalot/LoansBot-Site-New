@@ -14,7 +14,7 @@
     <div class="container px-2 py-5">
       <section>
         <div class="container-fluid alert" id="statusText" style="display: none"></div>
-        <form id="create-account-form">
+        <form id="reset-password-form">
           <div class="form-group row">
             <input type="number" class="form-control" id="user-id" aria-label="User ID" placeholder="User ID" aria-describedby="useridHelpBlock" step="1" min="1" <?php if(isset($_GET['user_id'])) { echo 'value="'.$_GET['user_id'].'"'; } ?> required>
             <small id="useridHelpBlock" class="form-text text-muted">What is the user ID of the reddit account? This should have been provided.</small>
@@ -43,7 +43,7 @@
         $('[data-toggle="tooltip"]').tooltip();
       });
 
-      var form = $("create-account-form");
+      var form = $("#reset-password-form");
       form.on('submit', function(e) {
         e.preventDefault();
         
