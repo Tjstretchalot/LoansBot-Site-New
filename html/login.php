@@ -83,8 +83,8 @@
           }).fail(function(xhr) {
             console.log(xhr.responseJSON);
             var json_resp = xhr.responseJSON;
-            var err_type = json_resp.error_type;
-            var err_mess = json_resp.error_message;
+            var err_type = json_resp.errors[0].error_type;
+            var err_mess = json_resp.errors[0].error_message;
             console.log(err_type + ": " + err_mess);
             statusText.fadeOut('fast', function() {
               statusText.removeClass("alert-success").removeClass("alert-info");
