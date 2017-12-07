@@ -1,5 +1,5 @@
 <?php
-  require 'database/common.php';
+  require_once 'database/common.php';
 
   class ResetPasswordRequestMapping {
     public static function fetch_by_id($sql_conn, $id) {
