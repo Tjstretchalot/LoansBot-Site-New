@@ -31,7 +31,7 @@
         $('[data-toggle="tooltip"]').tooltip();
       });
 
-      var form = $("reset-password-form");
+      var form = $("#reset-password-form");
       form.on('submit', function(e) {
         e.preventDefault();
         
