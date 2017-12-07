@@ -62,7 +62,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   $bad_token_iden = 'BAD_TOKEN';
-  $bad_token_mess = 'That token does not match our records.';
+  $bad_token_message = 'That token does not match our records.';
 
   $rpr = ResetPasswordRequestMapping::fetch_latest_by_user_id($conn, $user->id);
   if($rpr === null) {
@@ -71,13 +71,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     return;
   }
 
-  if($rpr->reset_code_sent === null) {
+  if($rpr->reset_code_sent === 0) {
     echo_fail(400, $bad_token_iden, $bad_token_message);
     $conn->close();
     return;
   }
 
-  if($rpr->reset_code_used !== null) {
+  if($rpr->reset_code_used !== 0) {
     echo_fail(400, $bad_token_iden, $bad_token_message);
     $conn->close();
     return;
