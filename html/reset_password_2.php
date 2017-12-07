@@ -57,7 +57,7 @@
             statusText.addClass("alert-danger");
             statusText.html("<span class=\"glyphicon glyphicon-remove\"></span> Password fields do not match!");
             statusText.fadeIn('fast');
-          }
+          });
           return;
         }
 
