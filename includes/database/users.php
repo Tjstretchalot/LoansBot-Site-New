@@ -1,4 +1,6 @@
 <?php
+  require 'database/common.php';
+
   class UserMapping {
     public static function fetch_by_id($sql_conn, $id) {
       $err_prefix = 'UserMapping::fetch_by_id';
@@ -87,6 +89,14 @@
 
       check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare('UPDATE users SET claimed=1, email=?, name=?, street_address=?, city=?, state=?, zip=?, country=?, updated_at=? WHERE id=?'));
       check_db_error($sql_conn, $err_prefix, $stmt->bind_param('ssssssssi', $email, $name, $street_address, $city, $state, $zip, $country, $usable_now, $usable_user_id));
+      check_db_error($sql_conn, $err_prefix, $stmt->execute());
+
+      $stmt->close();
+    }
+
+    public static function update_password_by_id($sql_conn, $user_id, $new_digest) {
+      check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare('UPDATE users SET password_digest=? WHERE id=?'));
+      check_db_error($sql_conn, $err_prefix, $stmt->bind_param('si', $new_digest, $user_id));
       check_db_error($sql_conn, $err_prefix, $stmt->execute());
 
       $stmt->close();
