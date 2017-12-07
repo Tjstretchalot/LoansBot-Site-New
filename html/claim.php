@@ -112,8 +112,8 @@
         $("#submit-button").attr('disabled', true);
         $.post("/api/create_account_2.php", { username: username, password: password1, token: token, name: name, country: country, state: state, city: city, streetAddress: streetAddress, zip: zip }, function(data, stat) {
           statusText.fadeOut('fast', function() {
-            statusText.removeClass("alert-success").removeClass("alert-info");
-            statusText.addClass("alert-info");
+            statusText.removeClass("alert-danger").removeClass("alert-info");
+            statusText.addClass("alert-success");
             statusText.html("<span class=\"glyphicon glyphicon-ok\"></span> Success! Your account has been claimed. You will be redirected to the index page automatically in 5 seconds.");
             statusText.fadeIn('fast');
 

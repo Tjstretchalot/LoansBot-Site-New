@@ -73,8 +73,8 @@
         $("#submit-button").attr('disabled', true);
         $.post("/api/reset_password_2.php", { username: username, password: password1, token: token }, function(data, stat) {
           statusText.fadeOut('fast', function() {
-            statusText.removeClass("alert-success").removeClass("alert-info");
-            statusText.addClass("alert-info");
+            statusText.removeClass("alert-danger").removeClass("alert-info");
+            statusText.addClass("alert-success");
             statusText.html("<span class=\"glyphicon glyphicon-ok\"></span> Success! Your password has been reset. You will be automatically redirected to the login page in 5 seconds.");
             statusText.fadeIn('fast');
 

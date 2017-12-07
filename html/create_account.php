@@ -48,8 +48,8 @@
           $("#submit-button").attr('disabled', true);
           $.post("/api/create_account_1.php", { username: username }, function(data, stat) {
             statusText.fadeOut('fast', function() {
-              statusText.removeClass("alert-success").removeClass("alert-info");
-              statusText.addClass("alert-info");
+              statusText.removeClass("alert-danger").removeClass("alert-info");
+              statusText.addClass("alert-success");
               statusText.html("<span class=\"glyphicon glyphicon-ok\"></span> Success! You should recieve a message within the next few minutes from the LoansBot with information on how to proceed.");
               statusText.fadeIn('fast');
             });
