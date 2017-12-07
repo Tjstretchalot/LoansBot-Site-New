@@ -41,5 +41,55 @@
       }
       return new ArrayObject($row, ArrayObject::ARRAY_AS_PROPS); 
     }
+
+    public static function create_by_username($isql_conn, $username) {
+      $err_prefix = 'UserMapping::create_by_username';
+
+      check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare('INSERT INTO users (auth, claimed, claim_link_sent_at, created_at, updated_at) values (0, null, now(), now())'));
+      check_db_error($sql_conn, $err_prefix, $stmt->execute());
+
+      $user_id = $conn->insert_id;
+
+      $stmt->close();
+
+
+      check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare('INSERT INTO usernames (user_id, username, created_at, updated_at) values (?, ?, now(), now())'));
+      check_db_error($sql_conn, $err_prefix, $stmt->bind_param('is', $user_id, $username));
+      check_db_error($sql_conn, $err_prefix, $stmt->execute());
+
+      $stmt->close();
+
+      return UserMapping::fetch_by_id($conn, $user_id);
+    }
+
+    public static function update_user_claim_code($sql_conn, $user) {
+      $err_prefix = 'UserMapping::update_user_claim_code';
+      
+      $usable_claim_code = $user->claim_code;
+      $usable_updated_at = date(time(), 'Y-m-d H:i:s');
+      $usable_user_id = $user->id;
+
+      check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare('UPDATE users SET claim_code=?, claim_link_sent_at=NULL, updated_at=? WHERE id=?'));
+      check_db_error($sql_conn, $err_prefix, $stmt->bind_param('si', $usable_claim_code, $usable_updated_at, $usable_user_id));
+      check_db_error($sql_conn, $err_prefix, $stmt->execute());
+
+      $user->updated_at = $usable_updated_at;
+      $user->claim_link_sent_at = null;
+
+      $stmt->close();
+    }
+
+    public static function update_user_after_claimed($sql_conn, $user, $email, $name, $street_address, $city, $state, $zip, $country) {
+      $err_prefix = 'UserMapping::update_user_after_claimed';
+
+      $usable_user_id = $user->id;
+      $usable_now = date(time(), 'Y-m-d H:i:s');
+
+      check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare('UPDATE users SET claimed=1, email=?, name=?, street_address=?, city=?, state=?, zip=?, country=?, updated_at=? WHERE id=?'));
+      check_db_error($sql_conn, $err_prefix, $stmt->bind_param('ssssssssi', $email, $name, $street_address, $city, $state, $zip, $country, $usable_now, $usable_user_id));
+      check_db_error($sql_conn, $err_prefix, $stmt->execute());
+
+      $stmt->close();
+    }
   }
 ?>
