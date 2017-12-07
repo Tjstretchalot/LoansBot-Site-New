@@ -50,7 +50,7 @@
     $outstanding = intval($_GET["outstanding"]) === 1;
   }
 
-  $sql_conn = connect_to_db();
+  $sql_conn = create_db_connection();
   if($checkname && !$checkid) {
     $query = 'select user_id from usernames where username=? limit 1';
     $stmt = $sql_conn->prepare($query);
