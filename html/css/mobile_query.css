@@ -1,0 +1,23 @@
+.mobile-query-outer {
+  margin: 0 auto;
+  width: 90%;
+  font-size: 36px;
+}
+
+.table.footable-details>tbody>tr>th:nth-child(1) {
+  width: 262px !important;
+}
+
+.pagination-lg>li>a, .pagination-lg>li>span {
+  font-size: 42px !important;
+}
+
+td {
+  border-right: 1px solid #ddd !important;
+  border-left: 1px solid #ddd !important;
+}
+
+.form-control {
+  font-size: 36px !important;
+  height: 70px !important;
+}
