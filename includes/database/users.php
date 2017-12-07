@@ -11,7 +11,7 @@
       $res->close();
       $stmt->close();
       if($row === null) { return null; }
-      return new ArrayObject($row);
+      return new ArrayObject($row, ArrayObject::ARRAY_AS_PROPS);
     }
 
     public static function fetch_by_username($sql_conn, $username) {
@@ -39,7 +39,7 @@
         error_log('no corresponding user for username=' . $username . ', user_id=' . $username_row['user_id']);
         return null; 
       }
-      return new ArrayObject($row); 
+      return new ArrayObject($row, ArrayObject::ARRAY_AS_PROPS); 
     }
   }
 ?>

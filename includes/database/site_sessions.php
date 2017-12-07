@@ -11,7 +11,7 @@
       $res->close();
       $stmt->close();
       if($row === null) { return null; }
-      return new ArrayObject($row);
+      return new ArrayObject($row, ArrayObject::ARRAY_AS_PROPS);
     }
 
     public static function delete_by_id($sql_conn, $id) {
