@@ -51,7 +51,7 @@
         var password1 = $("#password-1").val();
         var password2 = $("#password-2").val();
 
-        if(!password1.equals(password2)) {
+        if(password1 != password2) {
           statusText.fadeOut('fast', function() {
             statusText.removeClass("alert-danger").removeClass("alert-info");
             statusText.addClass("alert-danger");
