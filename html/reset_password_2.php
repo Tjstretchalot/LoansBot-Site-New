@@ -52,7 +52,7 @@
         var password2 = $("#password-2").val();
 
         if(!password1.equals(password2)) {
-          statusText.fadeOut('fast, function() {
+          statusText.fadeOut('fast', function() {
             statusText.removeClass("alert-danger").removeClass("alert-info");
             statusText.addClass("alert-danger");
             statusText.html("<span class=\"glyphicon glyphicon-remove\"></span> Password fields do not match!");
