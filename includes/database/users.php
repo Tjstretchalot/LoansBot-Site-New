@@ -26,8 +26,9 @@
       $stmt->close();
       if($username_row === null) { return null; }
 
+      $usable_user_id = $username_row['user_id'];
       check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare('SELECT * FROM users WHERE id=?'));
-      check_db_error($sql_conn, $err_prefix, $stmt->bind_param('i', $username_row->user_id));
+      check_db_error($sql_conn, $err_prefix, $stmt->bind_param('i', $usable_user_id));
       check_db_error($sql_conn, $err_prefix, $stmt->execute());
       check_db_error($sql_conn, $err_prefix, $res = $stmt->get_result());
 
@@ -35,7 +36,7 @@
       $res->close();
       $stmt->close();
       if($row === null) {
-        error_log('no corresponding user for username=' . $username . ', user_id=' . $username_row->user_id);
+        error_log('no corresponding user for username=' . $username . ', user_id=' . $username_row['user_id']);
         return null; 
       }
       return new ArrayObject($row); 
