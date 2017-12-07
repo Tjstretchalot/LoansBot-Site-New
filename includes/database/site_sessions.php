@@ -1,4 +1,6 @@
 <?php
+  require_once 'database/common.php';
+
   class SiteSessionMapping {
     public static function fetch_by_session_id($sql_conn, $session_id) {
       $err_prefix = 'SiteSessionMapping::fetch_by_session_id';
