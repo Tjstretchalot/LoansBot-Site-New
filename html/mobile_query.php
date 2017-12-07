@@ -11,7 +11,6 @@
   $cssSheets[] = 'css/footable.bootstrap.min.css';
 
   $pageTitle = 'RedditLoans - Mobile Query';
-  include('headers.php');
   
   $checkid = NULL;
   if(isset($_GET["checkid"]) && is_numeric($_GET["checkid"])) {
@@ -233,6 +232,8 @@
       });
     });
     </script>
+  </body>
+</html>
 <?php
-  include('pageend.php');
+  $sql_conn->close();
 ?>
