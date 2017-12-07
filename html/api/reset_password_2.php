@@ -7,16 +7,13 @@ require_once 'database/reset_password_requests.php';
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
   /* DEFAULT ARGUMENTS */
-  $username = null;
+  $userid = null;
   $password = null;
   $token = null;
 
   /* PARSING ARGUMENTS */
-  if(isset($_POST['username'])) {
-    $_username = $_POST['username'];
-    if($_username !== null && strlen($_username) > 2) {
-      $username = $_username;
-    }
+  if(isset($_POST['user_id']) && is_numeric($_POST['user_id'])) {
+    $userid = intval($_POST['user_id']);
   }
 
   if(isset($_POST['password'])) {
@@ -28,8 +25,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   /* VALIDATING ARGUMENTS */
-  if($username === null) {
-    echo_fail(400, 'ARGUMENT_MISSING', 'Username cannot be empty!');
+  if($userid === null) {
+    echo_fail(400, 'ARGUMENT_MISSING', 'User id cannot be empty!');
     return;
   }
 
@@ -56,7 +53,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   /* PERFORMING REQUEST */
   $conn = create_db_connection(); 
-  $user = UserMapping::fetch_by_username($conn, $username);
+  $user = UserMapping::fetch_by_id($conn, $userid);
 
   if($user === null || $user->claimed === 0) {
     echo_fail(400, 'ACCOUNT_NOT_CLAIMED', 'That account is not claimed. Perhaps you need to <a href="/create_account.php">create your account</a>?');

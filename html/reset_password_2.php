@@ -47,7 +47,7 @@
       form.on('submit', function(e) {
         e.preventDefault();
         
-        var username = $("#username").val();
+        var userid = $("#user-id").val();
         var password1 = $("#password-1").val();
         var password2 = $("#password-2").val();
 
@@ -71,7 +71,7 @@
           statusText.fadeIn('fast');
         });
         $("#submit-button").attr('disabled', true);
-        $.post("/api/reset_password_2.php", { username: username, password: password1, token: token }, function(data, stat) {
+        $.post("/api/reset_password_2.php", { user_id: userid, password: password1, token: token }, function(data, stat) {
           statusText.fadeOut('fast', function() {
             statusText.removeClass("alert-danger").removeClass("alert-info");
             statusText.addClass("alert-success");
