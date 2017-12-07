@@ -13,6 +13,11 @@
     <?php include('navigation.php'); ?>
     <div class="container px-2 py-5">
       <section>
+        <h2>Important Notice for Borrowers</h2>
+        <p>Do not reveal, for any reason, to any member of /r/borrow, all, the last 4 digits, or any part of your social security number, your passport, or your birth certificate because this information is almost solely used for identity theft. Additionally, do not provide information about <b>criminal investigations</b>, state or federal tax information, social welfare information, school records, communication between your attorney or government clients, or sealed settlements as this information is considered confidential. If this information is requested, immediately <a href="https://www.reddit.com/message/compose/?to=%2Fr%2Fborrow%0D%0A">contact the moderators</a>.</p>
+      </section>
+      <section>
+        <h2>Claim your account</h2>
         <div class="container-fluid alert" id="statusText" style="display: none"></div>
         <form id="create-account-form">
           <div class="form-group row">
