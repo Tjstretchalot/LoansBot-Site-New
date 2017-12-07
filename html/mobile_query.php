@@ -234,6 +234,3 @@
     </script>
   </body>
 </html>
-<?php
-  $sql_conn->close();
-?>
