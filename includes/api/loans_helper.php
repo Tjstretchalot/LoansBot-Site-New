@@ -209,7 +209,7 @@ class ParameterParser {
   public static function parse_format($helper, &$params) {
     $format = 1;
     if(isset($params['format']) && is_numeric($params['format'])) {
-      $_format = intval($params['format'])
+      $_format = intval($params['format']);
 
       if(in_array($_format, array(0, 1, 2, 3))) {
         $format = $_format;
