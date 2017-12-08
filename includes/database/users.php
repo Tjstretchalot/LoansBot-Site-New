@@ -72,7 +72,7 @@
       $usable_user_id = $user->id;
 
       check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare('UPDATE users SET claim_code=?, claim_link_sent_at=NULL, updated_at=? WHERE id=?'));
-      check_db_error($sql_conn, $err_prefix, $stmt->bind_param('si', $usable_claim_code, $usable_updated_at, $usable_user_id));
+      check_db_error($sql_conn, $err_prefix, $stmt->bind_param('ssi', $usable_claim_code, $usable_updated_at, $usable_user_id));
       check_db_error($sql_conn, $err_prefix, $stmt->execute());
 
       $user->updated_at = $usable_updated_at;
