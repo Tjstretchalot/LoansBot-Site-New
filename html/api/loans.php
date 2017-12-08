@@ -15,10 +15,16 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
   }
 
-  // order matters a lot here
+  // order irrelevant params
   handle_param_error(ParameterParser::parse_format($helper, $params));
-  handle_param_error(ParameterParser::parse_id($helper, $params));
   handle_param_error(ParameterParser::parse_limit($helper, $params));
+
+  // order irrelevant because they are split out with a return_ function
+  handle_param_error(ParameterParser::parse_after_time($helper, $params));_
+
+  // order relevant params
+  handle_param_error(ParameterParser::parse_id($helper, $params));
+  handle_param_error(ParameterParser::return_created_at($helper, $params));
 
   require_once 'connect_and_get_loggedin.php';
 

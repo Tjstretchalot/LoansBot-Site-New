@@ -289,5 +289,51 @@ class ParameterParser {
     $helper->add_callback($result);
     return null;
   }
+
+  public static function return_created_at($helper, &$params) {
+    if($helper->format === 0) 
+      return;
+
+    $result = new LoanQueryCallback('created_at', array(), null, null, null, null, null, null, null);
+    $result->param_callback = function($helper) {
+      return 'loans.created_at as loan_created_at';
+    };
+
+    $result->result_callback = function($helper, &$row, &$response_res) {
+      if($helper->format === 1) {
+        $response_res = $row['loan_created_at'];
+      }else {
+        $response_res['created_at'] = strtotime($row['loan_created_at']) * 1000;
+      }
+    };
+
+    $helper->add_callback($result);
+    return null;
+  }
+
+  public static function parse_after_time($helper, &$params) {
+    $after_time = null;
+    if(isset($params['after_time']) && is_numeric($params['after_time'])) {
+      $_after_time = intval($params['after_time']);
+
+      if($_after_time !== 0) {
+        if($_after_time < 0) {
+          return array('error_ident' => 'INVALID_PARAMETER', 'error_mess' => 'After time cannot be before 1970');
+        }
+        $after_time = date('Y-m-d H:i:s', $_after_time);
+      }
+    }
+
+    if($after_time === null)
+      return null;
+
+    $result = new LoanQueryCallback('after_time', array('after_time' => $after_time), null, null, null, null, null, null, null);
+    $result->where_callback = function($helper) {
+      return 'loan_created_at > ?';
+    };
+    $result->bind_where_callback = function($helper) use ($after_time) {
+      return array(array('s', $after_time));
+    };
+  }
 }
 ?>
