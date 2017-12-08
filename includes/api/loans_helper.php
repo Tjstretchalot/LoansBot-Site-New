@@ -82,8 +82,8 @@ class LoansHelper {
   public $format;
 
   public function __construct() {
-    $callbacks = array();
-    $callbacks_dict = array();
+    $callbacks = new ArrayObject(array());
+    $callbacks_dict = new ArrayObject(array());
   }
 
   public function add_callback($callback) {
@@ -92,6 +92,7 @@ class LoansHelper {
   }
 
   public function check_authorization($auth_level) {
+    error_log('attempting to loop over ' . strval($this->callbacks));
     foreach ($this->callbacks as $callback) {
       if($callback->authorization_callback !== null) {
         $tmp = $callback->authorization_callback;
@@ -252,7 +253,7 @@ class ParameterParser {
       }
     }
 
-    $result = new LoanQueryCallback('loan_id', array('id' => $id), null, null, null, null, null);
+    $result = new LoanQueryCallback('loan_id', array('id' => $id), null, null, null, null, null, null, null);
 
     $result->param_callback = function($helper) {
       return 'loans.id as loan_id';
