@@ -50,7 +50,7 @@
       check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare('INSERT INTO users (auth, claimed, claim_link_sent_at, created_at, updated_at) values (0, 0, null, now(), now())'));
       check_db_error($sql_conn, $err_prefix, $stmt->execute());
 
-      $user_id = $conn->insert_id;
+      $user_id = $sql_conn->insert_id;
 
       $stmt->close();
 
@@ -61,7 +61,7 @@
 
       $stmt->close();
 
-      return UserMapping::fetch_by_id($conn, $user_id);
+      return UserMapping::fetch_by_id($sql_conn, $user_id);
     }
 
     public static function update_user_claim_code($sql_conn, $user) {
