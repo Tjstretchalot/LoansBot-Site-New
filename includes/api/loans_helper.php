@@ -453,7 +453,7 @@ class ParameterParser {
     $result->where_callback = function($helper) {
       return 'loans.lender_id = ?';
     };
-    $result->bind_where_callback = functin($helper) use ($filter_lender_id) {
+    $result->bind_where_callback = function($helper) use ($filter_lender_id) {
       return array(array('i', $filter_lender_id));
     };
     $helper->add_callback($result);
