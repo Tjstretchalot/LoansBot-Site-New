@@ -234,7 +234,7 @@ class ParameterParser {
     }
 
     if($limit !== 0) {
-      $helper->limit_callback = function() {
+      $helper->limit_callback = function() use ($limit) {
         return 'LIMIT ' . strval($limit);
       };
     }
@@ -270,7 +270,7 @@ class ParameterParser {
       $result->where_callback = function($helper) {
         return 'loans.id = ?';
       };
-      $result->bind_where_callback = function($helper) {
+      $result->bind_where_callback = function($helper) use ($id) {
         return array(array('i', $id));
       };
     }
