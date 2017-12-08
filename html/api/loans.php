@@ -19,12 +19,28 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   handle_param_error(ParameterParser::parse_format($helper, $params));
   handle_param_error(ParameterParser::parse_limit($helper, $params));
 
-  // order irrelevant because they are split out with a return_ function
+  // result order irrelevant because they are split out with a return_ function
+  // and are not coupled with anything
   handle_param_error(ParameterParser::parse_after_time($helper, $params));
+  handle_param_error(ParameterParser::parse_before_time($helper, $params));
+
+  // result order relevant because things are coupled (couples are seperated with
+  // a newline)
+  handle_param_error(ParameterParser::parse_borrower_id($helper, $params));
+  handle_param_error(ParameterParser::parse_borrower_name($helper, $params));
+
+  handle_param_error(ParameterParser::parse_lender_id($helper, $params));
+
+  handle_param_error(ParameterParser::parse_includes_user_id($helper, $params));
 
   // order relevant params
   handle_param_error(ParameterParser::parse_id($helper, $params));
+  handle_param_error(ParameterParser::return_lender_id($helper, $params));
+  handle_param_error(ParameterParser::return_borrower_id($helper, $params));
   handle_param_error(ParameterParser::return_created_at($helper, $params));
+
+  // params that aren't processed unless order is irrelevant (format >= 2)
+  handle_param_error(ParameterParser::fetch_usernames($helper, $params));
 
   require_once 'connect_and_get_loggedin.php';
 

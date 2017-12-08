@@ -341,5 +341,202 @@ class ParameterParser {
     $helper->add_callback($result);
     return null;
   }
+
+  public static function parse_before_time($helper, &$params) {
+    $before_time = null;
+    if(isset($params['before_time']) && is_numeric($params['before_time'])) {
+      $_before_time = intval($params['before_time']);
+
+      if($_before_time !== 0) {
+        if($_before_time < 0) {
+          return array('error_ident' => 'INVALID_PARAMETER', 'error_mess' => 'Before time cannot be before 1970');
+        }
+        $before_time = date('Y-m-d H:i:s', $_before_time / 1000);
+      }
+    }
+
+    if($before_time === null)
+      return null;
+
+    $result = new LoanQueryCallback('before_time', array('before_time' => $before_time), null, null, null, null, null, null, null);
+    $result->where_callback = function($helper) {
+      return 'loans.created_at < ?';
+    };
+    $result->bind_where_callback = function($helper) use ($before_time) {
+      return array(array('s', $before_time));
+    };
+    $helper->add_callback($result);
+    return null;
+  }
+
+  public static function return_borrower_id($helper, &$params) {
+    if($helper->format === 0) 
+      return null;
+
+    $result = new LoanQueryCallback('borrower_id', array(), null, null, null, null, null, null, null);
+    $result->param_callback = function($helper) {
+      return 'loans.borrower_id as loan_borrower_id';
+    };
+
+    $result->result_callback = function($helper, &$row, &$response_res) {
+      $val = $row['loan_borrower_id'];
+      if($helper->format === 1) {
+        $response_res[] = $val;
+      }else {
+        $response_res['borrower_id'] = $val;
+      }
+    };
+
+    $helper->add_callback($result);
+    return null;
+  }
+
+  public static function parse_borrower_id($helper, &$params) {
+    $filter_borrower_id = null;
+    if(isset($params['borrower_id']) && is_numeric($params['borrower_id'])) {
+      $_borrower_id = $borrower_id;
+      
+      if($_borrower_id !== 0) {
+        $filter_borrower_id = $_borrower_id;
+      }
+    }
+    
+    if($filter_borrower_id === null)
+      return null;
+    
+    $result = new LoanQueryCallback('filter_borrower_id', array('filter_borrower_id' => $filter_borrower_id), null, null, null, null, null, null, null);
+    $result->where_callback = function($helper) {
+      return 'loans.borrower_id = ?';
+    }
+    $result->bind_where_callback = function($helper) use ($filter_borrower_id) {
+      return array(array('i', $filter_borrower_id));
+    }
+    $helper->add_callback($result);
+    return null;
+  }
+
+  public static function return_lender_id($helper, &$params) {
+    if($helper->format === 0) {
+      return null;
+    }
+    $result = new LoanQueryCallback('lender_id', array(), null, null, null, null, null, null, null);
+    $result->param_callback = function($helper) {
+      return 'loans.lender_id as loan_lender_id';
+    };
+    $result->result_callback = function($helper, &$row, &$response_res) {
+      $val = $row['loan_lender_id'];
+      if($helper->format === 1) {
+        $response_res[] = $val;
+      }else { 
+        $response_res['lender_id'] = $val;
+      }
+    };
+    $helper->add_callback($result);
+    return null;
+  }
+
+  public static function parse_lender_id($helper, &$params) {
+    $filter_lender_id = null;
+    if(isset($params['lender_id']) && is_numeric($params['lender_id'])) {
+      $_lender_id = intval($params['lender_id']);
+
+      if($_lender_id !== 0) {
+        $filter_lender_id = $_lender_id;
+      }
+    }
+    
+    if($filter_lender_id === null) {
+      return null;
+    }
+    
+    $result = new LoanQueryCallback('filter_lender_id', array(), null, null, null, null, null, null, null);
+    $result->where_callback = function($helper) {
+      return 'loans.lender_id = ?';
+    };
+    $result->bind_where_callback = functin($helper) use ($filter_lender_id) {
+      return array(array('i', $filter_lender_id));
+    };
+    $helper->add_callback($result);
+    return null;
+  }
+
+  public static function parse_includes_user_id($helper, &$params) {
+    $includes_user_id = null;
+    if(isset($params['includes_user_id']) && is_numeric($params['includes_user_id'])) {
+      $_includes_user_id = intval($params['includes_user_id']);
+      
+      if($_includes_user_id !== 0) {
+        $includes_user_id = $_includes_user_id;
+      }
+    }
+    
+    if($includes_user_id === null) {
+      return null;
+    }
+    
+    $result = new LoanQueryCallback('includes_user_id', array(), null, null, null, null, null, null, null);
+    $result->where_callback = function($helper) {
+      return '(loans.lender_id = ? OR loans.borrower_id = ?)';
+    };
+    $result->bind_where_callback = functin($helper) use ($includes_user_id) {
+      return array(array('i', $includes_user_id), array('i', $includes_user_id));
+    };
+    $helper->add_callback($result);
+    return null;
+  }
+
+  public static function parse_borrower_name($helper, &$params) {
+    $borrower_name = null;
+    if(isset($params['borrower_name'])) {
+      $borrower_name = $params['borrower_name'];
+    }
+    
+    if($borrower_name === null)
+      return;
+    
+    if(isset($helper->callbacks_dict['filter_borrower_id'])) {
+      return array('error_ident' => 'INVALID_PARAMETER', 'error_mess' => 'Cannot set both borrower_id and borrower_name');
+    }
+    
+    $result = new LoanQueryCallback('borrower_name', array(), null, null, null, null, null, null, null);
+    $result->where_callback = function($helper) {
+      return '(borrower_id = (SELECT user_id FROM usernames WHERE username LIKE ? LIMIT 1))';
+    };
+    $result->bind_where_callback = functin($helper) use ($borrower_name) {
+      return array(array('s', $borrower_name));
+    };
+    $helper->add_callback($result);
+    return null;
+  }
+
+  public static function fetch_usernames($helper, &$params) {
+    if($helper->format < 3) {
+      return null;
+    }
+
+    $result = new LoanQueryCallback('fetch_lender_username', array(), null, null, null, null, null, null, null);
+    $result->param_callback = function($helper) {
+      return 'lunames.username as lender_username';
+    };
+    $result->result_callback = function($helper, &$row, &$response_res) {
+      $response_res['lender_name'] = $row['lender_username'];
+    };
+    $result->join_callback = function($helper) {
+      return 'INNER JOIN (SELECT user_id, GROUP_CONCAT(username SEPERATOR \' aka \') AS username FROM usernames) lunames ON loans.lender_id = lunames.user_id'
+    };
+    $helper->add_callback($result);
+
+    $result = new LoanQueryCallback('fetch_borrower_username', array(), null, null, null, null, null, null, null);
+    $result->param_callback = function($helper) {
+      return 'bunames.username as borrower_username';
+    };
+    $result->result_callback = function($helper, &$row, &$response_res) {
+      $response_res['borrower_name'] = $row['borrower_username'];
+    };
+    $result->join_callback = function($helper) {
+      return 'INNER JOIN (SELECT user_id, GROUP_CONCAT(username SEPERATOR \' aka \') AS username FROM usernames) bunames ON loans.borrower_id = bunames.user_id';
+    };
+    $helper->add_callback($result);
+  }
 }
 ?>
