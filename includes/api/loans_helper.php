@@ -277,6 +277,9 @@ class ParameterParser {
         return array(array('i', $id));
       };
     }
+
+    $helper->add_callback($result);
+    return null;
   }
 }
 ?>
