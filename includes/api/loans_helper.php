@@ -300,10 +300,11 @@ class ParameterParser {
     };
 
     $result->result_callback = function($helper, &$row, &$response_res) {
+      $val = strtotime($row['loan_created_at']) * 1000;
       if($helper->format === 1) {
-        $response_res[] = $row['loan_created_at'];
+        $response_res[] = $val;
       }else {
-        $response_res['created_at'] = strtotime($row['loan_created_at']) * 1000;
+        $response_res['created_at'] = $val;
       }
     };
 
