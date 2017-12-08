@@ -321,7 +321,7 @@ class ParameterParser {
         if($_after_time < 0) {
           return array('error_ident' => 'INVALID_PARAMETER', 'error_mess' => 'After time cannot be before 1970');
         }
-        $after_time = date('Y-m-d H:i:s', $_after_time);
+        $after_time = date('Y-m-d H:i:s', $_after_time / 1000);
       }
     }
 
