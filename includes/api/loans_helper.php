@@ -190,6 +190,7 @@ class LoansHelper {
 
     $param_values_arr[0] = $param_types_str;
 
+    error_log( print_r( $param_values_arr, true ) );
     call_user_func_array(array($stmt, 'bind_param'), $param_values_arr);
   }
 
