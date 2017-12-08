@@ -187,6 +187,7 @@ class LoansHelper {
 
     $param_types_str = '';
     $param_values_arr = array();
+    $param_values_arr = array_pad($param_values_arr, count($all_params) + 1, 0);
     $tmp_holding_arr = array();
     foreach ($all_params as $ind=>$param) {
       // i tried using param as the holding arr but it doesn't work
