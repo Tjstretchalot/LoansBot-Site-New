@@ -94,7 +94,8 @@ class LoansHelper {
   public function check_authorization($auth_level) {
     foreach ($this->callbacks as $callback) {
       if($callback->authorization_callback !== null) {
-        $res = ($callback->authorization_callback)($this, $auth_level);
+        $tmp = $callback->authorization_callback;
+        $res = $tmp($this, $auth_level);
         if($res !== null) {
           return $res;
         }
@@ -113,7 +114,8 @@ class LoansHelper {
         }else {
           $query .= ', ';
         }
-        $query .= ($callback->param_callback)($this);
+        $tmp = $callback->param_callback;
+        $query .= $tmp($this);
       }
     }
 
@@ -127,7 +129,8 @@ class LoansHelper {
         }else { 
           $query .= ' ';
         }
-        $query .= ($callback->join_callback)($this);
+        $tmp = $callback->join_callback;
+        $query .= $tmp($this);
       }
     }
     
@@ -140,18 +143,21 @@ class LoansHelper {
         }else {
           $query .= ' AND ';
         }
-        $query .= ($callback->where_callback)($this);
+        $tmp = $callback->where_callback;
+        $query .= $tmp($this);
       }
     }
 
     if($this->order_by_callback !== null) {
       $query .= ' ';
-      $query .= ($this->order_by_callback)($this);
+      $tmp = $this->order_by_callback;
+      $query .= $tmp($this);
     }
 
     if($this->limit_callback !== null) {
       $query .= ' ';
-      $query .= ($this->limit_callback)($this);
+      $tmp = $this->limit_callback;
+      $query .= $tmp($this);
     }
   }
   
@@ -159,13 +165,15 @@ class LoansHelper {
     $all_params = array();
     foreach ($this->callbacks as $callback) {
       if($callback->bind_join_callback !== null) {
-        $all_params = $all_params + ($callback->bind_join_callback)($this);
+        $tmp = $callback->bind_join_callback;
+        $all_params = $all_params + $tmp($this);
       }
     }
 
     foreach ($this->callbacks as $callback) {
       if($callback->bind_where_callback !== null) {
-        $all_params = $all_params + ($callback->bind_where_callback)($this);
+        $tmp = $callback->bind_where_callback;
+        $all_params = $all_params + $tmp($this);
       }
     }
 
@@ -187,7 +195,8 @@ class LoansHelper {
     
     foreach($this->callbacks as $callback) {
       if($callback->result_callback !== null) {
-        ($callback->result_callback)($this, $row, $result);
+        $tmp = $callback->result_callback;
+        $tmp($this, $row, $result);
       }
     }
 
