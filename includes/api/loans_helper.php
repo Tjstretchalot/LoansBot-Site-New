@@ -192,7 +192,8 @@ class LoansHelper {
     foreach ($all_params as $ind=>$param) {
       var_dump($param);
       $param_types_str .= $param[0];
-      $param_values_arr[$ind+1] = &$param[1];
+      $tmp = $param[1];
+      $param_values_arr[$ind+1] = &$tmp;
       var_dump($param_values_arr);
     }
 
