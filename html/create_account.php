@@ -31,7 +31,7 @@
         $('[data-toggle="tooltip"]').tooltip();
       });
 
-      var form = $("create-account-form");
+      var form = $("#create-account-form");
       form.on('submit', function(e) {
         e.preventDefault();
         
