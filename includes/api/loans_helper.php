@@ -330,7 +330,7 @@ class ParameterParser {
 
     $result = new LoanQueryCallback('after_time', array('after_time' => $after_time), null, null, null, null, null, null, null);
     $result->where_callback = function($helper) {
-      return 'loan_created_at > ?';
+      return 'loans.created_at > ?';
     };
     $result->bind_where_callback = function($helper) use ($after_time) {
       return array(array('s', $after_time));
