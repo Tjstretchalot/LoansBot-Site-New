@@ -259,6 +259,8 @@ class ParameterParser {
       if($_id <= 0) {
         return array('error_ident' => 'INVALID_PARAMETER', 'error_mess' => 'ID must be strictly positive');
       }
+
+      $id = $_id;
     }
 
     $result = new LoanQueryCallback('loan_id', array('id' => $id), null, null, null, null, null, null, null);
