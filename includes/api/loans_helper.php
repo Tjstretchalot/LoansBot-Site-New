@@ -190,7 +190,7 @@ class LoansHelper {
 
     $param_values_arr[0] = &$param_types_str;
 
-    call_user_func_array(array($stmt, 'bind_params'), $param_values_arr);
+    call_user_func_array(array($stmt, 'bind_param'), $param_values_arr);
   }
 
   public function create_result_from_row($row) {
