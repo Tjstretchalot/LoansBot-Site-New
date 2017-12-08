@@ -52,7 +52,7 @@ class LoanQueryCallback {
   // may be null
   public $result_callback;
 
-  public __construct($identifier, $parsed, $param_callback, $join_callback, $where_callback, $authorization_callback, $bind_join_callback, $bind_where_callback, $result_callback) {
+  public function __construct($identifier, $parsed, $param_callback, $join_callback, $where_callback, $authorization_callback, $bind_join_callback, $bind_where_callback, $result_callback) {
     $this->identifier = $identifier;
     $this->parsed = $parsed;
     $this->param_callback = $param_callback;
