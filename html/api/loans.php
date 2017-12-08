@@ -20,7 +20,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   handle_param_error(ParameterParser::parse_limit($helper, $params));
 
   // order irrelevant because they are split out with a return_ function
-  handle_param_error(ParameterParser::parse_after_time($helper, $params));_
+  handle_param_error(ParameterParser::parse_after_time($helper, $params));
 
   // order relevant params
   handle_param_error(ParameterParser::parse_id($helper, $params));
