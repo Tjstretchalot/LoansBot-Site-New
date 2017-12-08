@@ -81,7 +81,7 @@ class LoansHelper {
   // the format being used
   public $format;
 
-  public __construct() {
+  public function __construct() {
     $callbacks = new ArrayObject(array());
     $callbacks_dict = new ArrayObject(array());
   }
