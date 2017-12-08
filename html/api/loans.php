@@ -1,7 +1,7 @@
 <?php
-require_once('database/common.php');
-require_once('api/common.php');
-require_once 'api/loans_helper.php');
+require_once 'database/common.php';
+require_once 'api/common.php';
+require_once 'api/loans_helper.php';
 
 if($_SERVER['REQUEST_METHOD'] === 'GET') {
   $params = $_GET;
@@ -20,7 +20,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   handle_param_error(ParameterParser::parse_id($helper, $params));
   handle_param_error(ParameterParser::parse_limit($helper, $params));
 
-  require_once('connect_and_get_loggedin.php');
+  require_once 'connect_and_get_loggedin.php';
 
   $auth = 0;
   if(isset($logged_in_user) && ($logged_in_user !== null)) {
