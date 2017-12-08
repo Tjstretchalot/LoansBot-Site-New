@@ -187,13 +187,13 @@ class LoansHelper {
 
     $param_types_str = '';
     $param_values_arr = array();
-    $param_values_arr = array_pad($param_values_arr, count($all_params) + 1, 0);
-    error_log('after padding to ' . strval(count($all_params) + 1) . ': ' . print_r($param_values_arr, true));
+    $tmp_holding_arr = array();
     foreach ($all_params as $ind=>$param) {
+      // i tried using param as the holding arr but it doesn't work
       var_dump($param);
       $param_types_str .= $param[0];
-      $tmp = $param[1];
-      $param_values_arr[$ind+1] = &$tmp;
+      $tmp_holding_arr[] = $param[1];
+      $param_values_arr[$ind+1] = &$tmp_holding_arr[$ind];
       var_dump($param_values_arr);
     }
 
