@@ -189,12 +189,15 @@ class LoansHelper {
     $param_values_arr = array();
     array_pad($param_values_arr, count($all_params) + 1, 0);
     foreach ($all_params as $ind=>$param) {
+      var_dump($param);
       $param_types_str .= $param[0];
       $param_values_arr[$ind+1] = &$param[1];
+      var_dump($param_values_arr);
     }
 
     $param_values_arr[0] = $param_types_str;
 
+    var_dump($param_values_arr);
     error_log( print_r( $param_values_arr, true ) );
     call_user_func_array(array($stmt, 'bind_param'), $param_values_arr);
   }
