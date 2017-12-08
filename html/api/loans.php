@@ -7,7 +7,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   $params = $_GET;
   $helper = new LoansHelper();
 
-  function handler_param_error($result) {
+  function handle_param_error($result) {
     if($result !== null) {
       echo_fail(400, $result->err_mess, $result->err_ident);
       die();
