@@ -68,7 +68,7 @@
       $err_prefix = 'UserMapping::update_user_claim_code';
       
       $usable_claim_code = $user->claim_code;
-      $usable_updated_at = date(time(), 'Y-m-d H:i:s');
+      $usable_updated_at = date('Y-m-d H:i:s');
       $usable_user_id = $user->id;
 
       check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare('UPDATE users SET claim_code=?, claim_link_sent_at=NULL, updated_at=? WHERE id=?'));
@@ -85,7 +85,7 @@
       $err_prefix = 'UserMapping::update_user_after_claimed';
 
       $usable_user_id = $user->id;
-      $usable_now = date(time(), 'Y-m-d H:i:s');
+      $usable_now = date('Y-m-d H:i:s');
 
       check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare('UPDATE users SET claimed=1, email=?, name=?, street_address=?, city=?, state=?, zip=?, country=?, updated_at=? WHERE id=?'));
       check_db_error($sql_conn, $err_prefix, $stmt->bind_param('ssssssssi', $email, $name, $street_address, $city, $state, $zip, $country, $usable_now, $usable_user_id));
