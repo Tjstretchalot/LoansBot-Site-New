@@ -188,7 +188,7 @@ class LoansHelper {
     $param_types_str = '';
     $param_values_arr = array();
     array_pad($param_values_arr, count($all_params) + 1, 0);
-    error_log('after padding to ' . (count($all_params + 1)) . ': ' . print_r($param_values_arr, true));
+    error_log('after padding to ' . strval(count($all_params) + 1) . ': ' . print_r($param_values_arr, true));
     foreach ($all_params as $ind=>$param) {
       $param_types_str .= $param[0];
       $param_values_arr[$ind+1] = &$param[1];
