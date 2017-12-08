@@ -272,7 +272,7 @@ class ParameterParser {
       };
       $result->bind_where_callback = function($helper) {
         return array(array('i', $id));
-      }
+      };
     }
   }
 }
