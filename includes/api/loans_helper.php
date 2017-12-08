@@ -169,14 +169,14 @@ class LoansHelper {
     foreach ($this->callbacks as $callback) {
       if($callback->bind_join_callback !== null) {
         $tmp = $callback->bind_join_callback;
-        $all_params = $all_params + $tmp($this);
+        $all_params = array_merge($all_params, $tmp($this));
       }
     }
 
     foreach ($this->callbacks as $callback) {
       if($callback->bind_where_callback !== null) {
         $tmp = $callback->bind_where_callback;
-        $all_params = $all_params + $tmp($this);
+        $all_params = array_merge($all_params, $tmp($this));
       }
     }
 
@@ -189,6 +189,7 @@ class LoansHelper {
     $param_values_arr = array();
     $param_values_arr[] = $param_types_str; // we will reset this later but we need to reserve the slot
     foreach ($all_params as $param) {
+      error_log( 'handling param ' . print_r( $param ) );
       $param_types_str .= $param[0];
       $param_values_arr[] = &$param[1];
     }
