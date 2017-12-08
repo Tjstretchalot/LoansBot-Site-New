@@ -19,7 +19,7 @@
       if(time() > $expires_at_php) {
         unset($_COOKIE['session_id']);
         setcookie('session_id', '', time() - 3600, '/');
-        SiteSessionMapping::delete_by_id($row->id);
+        SiteSessionMapping::delete_by_id($sql_conn, $row->id);
       }else {
         $logged_in_user = UserMapping::fetch_by_id($sql_conn, $row->user_id);
       }
