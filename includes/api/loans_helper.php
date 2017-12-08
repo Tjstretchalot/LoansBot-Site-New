@@ -522,7 +522,7 @@ class ParameterParser {
       $response_res['lender_name'] = $row['lender_username'];
     };
     $result->join_callback = function($helper) {
-      return 'INNER JOIN (SELECT user_id, GROUP_CONCAT(username SEPERATOR \' aka \') AS username FROM usernames) lunames ON loans.lender_id = lunames.user_id'
+      return 'INNER JOIN (SELECT user_id, GROUP_CONCAT(username SEPERATOR \' aka \') AS username FROM usernames) lunames ON loans.lender_id = lunames.user_id';
     };
     $helper->add_callback($result);
 
