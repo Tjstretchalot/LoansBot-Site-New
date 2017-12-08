@@ -394,7 +394,7 @@ class ParameterParser {
   public static function parse_borrower_id($helper, &$params) {
     $filter_borrower_id = null;
     if(isset($params['borrower_id']) && is_numeric($params['borrower_id'])) {
-      $_borrower_id = $borrower_id;
+      $_borrower_id = intval($params['borrower_id']);
       
       if($_borrower_id !== 0) {
         $filter_borrower_id = $_borrower_id;
@@ -504,6 +504,29 @@ class ParameterParser {
     };
     $result->bind_where_callback = function($helper) use ($borrower_name) {
       return array(array('s', $borrower_name));
+    };
+    $helper->add_callback($result);
+    return null;
+  }
+
+  public static function parse_lender_name($helper, &$params) {
+    $lender_name = null;
+    if(isset($params['lender_name'])) {
+      $lender_name = $params['lender_name'];
+    }
+
+    if($lender_name === null)
+      return;
+
+    if(isset($helper->callbacks_dict['filter_lender_id']))
+      return array('error_ident' => 'INVALID_PARAMETER', 'error_mess' => 'Cannot set both lender_id and lender_name');
+
+    $result = new LoanQueryCallback('lender_name', array(), null, null, null, null, null, null, null);
+    $result->where_callback = function($helper) {
+      return '(lender_id = (SELECT user_id FROM usernames WHERE username LIKE ? LIMIT 1))';
+    };
+    $result->bind_where_callback = function($helper) use ($lender_name) {
+      return array(array('s', $lender_name));
     };
     $helper->add_callback($result);
     return null;

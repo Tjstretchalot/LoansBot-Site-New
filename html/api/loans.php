@@ -30,6 +30,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   handle_param_error(ParameterParser::parse_borrower_name($helper, $params));
 
   handle_param_error(ParameterParser::parse_lender_id($helper, $params));
+  handle_param_error(ParameterParser::parse_lender_name($helper, $params));
 
   handle_param_error(ParameterParser::parse_includes_user_id($helper, $params));
 
