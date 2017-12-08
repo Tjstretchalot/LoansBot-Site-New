@@ -301,7 +301,7 @@ class ParameterParser {
 
     $result->result_callback = function($helper, &$row, &$response_res) {
       if($helper->format === 1) {
-        $response_res = $row['loan_created_at'];
+        $response_res[] = $row['loan_created_at'];
       }else {
         $response_res['created_at'] = strtotime($row['loan_created_at']) * 1000;
       }
@@ -334,6 +334,8 @@ class ParameterParser {
     $result->bind_where_callback = function($helper) use ($after_time) {
       return array(array('s', $after_time));
     };
+    $helper->add_callback($result);
+    return null;
   }
 }
 ?>
