@@ -193,7 +193,7 @@ class LoansHelper {
       var_dump($param);
       $param_types_str .= $param[0];
       $param_values_arr[$ind+1] = &$param[1];
-      var_dump($all_params);
+      var_dump($param_values_arr);
     }
 
     $param_values_arr[0] = $param_types_str;
