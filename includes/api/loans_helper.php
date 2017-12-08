@@ -82,17 +82,16 @@ class LoansHelper {
   public $format;
 
   public function __construct() {
-    $callbacks = new ArrayObject(array());
-    $callbacks_dict = new ArrayObject(array());
+    $this->callbacks = new ArrayObject(array());
+    $this->callbacks_dict = new ArrayObject(array());
   }
 
   public function add_callback($callback) {
-    $callbacks[] = $callback;
-    $callbacks_dict[$callback->identifier] = $callback;
+    $this->callbacks[] = $callback;
+    $this->callbacks_dict[$callback->identifier] = $callback;
   }
 
   public function check_authorization($auth_level) {
-    error_log('attempting to loop over ' . strval($this->callbacks));
     foreach ($this->callbacks as $callback) {
       if($callback->authorization_callback !== null) {
         $tmp = $callback->authorization_callback;
