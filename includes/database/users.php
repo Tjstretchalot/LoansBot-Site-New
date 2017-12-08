@@ -47,7 +47,7 @@
     public static function create_by_username($sql_conn, $username) {
       $err_prefix = 'UserMapping::create_by_username';
 
-      check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare('INSERT INTO users (auth, claimed, claim_link_sent_at, created_at, updated_at) values (0, null, now(), now())'));
+      check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare('INSERT INTO users (auth, claimed, claim_link_sent_at, created_at, updated_at) values (0, 0, null, now(), now())'));
       check_db_error($sql_conn, $err_prefix, $stmt->execute());
 
       $user_id = $conn->insert_id;
