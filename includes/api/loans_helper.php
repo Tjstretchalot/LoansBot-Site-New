@@ -407,10 +407,10 @@ class ParameterParser {
     $result = new LoanQueryCallback('filter_borrower_id', array('filter_borrower_id' => $filter_borrower_id), null, null, null, null, null, null, null);
     $result->where_callback = function($helper) {
       return 'loans.borrower_id = ?';
-    }
+    };
     $result->bind_where_callback = function($helper) use ($filter_borrower_id) {
       return array(array('i', $filter_borrower_id));
-    }
+    };
     $helper->add_callback($result);
     return null;
   }
