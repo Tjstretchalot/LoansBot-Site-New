@@ -478,7 +478,7 @@ class ParameterParser {
     $result->where_callback = function($helper) {
       return '(loans.lender_id = ? OR loans.borrower_id = ?)';
     };
-    $result->bind_where_callback = functin($helper) use ($includes_user_id) {
+    $result->bind_where_callback = function($helper) use ($includes_user_id) {
       return array(array('i', $includes_user_id), array('i', $includes_user_id));
     };
     $helper->add_callback($result);
@@ -502,7 +502,7 @@ class ParameterParser {
     $result->where_callback = function($helper) {
       return '(borrower_id = (SELECT user_id FROM usernames WHERE username LIKE ? LIMIT 1))';
     };
-    $result->bind_where_callback = functin($helper) use ($borrower_name) {
+    $result->bind_where_callback = function($helper) use ($borrower_name) {
       return array(array('s', $borrower_name));
     };
     $helper->add_callback($result);
