@@ -180,6 +180,11 @@ class LoansHelper {
       }
     }
 
+    if(count($all_params) === 0) {
+      error_log("no params to bind");
+      return;
+    }
+
     $param_types_str = '';
     $param_values_arr = array();
     $param_values_arr[] = $param_types_str; // we will reset this later but we need to reserve the slot
