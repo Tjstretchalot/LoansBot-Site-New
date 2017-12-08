@@ -2,9 +2,9 @@
   // Set $sql_conn to an active database connection and set $logged_in_user to a User 
   // if the user is logged in
 
-  require('database/common.php');
-  require('database/site_sessions.php');
-  require('database/users.php');
+  require_once('database/common.php');
+  require_once('database/site_sessions.php');
+  require_once('database/users.php');
 
   if(!isset($sql_conn) || $sql_conn === null) {
     $sql_conn = create_db_connection();
