@@ -190,11 +190,9 @@ class LoansHelper {
     $tmp_holding_arr = array();
     foreach ($all_params as $ind=>$param) {
       // i tried using param as the holding arr but it doesn't work
-      var_dump($param);
       $param_types_str .= $param[0];
       $tmp_holding_arr[] = $param[1];
       $param_values_arr[$ind+1] = &$tmp_holding_arr[$ind];
-      var_dump($param_values_arr);
     }
 
     $param_values_arr[0] = $param_types_str;
