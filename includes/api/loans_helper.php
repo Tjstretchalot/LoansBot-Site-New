@@ -187,18 +187,15 @@ class LoansHelper {
 
     $param_types_str = '';
     $param_values_arr = array();
-    $param_values_arr[] = $param_types_str; // we will reset this later but we need to reserve the slot
-    foreach ($all_params as $param) {
-      error_log( 'handling param ' . print_r( $param, true ) );
-      var_dump($param);
+    array_pad($param_values_arr, count($all_params) + 1, 0);
+    foreach ($all_params as $ind=>$param) {
       $param_types_str .= $param[0];
-      $param_values_arr[] = &$param[1];
+      $param_values_arr[$ind+1] = &$param[1];
     }
 
     $param_values_arr[0] = $param_types_str;
 
     error_log( print_r( $param_values_arr, true ) );
-    var_dump($param_values_arr);
     call_user_func_array(array($stmt, 'bind_param'), $param_values_arr);
   }
 
