@@ -159,6 +159,9 @@ class LoansHelper {
       $tmp = $this->limit_callback;
       $query .= $tmp($this);
     }
+    
+    error_log($query);
+    return $query;
   }
   
   public function bind_params($sql_conn, $stmt) {
