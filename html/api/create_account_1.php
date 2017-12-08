@@ -38,7 +38,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   if($user === null) {
-    $user = UserMapping::create_with_username($conn, $username);
+    $user = UserMapping::create_by_username($conn, $username);
   }
 
   if($user->claim_code !== null && $user->claim_link_sent_at === null) {
