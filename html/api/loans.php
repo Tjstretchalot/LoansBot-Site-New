@@ -9,6 +9,9 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
 
   function handle_param_error($result) {
     if($result !== null) {
+      if(!isset($result['err_mess'])) {
+        var_dump($result);
+      }
       echo_fail(400, $result['err_mess'], $result['err_ident']);
       die();
       return;
