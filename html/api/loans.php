@@ -1,11 +1,12 @@
 <?php
 require_once 'database/common.php';
 require_once 'api/common.php';
+require_once 'api/select_query_helper.php';
 require_once 'api/loans_helper.php';
 
 if($_SERVER['REQUEST_METHOD'] === 'GET') {
   $params = $_GET;
-  $helper = new LoansHelper();
+  $helper = new SelectQueryHelper();
 
   function handle_param_error($result) {
     if($result !== null) {
@@ -36,6 +37,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   handle_param_error(ParameterParser::parse_lender_name($helper, $params));
 
   handle_param_error(ParameterParser::parse_includes_user_id($helper, $params));
+  handle_param_error(ParameterParser::parse_includes_user_name($helper, $params));
 
   handle_param_error(ParameterParser::parse_unpaid($helper, $params));
 
@@ -48,7 +50,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   handle_param_error(ParameterParser::return_unpaid($helper, $params));
   handle_param_error(ParameterParser::return_created_at($helper, $params));
   handle_param_error(ParameterParser::return_updated_at($helper, $params));
-  handle_param_error(ParameterParser::return_latest_repayment_at($helper, $params));
+  handle_param_error(ParameterParser::parse_include_latest_repayment_at($helper, $params));
 
   // params that aren't processed unless order is irrelevant (format >= 2)
   handle_param_error(ParameterParser::fetch_usernames($helper, $params));

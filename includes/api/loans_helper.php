@@ -1,222 +1,7 @@
 <?php
 require_once 'api/common.php';
+require_once 'api/select_query_helper.php'
 
-/*
- * This class makes it easier to generate the very general
- * queries that can be spit out of html/api/loans.php. 
- * 
- * It generates queries of the form
- *
- * SELECT loans.asdf, john_sub.asdf[, ...] FROM loans INNER JOIN (SELECT john.hi FROM john ORDER BY date ASC) john_sub ON john_sub.hi = loans.asdf WHERE loan.asdf=? ORDER BY loans.asdf DESC LIMIT 10';
- */
-class LoanQueryCallback {
-  // may not be null
-  // the unique string that identifies this callback, in case other callbacks need to reference
-  // it
-  public $identifier;
-
-  // may not be null
-  // an array that contains any data that was parsed from parameters that help describe what this
-  // callback does
-  public $parsed;
-
-  // may be null
-  // 1 argument ($helper), returns a string to append with no leading or trailing spaces or commas
-  public $param_callback;
-
-  // may be null
-  // 1 argument ($helper), returns a string to append with no leading or trailing spaces or commas
-  public $join_callback;
-
-  // may be null
-  // 1 argument ($helper), returns a string to append with no leading or trailing spaces or commas
-  public $where_callback;
-  
-  // may be null
-  // accepts ($helper, $auth_level) and returns null if the command is valid, and an array('error_mess'=>'a string', 'error_ident' => 'another string') 
-  // if it is not valid
-  public $authorization_callback;
-
-  // may be null
-  // 1 argument ($helper)
-  // if you bind 1 param in your join_callback like 'INNER JOIN (SELECT * FROM asdf WHERE asdf.id=?) a ON asdf.loan_id=loans.loan_id'
-  // the result would be array(array( 'i', 5 ))
-  public $bind_join_callback;
-
-  // may be null
-  // 1 argument ($helper)
-  // if you had something like 'WHERE loans.id=? OR loans.id=?' then this would return array((array('i', 5), array('i', 6)))
-  // for example
-  public $bind_where_callback;
-
-  // accepts ($helper, &$row, &$array) where row is fetch_assoc() from the database, $array
-  // is the output for the current row, and $format is the format that was requested (numeric)
-  // may be null
-  public $result_callback;
-
-  public function __construct($identifier, $parsed, $param_callback, $join_callback, $where_callback, $authorization_callback, $bind_join_callback, $bind_where_callback, $result_callback) {
-    $this->identifier = $identifier;
-    $this->parsed = $parsed;
-    $this->param_callback = $param_callback;
-    $this->join_callback = $join_callback;
-    $this->where_callback = $where_callback;
-    $this->authorization_callback = $authorization_callback;
-    $this->bind_join_callback = $bind_join_callback;
-    $this->bind_where_callback = $bind_where_callback;
-    $this->result_callback = $result_callback;
-  }
-}
-
-class LoansHelper {
-  // acts like an array of callbacks
-  public $callbacks;
-
-  // acts like a dictionary of callback identifiers to callbacks
-  public $callbacks_dict;
-
-  // should return something like 'ORDER BY loans.x DESC'
-  public $order_by_callback;
-
-  // should return something like 'LIMIT 10'
-  public $limit_callback;
-
-  // the format being used
-  public $format;
-
-  public function __construct() {
-    $this->callbacks = new ArrayObject(array());
-    $this->callbacks_dict = new ArrayObject(array());
-  }
-
-  public function add_callback($callback) {
-    $this->callbacks[] = $callback;
-    $this->callbacks_dict[$callback->identifier] = $callback;
-  }
-
-  public function check_authorization($auth_level) {
-    foreach ($this->callbacks as $callback) {
-      if($callback->authorization_callback !== null) {
-        $tmp = $callback->authorization_callback;
-        $res = $tmp($this, $auth_level);
-        if($res !== null) {
-          return $res;
-        }
-      }
-    }
-  }
-
-  public function build_query() {
-    $query = 'SELECT ';
-
-    $first = true;
-    foreach ($this->callbacks as $callback) {
-      if($callback->param_callback !== null) {
-        if($first) {
-          $first = false;
-        }else {
-          $query .= ', ';
-        }
-        $tmp = $callback->param_callback;
-        $query .= $tmp($this);
-      }
-    }
-
-    $query .= ' FROM loans ';
-
-    $first = true;
-    foreach ($this->callbacks as $callback) {
-      if($callback->join_callback !== null) {
-        if($first) {
-          $first = false;
-        }else { 
-          $query .= ' ';
-        }
-        $tmp = $callback->join_callback;
-        $query .= $tmp($this);
-      }
-    }
-    
-    $first = true;
-    foreach ($this->callbacks as $callback) {
-      if($callback->where_callback !== null) {
-        if($first) {
-          $query .= ' WHERE ';
-          $first = false;
-        }else {
-          $query .= ' AND ';
-        }
-        $tmp = $callback->where_callback;
-        $query .= $tmp($this);
-      }
-    }
-
-    if($this->order_by_callback !== null) {
-      $query .= ' ';
-      $tmp = $this->order_by_callback;
-      $query .= $tmp($this);
-    }
-
-    if($this->limit_callback !== null) {
-      $query .= ' ';
-      $tmp = $this->limit_callback;
-      $query .= $tmp($this);
-    }
-    
-    error_log($query);
-    return $query;
-  }
-  
-  public function bind_params($sql_conn, $stmt) {
-    $all_params = array();
-    foreach ($this->callbacks as $callback) {
-      if($callback->bind_join_callback !== null) {
-        $tmp = $callback->bind_join_callback;
-        $all_params = array_merge($all_params, $tmp($this));
-      }
-    }
-
-    foreach ($this->callbacks as $callback) {
-      if($callback->bind_where_callback !== null) {
-        $tmp = $callback->bind_where_callback;
-        $all_params = array_merge($all_params, $tmp($this));
-      }
-    }
-
-    if(count($all_params) === 0) {
-      error_log("no params to bind");
-      return;
-    }
-
-    $param_types_str = '';
-    $param_values_arr = array();
-    $param_values_arr = array_pad($param_values_arr, count($all_params) + 1, 0);
-    $tmp_holding_arr = array();
-    foreach ($all_params as $ind=>$param) {
-      // i tried using param as the holding arr but it doesn't work
-      $param_types_str .= $param[0];
-      $tmp_holding_arr[] = $param[1];
-      $param_values_arr[$ind+1] = &$tmp_holding_arr[$ind];
-    }
-
-    $param_values_arr[0] = $param_types_str;
-    
-    error_log( print_r( $param_values_arr, true ) );
-    call_user_func_array(array($stmt, 'bind_param'), $param_values_arr);
-  }
-
-  public function create_result_from_row($row) {
-    $result = array();
-    
-    foreach($this->callbacks as $callback) {
-      if($callback->result_callback !== null) {
-        $tmp = $callback->result_callback;
-        $tmp($this, $row, $result);
-      }
-    }
-
-    return $result;
-  }
-}
 
 class ParameterParser {
   public static function parse_format($helper, &$params) {
@@ -267,7 +52,7 @@ class ParameterParser {
       $id = $_id;
     }
 
-    $result = new LoanQueryCallback('loan_id', array('id' => $id), null, null, null, null, null, null, null);
+    $result = new SelectQueryCallback('loan_id', array('id' => $id));
 
     $result->param_callback = function($helper) {
       return 'loans.id as loan_id';
@@ -298,7 +83,7 @@ class ParameterParser {
     if($helper->format === 0) 
       return;
 
-    $result = new LoanQueryCallback('created_at', array(), null, null, null, null, null, null, null);
+    $result = new SelectQueryCallback('created_at', array());
     $result->param_callback = function($helper) {
       return 'loans.created_at as loan_created_at';
     };
@@ -332,7 +117,7 @@ class ParameterParser {
     if($after_time === null)
       return null;
 
-    $result = new LoanQueryCallback('after_time', array('after_time' => $after_time), null, null, null, null, null, null, null);
+    $result = new SelectQueryCallback('after_time', array('after_time' => $after_time));
     $result->where_callback = function($helper) {
       return 'loans.created_at > ?';
     };
@@ -359,7 +144,7 @@ class ParameterParser {
     if($before_time === null)
       return null;
 
-    $result = new LoanQueryCallback('before_time', array('before_time' => $before_time), null, null, null, null, null, null, null);
+    $result = new SelectQueryCallback('before_time', array('before_time' => $before_time));
     $result->where_callback = function($helper) {
       return 'loans.created_at < ?';
     };
@@ -374,7 +159,7 @@ class ParameterParser {
     if($helper->format === 0) 
       return null;
 
-    $result = new LoanQueryCallback('borrower_id', array(), null, null, null, null, null, null, null);
+    $result = new SelectQueryCallback('borrower_id', array());
     $result->param_callback = function($helper) {
       return 'loans.borrower_id as loan_borrower_id';
     };
@@ -405,7 +190,7 @@ class ParameterParser {
     if($filter_borrower_id === null)
       return null;
     
-    $result = new LoanQueryCallback('filter_borrower_id', array('filter_borrower_id' => $filter_borrower_id), null, null, null, null, null, null, null);
+    $result = new SelectQueryCallback('filter_borrower_id', array('filter_borrower_id' => $filter_borrower_id));
     $result->where_callback = function($helper) {
       return 'loans.borrower_id = ?';
     };
@@ -420,7 +205,7 @@ class ParameterParser {
     if($helper->format === 0) {
       return null;
     }
-    $result = new LoanQueryCallback('lender_id', array(), null, null, null, null, null, null, null);
+    $result = new SelectQueryCallback('lender_id', array());
     $result->param_callback = function($helper) {
       return 'loans.lender_id as loan_lender_id';
     };
@@ -450,7 +235,7 @@ class ParameterParser {
       return null;
     }
     
-    $result = new LoanQueryCallback('filter_lender_id', array(), null, null, null, null, null, null, null);
+    $result = new SelectQueryCallback('filter_lender_id', array('filter_lender_id' => $filter_lender_id));
     $result->where_callback = function($helper) {
       return 'loans.lender_id = ?';
     };
@@ -475,7 +260,7 @@ class ParameterParser {
       return null;
     }
     
-    $result = new LoanQueryCallback('includes_user_id', array(), null, null, null, null, null, null, null);
+    $result = new SelectQueryCallback('includes_user_id', array('includes_user_id' => $includes_user_id));
     $result->where_callback = function($helper) {
       return '(loans.lender_id = ? OR loans.borrower_id = ?)';
     };
@@ -499,7 +284,7 @@ class ParameterParser {
       return array('error_ident' => 'INVALID_PARAMETER', 'error_mess' => 'Cannot set both borrower_id and borrower_name');
     }
     
-    $result = new LoanQueryCallback('borrower_name', array(), null, null, null, null, null, null, null);
+    $result = new SelectQueryCallback('borrower_name', array('borrower_name' => $borrower_name));
     $result->where_callback = function($helper) {
       return '(borrower_id = (SELECT user_id FROM usernames WHERE username LIKE ? LIMIT 1))';
     };
@@ -522,7 +307,7 @@ class ParameterParser {
     if(isset($helper->callbacks_dict['filter_lender_id']))
       return array('error_ident' => 'INVALID_PARAMETER', 'error_mess' => 'Cannot set both lender_id and lender_name');
 
-    $result = new LoanQueryCallback('lender_name', array(), null, null, null, null, null, null, null);
+    $result = new SelectQueryCallback('lender_name', array('lender_name' => $lender_name));
     $result->where_callback = function($helper) {
       return '(lender_id = (SELECT user_id FROM usernames WHERE username LIKE ? LIMIT 1))';
     };
@@ -546,7 +331,7 @@ class ParameterParser {
       return array('error_ident' => 'INVALID_PARAMETER', 'error_mess' => 'You cannot set includes_user_id AND includes_user_name');
     }
 
-    $result = new LoanQueryCallback('includes_user_name', array(), null, null, null, null, null, null, null);
+    $result = new SelectQueryCallback('includes_user_name', array('includes_user_name' => $includes_user_name));
     $result->where_callback = function($helper) {
       return '(loans.lender_id = (SELECT user_id FROM usernames WHERE username LIKE ?) OR loans.borrower_id = (SELECT user_id FROM usernames WHERE username LIKE ?))';
     };
@@ -566,13 +351,13 @@ class ParameterParser {
     }
 
     if(!$include_deleted) {
-      $result = new LoanQueryCallback('exclude_deleted_at', array(), null, null, null, null, null, null, null);
+      $result = new SelectQueryCallback('exclude_deleted_at', array());
       $result->where_callback = function($helper) {
         return 'loans.deleted = 0';
       };
       $helper->add_callback($result);
     }else {
-      $result = new LoanQueryCallback('include_deleted_at', array(), null, null, null, null, null, null, null);
+      $result = new SelectQueryCallback('include_deleted_at', array());
       $result->authorization_callback = function($helper, $auth) {
         if($auth < 5) { // MODERATOR_PERMISSION
           return array('error_ident' => 'NOT_AUTHORIZED', 'error_mess' => 'You do not have permission to view deleted loans');
@@ -587,7 +372,7 @@ class ParameterParser {
     if($helper->format === 0) {
       return null;
     }
-    $result = new LoanQueryCallback('principal_cents', array(), null, null, null, null, null, null, null);
+    $result = new SelectQueryCallback('principal_cents', array());
     $result->param_callback = function($helper) {
       return 'loans.principal_cents as loan_principal_cents';
     };
@@ -617,7 +402,7 @@ class ParameterParser {
       return null;
     }
     
-    $result = new LoanQueryCallback('filter_principal_cents', array(), null, null, null, null, null, null, null);
+    $result = new SelectQueryCallback('filter_principal_cents', array());
     $result->where_callback = function($helper) {
       return 'loans.principal_cents = ?';
     };
@@ -632,7 +417,7 @@ class ParameterParser {
     if($helper->format === 0) {
       return null;
     }
-    $result = new LoanQueryCallback('principal_repayment_cents', array(), null, null, null, null, null, null, null);
+    $result = new SelectQueryCallback('principal_repayment_cents', array());
     $result->param_callback = function($helper) {
       return 'loans.principal_repayment_cents as loan_principal_repayment_cents';
     };
@@ -662,7 +447,7 @@ class ParameterParser {
       return null;
     }
     
-    $result = new LoanQueryCallback('filter_principal_repayment_cents', array(), null, null, null, null, null, null, null);
+    $result = new SelectQueryCallback('filter_principal_repayment_cents', array());
     $result->where_callback = function($helper) {
       return 'loans.principal_repayment_cents = ?';
     };
@@ -677,7 +462,7 @@ class ParameterParser {
     if($helper->format === 0) {
       return null;
     }
-    $result = new LoanQueryCallback('unpaid', array(), null, null, null, null, null, null, null);
+    $result = new SelectQueryCallback('unpaid', array());
     $result->param_callback = function($helper) {
       return 'loans.unpaid as loan_unpaid';
     };
@@ -709,14 +494,14 @@ class ParameterParser {
       return;
 
     if($unpaid === 1) {
-      $result = new LoanQueryCallback('only_unpaid', array(), null, null, null, null, null, null, null);
+      $result = new SelectQueryCallback('only_unpaid', array());
       $result->where_callback = function($helper) {
         return 'loans.unpaid = 1';
       };
       $helper->add_callback($result);
       return null;
     }else {
-      $result = new LoanQueryCallback('no_unpaid', array(), null, null, null, null, null, null, null);
+      $result = new SelectQueryCallback('no_unpaid', array());
       $result->where_callback = function($helper) {
         return 'loans.unpaid = 0';
       };
@@ -741,14 +526,14 @@ class ParameterParser {
       return;
 
     if($repaid === 1) {
-      $result = new LoanQueryCallback('only_repaid', array(), null, null, null, null, null, null, null);
+      $result = new SelectQueryCallback('only_repaid', array());
       $result->where_callback = function($helper) {
         return 'loans.principal_cents = loans.principal_repayment_cents';
       };
       $helper->add_callback($result);
       return null;
     }else {
-      $result = new LoanQueryCallback('no_repaid', array(), null, null, null, null, null, null, null);
+      $result = new SelectQueryCallback('no_repaid', array());
       $result->where_callback = function($helper) {
         return 'loans.principal_cents != loans.principal_repayment_cents';
       };
@@ -761,7 +546,7 @@ class ParameterParser {
     if($helper->format === 0) {
       return null;
     }
-    $result = new LoanQueryCallback('updated_at', array(), null, null, null, null, null, null, null);
+    $result = new SelectQueryCallback('updated_at', array());
     $result->param_callback = function($helper) {
       return 'loans.updated_at as loan_updated_at';
     };
@@ -777,11 +562,23 @@ class ParameterParser {
     return null;
   }
 
-  public static function return_latest_repayment_at($helper, &$params) {
+  public static function parse_include_latest_repayment_at($helper, &$params) {
     if($helper->format === 0)
       return null;
+
+    $ret_lat_rep_at = 0;
+    if(isset($params['include_latest_repayment_at']) && is_numeric($params['include_latest_repayment_at'])) {
+      $_inclatrepat = intval($params['include_latest_repayment_at']);
+
+      if(in_array($_inclatrepat, array(0, 1))) {
+        $ret_lat_rep_at = $inclatrepat;
+      }
+    }
+
+    if($ret_lat_rep_at === 0)
+      return null;
     
-    $result = new LoanQueryCallback('fetch_latest_repayment_at', array(), null, null, null, null, null, null, null);
+    $result = new SelectQueryCallback('include_latest_repayment_at', array());
     $result->param_callback = function($helper) {
       return 'lrepays.created_at as latest_repayment_at';
     };
@@ -809,7 +606,7 @@ class ParameterParser {
       return null;
     }
 
-    $result = new LoanQueryCallback('fetch_lender_username', array(), null, null, null, null, null, null, null);
+    $result = new SelectQueryCallback('fetch_lender_username', array());
     $result->param_callback = function($helper) {
       return 'lunames.username as lender_username';
     };
@@ -821,7 +618,7 @@ class ParameterParser {
     };
     $helper->add_callback($result);
 
-    $result = new LoanQueryCallback('fetch_borrower_username', array(), null, null, null, null, null, null, null);
+    $result = new SelectQueryCallback('fetch_borrower_username', array());
     $result->param_callback = function($helper) {
       return 'bunames.username as borrower_username';
     };
