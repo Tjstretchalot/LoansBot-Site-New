@@ -583,6 +583,96 @@ class ParameterParser {
     }
   }
 
+  public static function return_principal_cents($helper, &$params) {
+    if($helper->format === 0) {
+      return null;
+    }
+    $result = new LoanQueryCallback('principal_cents', array(), null, null, null, null, null, null, null);
+    $result->param_callback = function($helper) {
+      return 'loans.principal_cents as loan_principal_cents';
+    };
+    $result->result_callback = function($helper, &$row, &$response_res) {
+      $val = $row['loan_principal_cents'];
+      if($helper->format === 1) {
+        $response_res[] = $val;
+      }else { 
+        $response_res['principal_cents'] = $val;
+      }
+    };
+    $helper->add_callback($result);
+    return null;
+  }
+
+  public static function parse_principal_cents($helper, &$params) {
+    $filter_principal_cents = null;
+    if(isset($params['principal_cents']) && is_numeric($params['principal_cents'])) {
+      $_principal_cents = intval($params['principal_cents']);
+
+      if($_principal_cents !== -1) {
+        $filter_principal_cents = $_principal_cents;
+      }
+    }
+    
+    if($filter_principal_cents === null) {
+      return null;
+    }
+    
+    $result = new LoanQueryCallback('filter_principal_cents', array(), null, null, null, null, null, null, null);
+    $result->where_callback = function($helper) {
+      return 'loans.principal_cents = ?';
+    };
+    $result->bind_where_callback = function($helper) use ($filter_principal_cents) {
+      return array(array('i', $filter_principal_cents));
+    };
+    $helper->add_callback($result);
+    return null;
+  }
+   
+  public static function return_principal_repayment_cents($helper, &$params) {
+    if($helper->format === 0) {
+      return null;
+    }
+    $result = new LoanQueryCallback('principal_repayment_cents', array(), null, null, null, null, null, null, null);
+    $result->param_callback = function($helper) {
+      return 'loans.principal_repayment_cents as loan_principal_repayment_cents';
+    };
+    $result->result_callback = function($helper, &$row, &$response_res) {
+      $val = $row['loan_principal_repayment_cents'];
+      if($helper->format === 1) {
+        $response_res[] = $val;
+      }else { 
+        $response_res['principal_repayment_cents'] = $val;
+      }
+    };
+    $helper->add_callback($result);
+    return null;
+  }
+
+  public static function parse_principal_repayment_cents($helper, &$params) {
+    $filter_principal_repayment_cents = null;
+    if(isset($params['principal_repayment_cents']) && is_numeric($params['principal_repayment_cents'])) {
+      $_principal_repayment_cents = intval($params['principal_repayment_cents']);
+
+      if($_principal_repayment_cents !== -1) {
+        $filter_principal_repayment_cents = $_principal_repayment_cents;
+      }
+    }
+    
+    if($filter_principal_repayment_cents === null) {
+      return null;
+    }
+    
+    $result = new LoanQueryCallback('filter_principal_repayment_cents', array(), null, null, null, null, null, null, null);
+    $result->where_callback = function($helper) {
+      return 'loans.principal_repayment_cents = ?';
+    };
+    $result->bind_where_callback = function($helper) use ($filter_principal_repayment_cents) {
+      return array(array('i', $filter_principal_repayment_cents));
+    };
+    $helper->add_callback($result);
+    return null;
+  }
+  
   public static function fetch_usernames($helper, &$params) {
     if($helper->format < 3) {
       return null;
