@@ -672,6 +672,63 @@ class ParameterParser {
     $helper->add_callback($result);
     return null;
   }
+
+  public static function return_unpaid($helper, &$params) {
+    if($helper->format === 0) {
+      return null;
+    }
+    $result = new LoanQueryCallback('unpaid', array(), null, null, null, null, null, null, null);
+    $result->param_callback = function($helper) {
+      return 'loans.unpaid as loan_unpaid';
+    };
+    $result->result_callback = function($helper, &$row, &$response_res) {
+      $val = $row['loan_unpaid'];
+      if($val === 1) {
+        $val = true;
+      }elseif($val === 0) {
+        $val = false;
+      }
+      if($helper->format === 1) {
+        $response_res[] = $val;
+      }else { 
+        $response_res['unpaid'] = $val;
+      }
+    };
+    $helper->add_callback($result);
+    return null;
+  }
+
+  public static function parse_unpaid($helper, &$params) {
+    $unpaid = null;
+    if(isset($params['unpaid']) && is_numeric($params['unpaid'])) {
+      $_unpaid = intval($params['unpaid']);
+
+      if($_unpaid === 1) {
+        $unpaid = 1;
+      }elseif($_unpaid === 0) {
+        $unpaid = 0;
+      }
+    }
+
+    if($unpaid === null)
+      return;
+
+    if($unpaid === 1) {
+      $result = new LoanQueryCallback('only_unpaid', array(), null, null, null, null, null, null, null);
+      $result->where_callback = function($helper) {
+        return 'loans.unpaid = 1';
+      };
+      $helper->add_callback($result);
+      return null;
+    }else {
+      $result = new LoanQueryCallback('no_unpaid', array(), null, null, null, null, null, null, null);
+      $result->where_callback = function($helper) {
+        return 'loans.unpaid = 0';
+      };
+      $helper->add_callback($result);
+      return null;
+    }
+  }
   
   public static function fetch_usernames($helper, &$params) {
     if($helper->format < 3) {
@@ -702,6 +759,5 @@ class ParameterParser {
     };
     $helper->add_callback($result);
   }
-
 }
 ?>

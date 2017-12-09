@@ -37,12 +37,15 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
 
   handle_param_error(ParameterParser::parse_includes_user_id($helper, $params));
 
+  handle_param_error(ParameterParser::parse_unpaid($helper, $params));
+
   // order relevant params
   handle_param_error(ParameterParser::parse_id($helper, $params));
   handle_param_error(ParameterParser::return_lender_id($helper, $params));
   handle_param_error(ParameterParser::return_borrower_id($helper, $params));
   handle_param_error(ParameterParser::return_principal_cents($helper, $params));
   handle_param_error(ParameterParser::return_principal_repayment_cents($helper, $params));
+  handle_param_error(ParameterParser::return_unpaid($helper, $params));
   handle_param_error(ParameterParser::return_created_at($helper, $params));
 
   // params that aren't processed unless order is irrelevant (format >= 2)
