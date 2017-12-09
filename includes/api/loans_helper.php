@@ -683,11 +683,6 @@ class ParameterParser {
     };
     $result->result_callback = function($helper, &$row, &$response_res) {
       $val = $row['loan_unpaid'];
-      if($val === 1) {
-        $val = true;
-      }elseif($val === 0) {
-        $val = false;
-      }
       if($helper->format === 1) {
         $response_res[] = $val;
       }else { 
