@@ -1,4 +1,6 @@
 <?php
+require_once 'api/common.php';
+
 /*
  * This class makes it easier to generate the very general
  * queries that can be spit out of html/api/loans.php. 
@@ -532,6 +534,55 @@ class ParameterParser {
     return null;
   }
 
+  public static function parse_includes_user_name($helper, &$params) {
+    $includes_user_name = null;
+    if(isset($params['includes_user_name'])) {
+      $includes_user_name = $params['includes_user_name'];
+    }
+
+    if($includes_user_name)
+      return null;
+
+    if(isset($helper->callbacks_dict['includes_user_id'])) {
+      return array('error_ident' => 'INVALID_PARAMETER', 'error_mess' => 'You cannot set includes_user_id AND includes_user_name');
+    }
+
+    $result = new LoanQueryCallback('includes_user_name', array(), null, null, null, null, null, null, null);
+    $result->where_callback = function($helper) {
+      return '(loans.lender_id = (SELECT user_id FROM usernames WHERE username LIKE ?) OR loans.borrower_id = (SELECT user_id FROM usernames WHERE username LIKE ?))';
+    };
+    $result->bind_where_callback = function($helper) use ($includes_user_name) {
+      return array(array('s', $includes_user_name), array('s', $includes_user_name));
+    };
+    $helper->add_callback($result);
+  }
+
+  public static function parse_include_deleted($helper, &$params) {
+    $include_deleted = false;
+    if(isset($params['include_deleted']) && is_numeric($params['include_deleted'])) {
+      $_include_deleted = intval($params['include_deleted']);
+      if($_include_deleted === 1) {
+        $include_deleted = true;
+      }
+    }
+
+    if(!$include_deleted) {
+      $result = new LoanQueryCallback('exclude_deleted_at', array(), null, null, null, null, null, null, null);
+      $result->where_callback = function($helper) {
+        return 'loans.deleted = 0';
+      };
+      $helper->add_callback($result);
+    }else {
+      $result = new LoanQueryCallback('include_deleted_at', array(), null, null, null, null, null, null, null);
+      $result->authorization_callback = function($helper, $auth) {
+        if($auth < $MODERATOR_PERMISSION) {
+          return array('error_ident' => 'NOT_AUTHORIZED', 'error_message' => 'You do not have permission to view deleted loans');
+        }
+        return null;
+      };
+    }
+  }
+
   public static function fetch_usernames($helper, &$params) {
     if($helper->format < 3) {
       return null;
@@ -561,5 +612,6 @@ class ParameterParser {
     };
     $helper->add_callback($result);
   }
+
 }
 ?>

@@ -18,6 +18,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   // order irrelevant params
   handle_param_error(ParameterParser::parse_format($helper, $params));
   handle_param_error(ParameterParser::parse_limit($helper, $params));
+  handle_param_error(ParameterParser::parse_include_deleted($helper, $params));
 
   // result order irrelevant because they are split out with a return_ function
   // and are not coupled with anything
