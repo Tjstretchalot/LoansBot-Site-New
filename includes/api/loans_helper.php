@@ -575,7 +575,7 @@ class ParameterParser {
       $result = new LoanQueryCallback('include_deleted_at', array(), null, null, null, null, null, null, null);
       $result->authorization_callback = function($helper, $auth) {
         if($auth < 5) { // MODERATOR_PERMISSION
-          return array('error_ident' => 'NOT_AUTHORIZED', 'error_message' => 'You do not have permission to view deleted loans');
+          return array('error_ident' => 'NOT_AUTHORIZED', 'error_mess' => 'You do not have permission to view deleted loans');
         }
         return null;
       };
