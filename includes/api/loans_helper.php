@@ -803,7 +803,7 @@ class ParameterParser {
       }
     };
     $result->join_callback = function($helper) {
-      return 'LEFT OUTER JOIN (SELECT loan_id, MAX(created_at) FROM repayments GROUP BY loan_id) lrepays ON loans.id = lrepays.loan_id';
+      return 'LEFT OUTER JOIN (SELECT loan_id, MAX(created_at) as created_at FROM repayments GROUP BY loan_id) lrepays ON loans.id = lrepays.loan_id';
     };
     $helper->add_callback($result);
     return null;
