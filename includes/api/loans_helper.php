@@ -1,6 +1,6 @@
 <?php
 require_once 'api/common.php';
-require_once 'api/select_query_helper.php'
+require_once 'api/select_query_helper.php';
 
 
 class ParameterParser {
