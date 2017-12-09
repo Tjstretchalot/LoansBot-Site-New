@@ -324,7 +324,7 @@ class ParameterParser {
       $includes_user_name = $params['includes_user_name'];
     }
 
-    if($includes_user_name)
+    if($includes_user_name === null)
       return null;
 
     if(isset($helper->callbacks_dict['includes_user_id'])) {
