@@ -47,6 +47,8 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   handle_param_error(ParameterParser::return_principal_repayment_cents($helper, $params));
   handle_param_error(ParameterParser::return_unpaid($helper, $params));
   handle_param_error(ParameterParser::return_created_at($helper, $params));
+  handle_param_error(ParameterParser::return_updated_at($helper, $params));
+  handle_param_error(ParameterParser::return_latest_repayment_at($helper, $params));
 
   // params that aren't processed unless order is irrelevant (format >= 2)
   handle_param_error(ParameterParser::fetch_usernames($helper, $params));

@@ -730,6 +730,85 @@ class ParameterParser {
     }
   }
   
+  public static function parse_repaid($helper, &$params) {
+    $repaid = null;
+    if(isset($params['repaid']) && is_numeric($params['repaid'])) {
+      $_unpaid = intval($params['repaid']);
+
+      if($_repaid === 1) {
+        $repaid = 1;
+      }elseif($_repaid === 0) {
+        $repaid = 0;
+      }
+    }
+
+    if($repaid === null)
+      return;
+
+    if($repaid === 1) {
+      $result = new LoanQueryCallback('only_repaid', array(), null, null, null, null, null, null, null);
+      $result->where_callback = function($helper) {
+        return 'loans.principal_cents = loans.principal_repayment_cents';
+      };
+      $helper->add_callback($result);
+      return null;
+    }else {
+      $result = new LoanQueryCallback('no_repaid', array(), null, null, null, null, null, null, null);
+      $result->where_callback = function($helper) {
+        return 'loans.principal_cents != loans.principal_repayment_cents';
+      };
+      $helper->add_callback($result);
+      return null;
+    }
+  }
+
+  public static function return_updated_at($helper, &$params) {
+    if($helper->format === 0) {
+      return null;
+    }
+    $result = new LoanQueryCallback('updated_at', array(), null, null, null, null, null, null, null);
+    $result->param_callback = function($helper) {
+      return 'loans.updated_at as loan_updated_at';
+    };
+    $result->result_callback = function($helper, &$row, &$response_res) {
+      $val = strtotime($row['loan_updated_at']) * 1000;
+      if($helper->format === 1) {
+        $response_res[] = $val;
+      }else { 
+        $response_res['updated_at'] = $val;
+      }
+    };
+    $helper->add_callback($result);
+    return null;
+  }
+
+  public static function return_latest_repayment_at($helper, &$params) {
+    if($helper->format === 0)
+      return null;
+    
+    $result = new LoanQueryCallback('fetch_latest_repayment_at', array(), null, null, null, null, null, null, null);
+    $result->param_callback = function($helper) {
+      return 'lrepays.created_at as latest_repayment_at';
+    };
+    $result->result_callback = function($helper, &$row, &$response_res) {
+      $val = null;
+      if(isset($row['latest_repayment_at']) && $row['latest_repayment_at'] !== null) {
+        $val = strtotime($row['latest_repayment_at']) * 1000;
+      }
+
+      if($helper->format === 1) {
+        $response_res[] = $val;
+      }else {
+        $response_res['latest_repayment_at'] = $val;
+      }
+    };
+    $result->join_callback = function($helper) {
+      return 'LEFT OUTER JOIN (SELECT loan_id, MAX(created_at) FROM repayments GROUP BY loan_id) lrepays ON loans.id = lrepays.loan_id';
+    };
+    $helper->add_callback($result);
+    return null;
+  }
+
   public static function fetch_usernames($helper, &$params) {
     if($helper->format < 3) {
       return null;
