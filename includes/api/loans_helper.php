@@ -219,7 +219,6 @@ class LoansHelper {
 }
 
 class ParameterParser {
-  //public __construct($identifier, $parsed, $param_callback, $join_callback, $where_callback, $authorization_callback, $result_callback) {
   public static function parse_format($helper, &$params) {
     $format = 1;
     if(isset($params['format']) && is_numeric($params['format'])) {
@@ -580,6 +579,7 @@ class ParameterParser {
         }
         return null;
       };
+      $helper->add_callback($result);
     }
   }
 
