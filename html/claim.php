@@ -111,7 +111,7 @@
           statusText.fadeIn('fast');
         });
         $("#submit-button").attr('disabled', true);
-        $.post("/api/create_account_2.php", { username: username, password: password1, token: token, name: name, email: email, country: country, state: state, city: city, streetAddress: streetAddress, zip: zip }, function(data, stat) {
+        $.post("/api/create_account_2.php", { username: username, password: password1, token: token, name: name, email: email, country: country, state: state, city: city, street_address: streetAddress, zip: zip }, function(data, stat) {
           statusText.fadeOut('fast', function() {
             statusText.removeClass("alert-danger").removeClass("alert-info");
             statusText.addClass("alert-success");
