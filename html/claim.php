@@ -37,7 +37,7 @@
             <small id="password2HelpBlock" class="form-text text-muted">Repeat your password.</small>
           </div>
           <div class="form-group row">
-            <input type="email" class="form-control" id="token" aria-label="Email" placeholder="Email" aria-describedby="emailHelpBlock" required>
+            <input type="email" class="form-control" id="email" aria-label="Email" placeholder="Email" aria-describedby="emailHelpBlock" required>
             <small id="emailHelpBlock" class="form-text text-muted">Your email address, in case we need to get a hold of you outside reddit.</small>
           </div>
           <div class="form-group row">
