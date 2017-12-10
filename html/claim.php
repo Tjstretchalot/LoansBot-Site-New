@@ -100,7 +100,7 @@
         var state = $("#state").val();
         var city = $("#city").val();
         var streetAddress = $("#streetAddress").val();
-        var zip = ($"#zipAddress").val();
+        var zip = $("#zipAddress").val();
 
         var statusText = $("#statusText");
         statusText.fadeOut('fast', function() {
