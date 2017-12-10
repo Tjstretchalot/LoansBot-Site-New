@@ -21,8 +21,8 @@
         <div class="container-fluid alert" id="statusText" style="display: none"></div>
         <form id="create-account-form">
           <div class="form-group row">
-            <input type="number" class="form-control" id="user-id" aria-label="User ID" placeholder="User ID" aria-describedby="useridHelpBlock" step="1" min="1" <?php if(isset($_GET['user_id'])) { echo 'value="'.$_GET['user_id'].'"'; } ?> required>
-            <small id="useridHelpBlock" class="form-text text-muted">What is the user ID of the reddit account you want to claim? This should have been provided.</small>
+            <input type="text" class="form-control" id="username" aria-label="Username" placeholder="Username" aria-describedby="usernameHelpBlock" <?php if(isset($_GET['username'])) { echo 'value="'.$_GET['username'].'"'; } ?> required>
+            <small id="usernameHelpBlock" class="form-text text-muted">What is the username of the reddit account you want to claim?</small>
           </div>
           <div class="form-group row">
             <input type="text" class="form-control" id="token" aria-label="Token" placeholder="Token" aria-describedby="tokenHelpBlock" <?php if(isset($_GET['claim_code'])) { echo 'value="' . $_GET['claim_code'] . '"'; } ?> required>
