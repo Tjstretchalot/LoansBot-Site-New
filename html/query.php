@@ -654,7 +654,7 @@
             var lParams = getLoanParams();
             console.log("sending loan params");
             console.log(lParams);
-            $.get("/api/loans.php", lparams, function(data, status) {
+            $.get("/api/loans.php", lParams, function(data, status) {
               $(".status-text").attr("hidden", true);
               populateResults(data);
             }).fail(function(data){
