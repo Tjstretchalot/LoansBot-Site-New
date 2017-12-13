@@ -892,7 +892,7 @@ class ModifyParameterParser {
       }elseif($helper->callbacks_dict['set_borrower_name']) {
         $set_borrower_name = $helper->callbacks_dict['set_borrower_name'];
         if(isset($set_borrower_name->params['set_borrower_id'])) {
-          if($set_borrower_name->params['set_borrower_id'] === $params['set_lender_id')
+          if($set_borrower_name->params['set_borrower_id'] === $params['set_lender_id'])
             return array('error_ident' => 'SET_LENDER_ID_SANITY_FAILED', 'error_mess' => 'You attempted to set the borrower id (through the borrower name) and the lender id to the same thing!');
         }else {
           if(!isset($set_borrower_name->params['resolve_id_callbacks'])) 
