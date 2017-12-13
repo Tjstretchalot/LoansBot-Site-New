@@ -91,12 +91,12 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
 
   while(($row = $res->fetch_assoc()) !== null) {
     $tmp = array();
-    $tmp['type'] = $res['type'];
-    if($res['type'] === 0) {
-      $tmp['thread'] = $res['thread'];
-    }elseif($res['type'] === 1) {
+    $tmp['type'] = $row['type'];
+    if($row['type'] === 0) {
+      $tmp['thread'] = $row['thread'];
+    }elseif($row['type'] === 1) {
       if($auth >= $MODERATOR_PERMISSION) {
-        $tmp['user_id'] = $res['user_id'];
+        $tmp['user_id'] = $row['user_id'];
       }
     }
     $results_to_return[strval($tmp['loan_id'])] = $tmp;
