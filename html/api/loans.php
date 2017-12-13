@@ -90,7 +90,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   }
 
   if($modify === 1) {
-    $query->use_temporary_table = 'loans_modify_result_tmp';
+    $helper->use_temporary_table = 'loans_modify_result_tmp';
   }
 
   handle_param_error($helper->check_authorization($auth));
