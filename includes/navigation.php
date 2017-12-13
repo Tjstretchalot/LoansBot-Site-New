@@ -11,6 +11,11 @@
     'name' => 'Statistics'
   );
 
+  $pages[] = array(
+    'link' => '/query.php',
+    'name' => 'Search'
+  );
+
   if(!isset($logged_in_user) || $logged_in_user === null) {
     $pages[] = array(
       'link' => '/login.php',
