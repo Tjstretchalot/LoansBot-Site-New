@@ -138,7 +138,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     return;
   }
 
-  if($user->token !== $token) {
+  if($user->claim_code !== $token) {
     echo_fail(400, $bad_token_iden, $bad_token_message . ' (Error Code 004)');
     $conn->close();
     return;
