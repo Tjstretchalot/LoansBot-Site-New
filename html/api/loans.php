@@ -211,7 +211,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
     $query .=  'FROM loans ';
     $query .= ') new_info ON old_info.loan_id = new_info.id ';
     $query .= 'CROSS JOIN (';
-    $query .=   'SELECT NOW(), NOW()';
+    $query .=   'SELECT NOW() as now1, NOW() as now2';
     $query .= ') cjtimes';
     error_log($query); 
     check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare($query));
