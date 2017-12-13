@@ -255,7 +255,7 @@ class UpdateQueryHelper {
     return $query;
   }
 
-  public function bind_params() {
+  public function bind_params($sql_conn, $stmt) {
     $all_params = array();
     foreach($this->callbacks as $callback) {
       if($callback->bind_set_callback !== null) {
@@ -264,7 +264,7 @@ class UpdateQueryHelper {
       }
     }
     
-    foreach($this->callback as $callback) {
+    foreach($this->callbacks as $callback) {
       if($callback->bind_where_callback !== null) {
         $tmp = $callback->bind_where_callback;
         $all_params = array_merge($all_params, $tmp($this, $callback->params));
