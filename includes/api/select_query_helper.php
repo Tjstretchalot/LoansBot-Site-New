@@ -1,5 +1,6 @@
 <?php
 require_once 'api/common.php';
+require_once 'api/query_helper.php';
 
 /*
  * Contains one section of the query callback. These will typically either
@@ -14,6 +15,11 @@ class SelectQueryCallback {
 
   // Array containing anything this callback wants to share with other callbacks
   public $parsed;
+
+  // may be null
+  // 1 argument ($helper), returns a string to append to CREATE TEMPORARY TABLE (here is appended) SELECT
+  // should have no leading or trailing spaces or commas
+  public $temporary_table_columns_callback;
 
   // may be null
   // 1 argument ($helper), returns a string to append with no leading or trailing spaces or commas
@@ -50,7 +56,7 @@ class SelectQueryCallback {
   // for example
   public $bind_where_callback;
 
-  // accepts ($helper, &$row, &$array) where row is fetch_assoc() from the database, $array
+  // accepts ($helper, $row, &$array) where row is fetch_assoc() from the database, $array
   // is the output for the current row, and $format is the format that was requested (numeric)
   // may be null
   public $result_callback;
@@ -79,9 +85,17 @@ class SelectQueryHelper {
   // the format being used
   public $format;
 
-  public function __construct() {
+  // if set and not null, the query will insert into
+  // this table rather than return as a result set
+  public $use_temporary_table;
+
+  // the table being used
+  public $table;
+
+  public function __construct($table) {
     $this->callbacks = new ArrayObject(array());
     $this->callbacks_dict = new ArrayObject(array());
+    $this->table = $table;
   }
 
   public function add_callback($callback) {
@@ -101,8 +115,46 @@ class SelectQueryHelper {
     }
   }
 
+  public function check_sanity() {
+    foreach ($this->callbacks as $callback) {
+      if($callback->sanity_callback !== null) {
+        $tmp = $callback->santiy_callback;
+        $res = $tmp($this);
+        if($res !== null) {
+          return $res;
+        }
+      }
+    }
+  }
+
   public function build_query() {
-    $query = 'SELECT ';
+    $query = '';
+    if($use_temporary_table !== null) {
+      $query .= 'CREATE TEMPORARY TABLE ' . $use_temporary_table . ' ';
+
+      $first = true;
+      foreach ($this->callbacks as $callback) {
+        if($callback->temporary_table_columns_callback !== null) {
+          $tmp = $callback->temporary_table_columns_callback;
+          $res = $tmp($this);
+          if($res !== null) {
+            if($first) {
+              $query .= '(';
+              $first = false;
+            }else {
+              $query .= ', ';
+            }
+
+            $query .= $res;
+          }
+        }
+      }
+      if(!$first) {
+        $query .= ') ';
+      }
+    }
+
+    $query .= 'SELECT ';
 
     $first = true;
     foreach ($this->callbacks as $callback) {
@@ -117,7 +169,7 @@ class SelectQueryHelper {
       }
     }
 
-    $query .= ' FROM loans ';
+    $query .= ' FROM ' . $this->table . ' ';
 
     $first = true;
     foreach ($this->callbacks as $callback) {
@@ -177,27 +229,8 @@ class SelectQueryHelper {
         $all_params = array_merge($all_params, $tmp($this));
       }
     }
-
-    if(count($all_params) === 0) {
-      error_log("no params to bind");
-      return;
-    }
-
-    $param_types_str = '';
-    $param_values_arr = array();
-    $param_values_arr = array_pad($param_values_arr, count($all_params) + 1, 0);
-    $tmp_holding_arr = array();
-    foreach ($all_params as $ind=>$param) {
-      // i tried using param as the holding arr but it doesn't work
-      $param_types_str .= $param[0];
-      $tmp_holding_arr[] = $param[1];
-      $param_values_arr[$ind+1] = &$tmp_holding_arr[$ind];
-    }
-
-    $param_values_arr[0] = $param_types_str;
     
-    error_log( print_r( $param_values_arr, true ) );
-    call_user_func_array(array($stmt, 'bind_param'), $param_values_arr);
+    QueryHelper::bind_params($sql_conn, $stmt, $all_params);
   }
 
   public function create_result_from_row($row) {
