@@ -863,7 +863,7 @@
           rowCont += "<td>$" + (loanInfo.principal_cents / 100.) + "</td>";
           rowCont += "<td>$" + (loanInfo.principal_repayment_cents / 100.) + "</td>";
           rowCont += "<td>" + (loanInfo.unpaid === 1 ? 'Yes' : 'No') + "</td>";
-          rowCont += "<td><a href=\"#\" onclick=\"return resolveThread(this, " + loanInfo.loan_id + ");\">Fetch thread</a>")) + "</td>";
+          rowCont += "<td><a href=\"#\" onclick=\"return resolveThread(this, " + loanInfo.loan_id + ");\">Fetch thread</a></td>";
           rowCont += "<td>" + ((createdAt.getMonth()+1) + "/" + createdAt.getDate() + "/" + createdAt.getFullYear()) + "</td>";
           if(haveDeleted) {
             var deletedAt = new Date(loanInfo.deleted_at + now.getTimezoneOffset() * 60000);
