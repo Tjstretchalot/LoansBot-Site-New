@@ -1070,7 +1070,7 @@ class ModifyParameterParser {
   public static function parse_set_lender_name($sel_helper, $upd_helper, $params) {
     $set_lender_name = null;
     if(isset($params['set_lender_name'])) {
-      $set_lender-name = $params['set_lender_name'];
+      $set_lender->name = $params['set_lender_name'];
     }
     
     if($set_lender_name === null)
