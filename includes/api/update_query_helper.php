@@ -144,7 +144,7 @@ class UpdateQueryHelper {
       $tmp = $callback->cleanup_callback;
 
       if($tmp !== null) {
-        $tmp($this, &$callback->params, $sql_conn);
+        $tmp($this, $callback->params, $sql_conn);
       }
     }
     
