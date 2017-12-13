@@ -99,7 +99,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
         $tmp['user_id'] = $row['user_id'];
       }
     }
-    $results_to_return[strval($tmp['loan_id'])] = $tmp;
+    $results_to_return[strval($row['loan_id'])] = $tmp;
   }
 
   $res->close();
