@@ -130,7 +130,7 @@ class SelectQueryHelper {
   public function build_query() {
     $query = '';
     if($this->use_temporary_table !== null) {
-      $query .= 'CREATE TEMPORARY TABLE ' . $use_temporary_table . ' ';
+      $query .= 'CREATE TEMPORARY TABLE ' . $this->use_temporary_table . ' ';
 
       $first = true;
       foreach ($this->callbacks as $callback) {
