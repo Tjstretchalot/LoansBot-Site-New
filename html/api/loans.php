@@ -44,6 +44,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   handle_param_error(ParameterParser::parse_includes_user_name($helper, $params));
 
   handle_param_error(ParameterParser::parse_unpaid($helper, $params));
+  handle_param_error(ParameterParser::parse_repaid($helper, $params));
 
   // order relevant params
   handle_param_error(ParameterParser::parse_id($helper, $params));
