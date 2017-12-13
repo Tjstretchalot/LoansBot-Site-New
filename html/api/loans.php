@@ -206,7 +206,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
     $query .=   'outer.new_deleted_reason, ';
     $query .=   'NOW() as now1, ';
     $query .=   'NOW() as now2 ';
-    $query .= 'FROM '
+    $query .= 'FROM ';
     $query .= '(';
     $query .=   'SELECT ';
     $query .=     'loan_id, ';
