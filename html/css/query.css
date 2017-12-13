@@ -1,0 +1,77 @@
+#temp-navbar {
+  background-color: #FAEBD7;
+  padding: 1em 0;
+}
+
+#select-database {
+  background-color: #E5E5E5;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding: 1em 0;
+}
+
+#database-button-group {
+  min-height: 69px;
+}
+
+#users-restrictions, #loans-restrictions {
+  background-color: #D8D8EE;
+  padding: 1em 0;
+}
+
+#results {
+  background-color: #FAEBD7;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.well [class*="col-"] {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+#run-search-button {
+  min-height: 69px;
+  border-radius: 0;
+}
+
+.restrictions-label {
+  width: 16.666666%;
+  margin-left: 16.6666666%;
+  float: left;
+}
+
+.restrictions-input {
+  width: 50%;
+  float: left;
+}
+
+@media screen and (max-width: 1020px) {
+.restrictions-label {
+  margin-left: 8.33333333%;
+  width: 83.33333333%;
+  margin-top: 1em;
+}
+
+.restrictions-input {
+  margin-left: 8.33333333%;
+  width: 83.33333333%;
+}
+}
+
+.lone-checkbox {
+  margin: 6px 12px !important;
+  float: left;
+}
+
+.radio-group {
+  width: 80%;
+  width: -moz-calc(100% - 38px);
+  width: -webkit-calc(100% - 38px);
+  width: calc(100% - 38px);
+  float: left;
+}
+
+.radio-group label {
+  width: 25%;
+}
+

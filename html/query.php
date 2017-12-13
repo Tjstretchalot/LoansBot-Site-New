@@ -1,12 +1,12 @@
-<?php
-  $pageTitle = 'RedditLoans - Query Database';
+<html>
+  <head>
+    <title>RedditLoans - Query</title>
 
-  $suppressDefaultSheets = true;
-  $cssSheets = array( "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css", "https://fonts.googleapis.com/css?family=Open+Sans:400,300,400italic,700,700italic", "/css/site.css", "/css/query.css" );
-
-  include("pagestart.php");
-  include("headers.php");
-?>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,400italic,700,700italic">
+    <link rel="stylesheet" type="text/css" href="/css/query.css">
+  </head>
+  <body>
     <div class="container-fluid">
       <div class="row" id="temp-navbar">
         <div class="col-xs-12"><a href="index.php" class="btn btn-primary">Back to Index Page</a></div>
@@ -863,6 +863,5 @@
         }
       }
     </script>
-<?php
-  include('pageend.php');
-?>
+  </body>
+</html>
