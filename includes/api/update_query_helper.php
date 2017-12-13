@@ -121,7 +121,7 @@ class UpdateQueryHelper {
     if(isset($this->callbacks_dict[$callback->identifier])) {
       error_log('update_query_helper has a callback with the identifier ' . $callback->identifier . ' when another with the same identifier was added');
       error_log('complete list of callback identifiers so far:');
-      for($this->callbacks as $callback) {
+      foreach($this->callbacks as $callback) {
         error_log('  ' . $callback->identifier);
       }
       die();
