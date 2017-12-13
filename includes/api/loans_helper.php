@@ -698,7 +698,7 @@ class ModifyParameterParser {
     
     $upd_helper->add_callback($result);
     return null;
-  };
+  }
 
   public static function update_updated_at($sel_helper, $upd_helper, $params) {
     $result = new UpdateQueryCallback('update_updated_at', array('new_updated_at' => time()));
@@ -717,7 +717,7 @@ class ModifyParameterParser {
 
     $upd_helper->add_callback($result);
     return null;
-  };
+  }
 
   public static function return_boilerplate($sel_helper, $upd_helper, $params) {
     $result = new UpdateQueryCallback('return_boilerplate', array());
