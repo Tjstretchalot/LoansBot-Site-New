@@ -221,7 +221,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
     $query .=   ' old_info ';
     $query .=   'INNER JOIN (';
     $query .=    'SELECT ';
-    $query .=      'id, '
+    $query .=      'id, ';
     $query .=      'lender_id as new_lender_id, ';
     $query .=      'borrower_id as new_borrower_id, ';
     $query .=      'principal_cents as new_principal_cents, ';
@@ -231,7 +231,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
     $query .=      'deleted_reason as new_deleted_reason ';
     $query .=    'FROM loans ';
     $query .=   ') new_info ON old_info.loan_id = new_info.id ';
-    $query .= ') outer'
+    $query .= ') outer';
     error_log($query); 
     check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare($query));
     check_db_error($sql_conn, $err_prefix, $stmt->bind_param('is', $logged_in_user->id, $modify_reason));
