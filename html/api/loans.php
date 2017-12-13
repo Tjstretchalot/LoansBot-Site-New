@@ -156,7 +156,8 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
     handle_param_error($upd_helper->check_authorization($sql_conn, $auth), $drop_temp_table);
 
     // executing the query
-    $query = $upd_helper->build_query(); 
+    $query = $upd_helper->build_query();
+    error_log($query);
     check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare($query));
     $upd_helper->bind_params($sql_conn, $stmt);
     check_db_error($sql_conn, $err_prefix, $stmt->execute());
