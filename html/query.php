@@ -651,7 +651,10 @@
               populateResults(data);
             });
           }else if($("#database-loans").is(":checked")) {
-            $.get("/api/loans.php", getLoanParams(), function(data, status) {
+            var lParams = getLoanParams();
+            console.log("sending loan params");
+            console.log(lParams);
+            $.get("/api/loans.php", lparams, function(data, status) {
               $(".status-text").attr("hidden", true);
               populateResults(data);
             }).fail(function(data){
