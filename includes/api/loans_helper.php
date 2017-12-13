@@ -1455,7 +1455,7 @@ class ModifyParameterParser {
       }
 
       $err_prefix = 'parse_set_deleted#preview_callback';
-      check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare('SELECT loan_id FROM ' . $helper->temporary_table . ' WHERE deleted = 1'));
+      check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare('SELECT loan_id FROM ' . $helper->temporary_table . ' WHERE loan_deleted = 1'));
       check_db_error($sql_conn, $err_prefix, $stmt->execute());
       check_db_error($sql_conn, $err_prefix, $res = $stmt->get_result());
 
@@ -1528,7 +1528,7 @@ class ModifyParameterParser {
     $result->preview_callback = function($helper, &$params, $sql_conn) {
       if(!$params['resolved_reason_without_deleted']) {
         $err_prefix = 'parse_set_deleted_reason#preview_callback';
-        check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare('SELECT loan_id FROM ' . $helper->temporary_table . ' WHERE deleted = 0'));
+        check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare('SELECT loan_id FROM ' . $helper->temporary_table . ' WHERE loan_deleted = 0'));
         check_db_error($sql_conn, $err_prefix, $stmt->execute());
         check_db_error($sql_conn, $err_prefix, $res = $stmt->get_result());
 
