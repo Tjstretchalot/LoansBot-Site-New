@@ -1552,7 +1552,7 @@ class ModifyParameterParser {
     };
     $result->result_callback = function($helper, &$params, $row, &$res) {
       $res['new_deleted_reason'] = $params['set_deleted_reason']
-    }
+    };
 
     $upd_helper->add_callback($result);
     return null;
