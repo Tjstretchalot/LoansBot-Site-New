@@ -121,25 +121,25 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
   $bad_token_message = 'That username/token combination does not match our records.';
 
   if($user === null) {
-    echo_fail(400, $bad_token_iden, $bad_token_message);
+    echo_fail(400, $bad_token_iden, $bad_token_message . ' (Error Code 001)');
     $conn->close();
     return;
   }
 
   if($user->claimed !== 0) {
-    echo_fail(400, $bad_token_iden, $bad_token_message);
+    echo_fail(400, $bad_token_iden, $bad_token_message . ' (Error Code 002)');
     $conn->close();
     return;
   }
 
   if($user->claim_link_sent_at === null) {
-    echo_fail(400, $bad_token_iden, $bad_token_message);
+    echo_fail(400, $bad_token_iden, $bad_token_message . ' (Error Code 003)');
     $conn->close();
     return;
   }
 
   if($user->token !== $token) {
-    echo_fail(400, $bad_token_iden, $bad_token_message);
+    echo_fail(400, $bad_token_iden, $bad_token_message . ' (Error Code 004)');
     $conn->close();
     return;
   }
