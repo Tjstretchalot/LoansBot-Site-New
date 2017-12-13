@@ -669,7 +669,9 @@ class ModifyParameterParser {
     
     $result->sanity_callback = function($helper, &$params, $sql_conn) {
       $err_prefix = 'add_number_results_sanity_limits#sanity_callback';
-      check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare('SELECT COUNT(*) FROM ' . $helper->temporary_table));
+      $query = 'SELECT COUNT(*) FROM ' . $helper->temporary_table;
+      error_log($err_prefix . ' querying ' . $query);
+      check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare($query));
       check_db_error($sql_conn, $err_prefix, $stmt->execute());
       check_db_error($sql_conn, $err_prefix, $res = $stmt->get_result());
 
