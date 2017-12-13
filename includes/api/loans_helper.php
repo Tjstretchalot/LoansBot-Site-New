@@ -544,7 +544,7 @@ class ParameterParser {
   public static function parse_repaid($helper, $params) {
     $repaid = null;
     if(isset($params['repaid']) && is_numeric($params['repaid'])) {
-      $_unpaid = intval($params['repaid']);
+      $_repaid = intval($params['repaid']);
 
       if($_repaid === 1) {
         $repaid = 1;
