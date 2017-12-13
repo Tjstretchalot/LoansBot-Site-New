@@ -116,6 +116,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   $stmt->close();
   
   $drop_temp_table = function() use ($helper, $sql_conn) {
+    $err_prefix = 'loans.php#drop_temp_table';
     check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare('DROP TABLE ' . $helper->use_temporary_table));
     check_db_error($sql_conn, $err_prefix, $stmt->execute());
     $stmt->close();
