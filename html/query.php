@@ -793,6 +793,39 @@
           resultsBody.append(toApp);
         }
       }
+      
+      function resolveThread(callingA, loan_id) {
+        callingA = $(callingA);
+        if(callingA.data("resolving") == 1)
+          return true;
+        if(callingA.data("resolved") == 1)
+          return true;
+        callingA.data("resolving", 1);
+
+        $.get('https://redditloans.com/api/get_creation_info.php', { loan_id: loan_id }, function(data, status) {
+          console.log("retrieved loan creation info: ");
+          console.log(JSON.stringify(data));
+
+          callingA.data("resolved", 1);
+          callingA.removeData("resolving");
+
+          if(!data.results[loan_id]) {
+            callingA.html("No thread found (code 0)");
+          }else {
+            var info = data.results[loan_id];
+            if(info.type == 0) {
+              callingA.attr("href", info.thread);
+              callingA.html("Thread");
+            }else {
+              callingA.html("No thread found (code " + info.type.toString() + ")");
+            }
+          }
+        }).fail(function(xhr) {
+          var errMess = errorMessageFromFailResponse(xhr.responseJSON);
+          callingA.html(errMess)
+        });
+        return false;
+      }
 
       function populateLoans(results, resultsTable, resultsHead, resultsBody) {
         var haveDeleted = false;
@@ -830,7 +863,7 @@
           rowCont += "<td>$" + (loanInfo.principal_cents / 100.) + "</td>";
           rowCont += "<td>$" + (loanInfo.principal_repayment_cents / 100.) + "</td>";
           rowCont += "<td>" + (loanInfo.unpaid === 1 ? 'Yes' : 'No') + "</td>";
-          rowCont += "<td>" + (loanInfo.thread === null ? 'N/A' : ("<a href=\"" + loanInfo.thread + "\">Thread</a>")) + "</td>";
+          rowCont += "<td><a href=\"#\" onclick=\"return resolveThread(this, " + loanInfo.loan_id + ");\">Fetch thread</a>")) + "</td>";
           rowCont += "<td>" + ((createdAt.getMonth()+1) + "/" + createdAt.getDate() + "/" + createdAt.getFullYear()) + "</td>";
           if(haveDeleted) {
             var deletedAt = new Date(loanInfo.deleted_at + now.getTimezoneOffset() * 60000);
