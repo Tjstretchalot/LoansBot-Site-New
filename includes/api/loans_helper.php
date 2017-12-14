@@ -666,7 +666,7 @@ class ParameterParser {
   }
 
   public static function parse_order_by($outer_helper, $params) {
-    $helper->order_by_callback = function($helper) {
+    $outer_helper->order_by_callback = function($helper) {
       if(isset($helper->callbacks_dict['limit'])) {
         $limit_callback = $helper->callbacks_dict['limit'];
         $limit = $limit_callback->parsed['limit'];
