@@ -36,7 +36,7 @@
             <div class="well">
               <div class="row">
                 <div class="restrictions-label text-sm-center text-sm-vcenter">
-                  <label><a href="#" data-toggle="tooltip" data-placement="top" title="The maximum number of results returned.">Limit</a></label>
+                  <label><a href="#" data-toggle="tooltip" data-placement="top" title="The maximum number of results returned. If unchecked this is 10 - set to 0 for no limit">Limit</a></label>
                 </div>
                 <div class="restrictions-input input-group">
                   <span class="input-group-addon">
