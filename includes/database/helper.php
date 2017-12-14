@@ -14,7 +14,6 @@
 
       $res_arr = array();
       while(($row = $res->fetch_assoc()) !== null) {
-        $row = $res->fetch_assoc();
         $res_arr[] = new ArrayObject($row, ArrayObject::ARRAY_AS_PROPS);
       }
       $res->close();
