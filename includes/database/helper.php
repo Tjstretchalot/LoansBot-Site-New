@@ -42,7 +42,7 @@
     }
 
     public static function execute($sql_conn, $query, $params) {
-      $err_prefix = 'DatabaseHelper::execute - ' $query;
+      $err_prefix = 'DatabaseHelper::execute - ' . $query;
       check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare($query));
       QueryHelper::bind_params($sql_conn, $stmt, $params);
       check_db_error($sql_conn, $err_prefix, $stmt->execute());
