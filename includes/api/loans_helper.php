@@ -35,6 +35,9 @@ class ParameterParser {
       $helper->limit_callback = function() use ($limit) {
         return 'LIMIT ' . strval($limit);
       };
+
+      $result = new SelectQueryCallback('limit', array('limit' => $limit));
+      $helper->add_callback($result);
     }
 
     return null;
@@ -660,6 +663,19 @@ class ParameterParser {
       return 'INNER JOIN (SELECT user_id, GROUP_CONCAT(username SEPARATOR \' aka \') AS username FROM usernames GROUP BY user_id) bunames ON loans.borrower_id = bunames.user_id';
     };
     $helper->add_callback($result);
+  }
+
+  public static function parse_order_by($outer_helper, $params) {
+    $helper->order_by_callback = function($helper) {
+      if(isset($helper->callbacks_dict['limit'])) {
+        $limit_callback = $helper->callbacks_dict['limit'];
+        $limit = $limit_callback->parsed['limit'];
+
+        if($limit > 0 && $limit < 100)
+          return 'ORDER BY loan_created_at DESC';
+      }
+      return '';
+    };
   }
 }
 
