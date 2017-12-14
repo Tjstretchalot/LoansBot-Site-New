@@ -49,7 +49,7 @@
           </div>
           <div class="form-group">
             <textarea class="form-control" id="edit-reason" placeholder="Reason for edit" rows="3" pattern=".{5,}" required></textarea>
-            <small class="form-text text-muted">Must be at least 5 characters long - be as descriptive as possible without repeating yuorself</small>
+            <small class="form-text text-muted">Must be at least 5 characters long - be as descriptive as possible without repeating yourself</small>
           </div>
           <button type="submit" id="submit-button" class="btn btn-primary">Update</button>
         </form>

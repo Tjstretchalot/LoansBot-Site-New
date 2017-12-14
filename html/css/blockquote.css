@@ -149,19 +149,20 @@ blockquote.gray{
 
 
 /* These CSS classes used just for Demo purpose */
+/* Timothy - I modified to make the page look like demo without messing things up */
 .heading{
      font-family:Montez;
         text-align:center;
            font-size:30px;
 }
-code{
+blockquote code{
     color:#da4453;
 }
-span{
+blockquote span{
     font-weight:bolder;
       
 }
-h1{
+blockquote h1 {
     text-align:left;
       font-size:16px;
         font-family: 'Francois One', sans-serif;
