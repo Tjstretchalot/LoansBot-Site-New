@@ -45,7 +45,7 @@
         <h2><?= $response->name ?></h2>
         <form id="edit-form">
           <div class="form-group">
-            <textarea class="form-control" id="new-response-body" style="font-family: monospace, monospace;" rows="15" pattern=".{5,}" required><?= $response->response_body ?></textarea>
+            <textarea class="form-control" id="new-response-body" style="font-family: monospace, monospace;" rows="15" pattern=".{5,}" required><?= htmlspecialchars($response->response_body) ?></textarea>
           </div>
           <div class="form-group">
             <textarea class="form-control" id="edit-reason" placeholder="Reason for edit" rows="3" pattern=".{5,}" required></input>
