@@ -1,4 +1,5 @@
 <?php
+  require_once 'api/common.php';
   $pages = array();
 
   $pages[] = array(
@@ -22,6 +23,12 @@
       'name' => 'Login'
     );
   }else {
+    if($logged_in_user->auth >= $MODERATOR_PERMISSION) {
+      $pages[] = array(
+        'link' => '/responses.php',
+        'name' => 'Responses'
+      );
+    }
     $pages[] = array(
       'link' => '/logout.php',
       'name' => 'Logout'
