@@ -24,7 +24,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   handle_param_error(ParameterParser::parse_format($helper, $params));
   handle_param_error(ParameterParser::parse_limit($helper, $params));
   handle_param_error(ParameterParser::parse_include_deleted($helper, $params));
-  //handle_param_error(ParameterParser::parse_order_by($helper, $params));
+  handle_param_error(ParameterParser::parse_order_by($helper, $params));
 
   // result order irrelevant because they are split out with a return_ function
   // and are not coupled with anything
