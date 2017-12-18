@@ -111,7 +111,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   unset($before_build_query);
   unset($after_build_query);
 
-  $before_run_query = microtime():
+  $before_run_query = microtime();
   $err_prefix = 'html/api/loans.php';
   check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare($query));
   $helper->bind_params($sql_conn, $stmt);
