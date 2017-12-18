@@ -5,6 +5,8 @@ require_once 'api/select_query_helper.php';
 require_once 'api/loans_helper.php';
 
 if($_SERVER['REQUEST_METHOD'] === 'GET') {
+  error_log('query.php start');
+  $before_params = microtime();
   $params = $_GET;
   $helper = new SelectQueryHelper('loans');
 
@@ -97,13 +99,30 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   handle_param_error($helper->check_authorization($auth));
   handle_param_error($helper->check_sanity());
 
+  $after_params = microtime();
+  error_log('parsing params took: ' . ($after_params - $before_params));
+  unset($after_params);
+  unset($before_params);
+
+  $before_build_query = microtime();
   $query = $helper->build_query();
+  $after_build_query = microtime();
+  error_log('building query took: ' . ($after_build_query - $before_build_query));
+  unset($before_build_query);
+  unset($after_build_query);
+
+  $before_run_query = microtime():
   $err_prefix = 'html/api/loans.php';
   check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare($query));
   $helper->bind_params($sql_conn, $stmt);
   check_db_error($sql_conn, $err_prefix, $stmt->execute());
+  $after_run_query = microtime();
+  error_log('running the select query took ' . ($after_run_query - $before_run_query));
+  unset($before_run_query);
+  unset($after_run_query);
 
   if($modify === 0) {
+    $before_results = microtime();
     check_db_error($sql_conn, $err_prefix, $res = $stmt->get_result());
     
     $response_loans = array();
@@ -113,6 +132,10 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
       $row = $res->fetch_assoc();
     }
     $res->close();
+    $after_results = microtime();
+    error_log('fetching results took ' . ($after_results - $before_results));
+    unset($after_results);
+    unset($before_results);
   }
   $stmt->close();
   
