@@ -65,7 +65,7 @@
       </section>
     </div>
     <?php include('bootstrap_js.php') ?>
-    <script src="js/jquery.basictable.js"></script>
+    <script src="js/jquery.basictable.min.js"></script>
     <script src="js/query2_query_parameters.js"></script>
     <script type="text/javascript">
       var existing_query_parameters = [];
