@@ -511,6 +511,7 @@
         }
         console.log(params);
         $.get("https://redditloans.com/api/loans.php", params, function(data, stat) {
+          statusText.slideUp('fast');
           load_results(data);
         }).fail(function(xhr) {
           var errMess = 'Unknown';
