@@ -78,8 +78,8 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
     $params = array();
     while(($row = $res->fetch_assoc()) !== null) {
       $params[] = array(
-        'param_name' => $res['name'],
-        'options' => json_decode($res['options'])
+        'param_name' => $row['name'],
+        'options' => json_decode($row['options'])
       );
     }
     $result['parameters'] = $params;
