@@ -499,7 +499,7 @@
             }).fail(function(xhr) {
               statusText.fadeOut('fast', function() {
                 var err_mess = "Unknown";
-                if("object" === typeof(xhr.responseType)) {
+                if("object" === typeof(xhr.responseJSON)) {
                   err_mess = xhr.responseJSON.errors[0].error_message;
                 }else {
                   err_mess = xhr.statusText;
