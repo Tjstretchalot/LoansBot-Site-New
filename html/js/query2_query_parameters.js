@@ -81,7 +81,7 @@ var query2_parameters = {};
   }
 
   function default_fetch_params() {
-    return [ parseInt(this.fetch_control().val()) ];
+    return [ this.fetch_control().val() ];
   }
 
   function default_send_params(all_params) {
