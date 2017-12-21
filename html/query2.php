@@ -57,8 +57,10 @@
         </form>
       </section>
       <section>
-        <table id="results-table">
-        </table>
+        <div id="results-table-wrapper">
+          <table id="results-table">
+          </table>
+        </div>
       </section>
     </div>
     <?php include('bootstrap_js.php') ?>
@@ -239,8 +241,9 @@
        * @param results this should be a LOANS_EXTENDED result
        */
       function load_results(results) {
+        var wrap = $("#results-table-wrapper");
         var tab = $("#results-table");
-        tab.slideUp('fast', function() {
+        wrap.slideUp('fast', function() {
           var have_admin_info = false;
           var have_modified_info = false;
           if(results.loans.length > 0) {
@@ -323,7 +326,7 @@
           tab.basictable({
             tableWrapper: true
           });
-          tab.slideDown('fast');
+          wrap.slideDown('fast');
         });
       }
 
