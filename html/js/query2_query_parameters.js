@@ -269,7 +269,7 @@ var query2_parameters = {};
       var container = generate_container(this.param_name);
       var label = generate_label(this.param_name, "Repayment");
       var help_block = generate_simple_help_block(this.param_name, "Restrict the results to loans with exactly the specified repayment.");
-      var control = generate_input_control(this.param_name, "number", "REpayment");
+      var control = generate_input_control(this.param_name, "number", "Repayment");
       control.attr('value', amt_cents / 100);
       control.attr('step', '0.01');
       control.attr('min', '0');
@@ -280,6 +280,65 @@ var query2_parameters = {};
     },
     fetch_params: function() {
       return [ Math.floor(parseFloat(this.fetch_control().val()) * 100) ]
+    }
+  });
+
+  query2_parameters.unpaid = apply_defaults({
+    param_name: "unpaid",
+    name: "Unpaid",
+    construct_html: function(only_unpaid) {
+      only_unpaid = only_unpaid === null ? true : false;
+      var container = generate_container(this.param_name);
+      var label = generate_label(this.param_name, "Unpaid");
+      var help_block = generate_simple_help_block(this.param_name, "Restrict the results to loans that either have been flagged as unpaid or have not been flagged unpaid.");
+      var control = $("<div>");
+      
+      var div1 = $("<div>");
+      div1.addClass("form-check");
+      div1.addClass("form-check-inline");
+      var lab1 = $("<label>");
+      lab1.addClass("form-check-label");
+      var inp1 = $("<input>");
+      inp1.addClass("form-check-input");
+      inp1.attr("type", "radio");
+      inp1.attr("name", "unpaid-radio");
+      inp1.attr("value", "only-unpaid");
+      inp1.attr("id", "unpaid-radio-only-unpaid");
+      if(only_unpaid)
+        inp1.attr("checked", true);
+      lab1.append(inp1);
+      lab1.append("Only Unpaid");
+      div1.append(lab1);
+      control.append(div1);
+
+      var div2 = $("<div>");
+      div2.addClass("form-check");
+      div2.addClass("form-check-inline");
+      var lab2 = $("<label>");
+      lab2.addClass("form-check-label");
+      var inp2 = $("<input>");
+      inp2.addClass("form-check-input");
+      inp2.attr("type", "radio");
+      inp2.attr("name", "unpaid-radio");
+      inp2.attr("value", "no-unpaid");
+      inp2.attr("id", "unpaid-radio-no-unpaid");
+      if(!only_unpaid)
+        inp2.attr("checked", true);
+      lab2.append(inp2);
+      lab2.append("No Unpaid");
+      div2.append(lab2);
+      control.append(div2);
+
+      var remove_button = generate_remove_button(this.param_name);
+
+      combine_elements(this.param_name, container, { label: label, control: control, help_block: help_block, remove_button: remove_button });
+      return container;
+    },
+    fetch_params: function() {
+      return [ $("#unpaid-radio-only-unpaid").is(":checked") ]
+    },
+    send_params: function(all_params) {
+      all_params.unpaid = this.fetch_params()[0] ? 1 : 0;
     }
   });
 })();
