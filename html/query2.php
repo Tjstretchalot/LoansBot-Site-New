@@ -331,7 +331,7 @@
        * This handles #saved-queries-status-text for user feedback
        */
       function fetch_and_load_saved_queries() {
-        $.get("/api/my_saved_queries.php", {}, function(stat, data) {
+        $.get("/api/my_saved_queries.php", {}, function(data, stat) {
           var queries = data.queries;
           setup_saved_queries(queries);
 
@@ -417,7 +417,7 @@
           param.send_params(params);
         }
 
-        $.get("https://redditloans.com/api/loans.php", params, function(stat, data) {
+        $.get("https://redditloans.com/api/loans.php", params, function(data, stat) {
           load_results(data.loans);
         }).fail(function(xhr) {
           var errMess = 'Unknown';
