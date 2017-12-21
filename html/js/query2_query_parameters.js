@@ -74,7 +74,35 @@ var query2_parameters = {};
     }
   }
 
-  query2_parameters.limit = {
+  // If you see this and you are wondering why I didn't just follow the normal object model...
+  // there is no good reason
+  function default_fetch_control() {
+    return $("#" + this.param_name + "-control");
+  }
+
+  function default_fetch_params() {
+    return [ parseInt(this.fetch_control().val()) ];
+  }
+
+  function default_send_params(all_params) {
+    all_params[this.param_name] = this.fetch_params()[0];
+  }
+
+  function apply_defaults(partial_param) {
+    if("undefined" === typeof(partial_param.fetch_control)) {
+      partial_param.fetch_control = default_fetch_control;
+    }
+
+    if("undefined" === typeof(partial_param.fetch_params)) {
+      partial_param.fetch_params = default_fetch_params;
+    }
+
+    if("undefined" === typeof(partial_param.send_params)) {
+      partial_param.send_params = default_send_params;
+    }
+  }
+
+  query2_parameters.limit = apply_defaults({
     param_name: "limit",
     name: "Limit",
     construct_html: function(limit) {
@@ -90,19 +118,10 @@ var query2_parameters = {};
 
       combine_elements(this.param_name, container, { label: label, control: control, help_block: help_block, remove_button: remove_button });
       return container;
-    },
-    fetch_control: function() {
-      return $("#" + this.param_name + "-control");
-    },
-    fetch_params: function() {
-      return [ parseInt(this.fetch_control().val()) ];
-    },
-    send_params: function(all_params) {
-      all_params.limit = this.fetch_params()[0];
     }
-  };
+  });
 
-  query2_parameters.id = {
+  query2_parameters.id = apply_defaults({
     param_name: "id",
     name: "Loan ID",
     construct_html: function(id) {
@@ -118,15 +137,6 @@ var query2_parameters = {};
 
       combine_elements(this.param_name, container, { label: label, control: control, help_block: help_block, remove_button: remove_button });
       return container;
-    },
-    fetch_control: function() {
-      return $("#" + this.param_name + "-control");
-    },
-    fetch_params: function() {
-      return [ parseInt(this.fetch_control().val()) ];
-    },
-    send_params: function(all_params) {
-      all_params.id = this.fetch_params()[0];
     }
-  };
+  });
 })();
