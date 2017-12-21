@@ -1,3 +1,8 @@
+#parameters-form .form-group label {
+  font-size: 2.5em;
+  font-weight: bold;
+}
+
 .help-block {
   font-size: smaller;
 }
