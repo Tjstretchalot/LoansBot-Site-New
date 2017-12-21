@@ -50,7 +50,7 @@ var query2_parameters = {};
     return result;
   }
 
-  function combine_elements(container, things) {
+  function combine_elements(param_name, container, things) {
     if(things.label) {
       if(things.control) {
         things.label.attr("for", param_name + "-control");
@@ -89,7 +89,7 @@ var query2_parameters = {};
       control.attr("step", "1");
       var remove_button = generate_remove_button(this.param_name);
 
-      return combine_elements(container, { label: label, control: control, help_block: help_block, remove_button: remove_button });
+      return combine_elements(this.param_name, container, { label: label, control: control, help_block: help_block, remove_button: remove_button });
     },
     fetch_control: function() {
       return $("#" + this.param_name + "-control");
