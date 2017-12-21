@@ -22,8 +22,8 @@
       <div class="container-fluid alert" id="statusText" style="display: none"></div>
       <section>
         <div class="container-fluid alert" id="saved-queries-status-text" style="display: none"></div>
-        <form id="saved-queries-form" class="form-inline w-100">
-          <div class="form-group justify-content-between">
+        <form id="saved-queries-form" class="form-inline">
+          <div class="form-group justify-content-between w-100">
             <select class="form-control col-sm" id="saved-queries-select">
               <option value="loading">Loading...</option>
             </select>
@@ -34,8 +34,8 @@
       <section>
         <form id="parameters-form">
         </form>
-        <form id="add-parameter-form" class="form-inline w-100">
-          <div class="form-group">
+        <form id="add-parameter-form" class="form-inline">
+          <div class="form-group w-100">
             <select class="form-control col-sm" id="add-parameter-select">
               <option>Loading...</option>
             </select>
@@ -43,15 +43,15 @@
           </div>
         </form>
         <div class="container-fluid alert" id="save-query-status-text" style="display: none"></div>
-        <form id="save-query-form" class="form-inline w-100">
-          <div class="form-group">
+        <form id="save-query-form" class="form-inline">
+          <div class="form-group w-100">
             <input type="text" class="form-control col-sm" id="save-query-name" aria-label="Name for this query" placeholder="Name for this query">
             <button type="submit" class="btn btn-primary col-sm">Save Query</button>
           </div>
         </form>
         <div class="container-fluid alert" id="get-results-status-text" style="display: none"></div>
-        <form id="get-results-form" class="form-inline w-100">
-          <div class="form-group">
+        <form id="get-results-form" class="form-inline">
+          <div class="form-group w-100">
             <button type="submit" class="btn btn-primary btn-block">Get Results</button>
           </div>
         </form>
