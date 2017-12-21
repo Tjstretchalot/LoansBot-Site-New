@@ -325,7 +325,7 @@
 
           tab.append(tbody);
           tab.basictable({
-            tableWrapper: true
+            tableWrap: true
           });
           wrap.slideDown('fast');
         });
