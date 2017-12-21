@@ -295,7 +295,7 @@
             td.text((loan.unpaid ? "Yes" : "No"));
             tr.append(td);
             if(have_admin_info) {
-              td = $("<td");
+              td = $("<td>");
               td.text((loan.deleted ? "Yes" : "No"));
               tr.append(td);
             }
