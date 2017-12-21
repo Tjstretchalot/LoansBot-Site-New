@@ -14,8 +14,8 @@
     <?php include('metatags.php'); ?>
 
     <?php include('bootstrap_css.php'); ?>
-    <link rel="stylesheet" href="/css/query2.css">
     <link rel="stylesheet" href="/css/basictable.css">
+    <link rel="stylesheet" href="/css/query2.css">
   </head>
   <body>
     <?php include('navigation.php'); ?>
