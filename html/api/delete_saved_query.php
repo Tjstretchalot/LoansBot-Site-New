@@ -32,7 +32,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     return;
   }
  
-  $act_id = dechex($str_id);
+  $act_id = hexdec($str_id);
   if($act_id < 0) {
     echo_fail(400, 'UNKNOWN_QUERY', 'No query with that identifier found!');
     return;
