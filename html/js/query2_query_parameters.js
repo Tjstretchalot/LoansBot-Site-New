@@ -19,7 +19,7 @@ var query2_parameters = {};
 
   function generate_label(param_name, content) {
     var result = $("<label>");
-    result.text(label);
+    result.text(content);
     return result;
   }
 
