@@ -510,6 +510,7 @@
           param.send_params(params);
         }
         console.log(params);
+        var statusText = $("#get-results-status-text");
         $.get("https://redditloans.com/api/loans.php", params, function(data, stat) {
           statusText.slideUp('fast');
           load_results(data);
@@ -521,7 +522,6 @@
             errMess = xhr.statusText;
           }
 
-          var statusText = $("#get-results-status-text");
           statusText.slideUp('fast', function() {
             statusText.removeClass('alert-info').removeClass('alert-success');
             statusText.addClass('alert-danger');
