@@ -257,7 +257,7 @@ var query2_parameters = {};
       return container;
     },
     fetch_params: function() {
-      return [ Math.floor(parseFloat(this.fetch_control.val()) * 100) ]
+      return [ Math.floor(parseFloat(this.fetch_control().val()) * 100) ]
     }
   });
 })();
