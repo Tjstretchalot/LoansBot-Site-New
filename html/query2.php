@@ -103,7 +103,7 @@
         for(var i = 0, len = valid_parameters.length; i < len; i++) {
           var valid_param = valid_parameters[i];
           var ele = $("<option>");
-          ele.data("param-name", valid_param.param_name);
+          ele.attr("value", valid_param.param_name);
           ele.text(valid_param.name);
           select.append(ele);
         }
@@ -126,7 +126,7 @@
 
         var params_select = $("#add-parameter-select");
         params_select.children().each(function(idx) {
-          if($(this).data("param-name") === param_name) {
+          if($(this).attr("value") === param_name) {
             $(this).attr("disabled", false);
             return false;
           }
@@ -174,7 +174,7 @@
 
         var add_params_select = $("#add-parameter-select");
         add_params_select.children().each(function(idx) {
-          if($(this).data("param-name") === param_name) {
+          if($(this).attr("value") === param_name) {
             $(this).attr("disabled", true);
             return false;
           }
