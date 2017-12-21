@@ -238,4 +238,26 @@ var query2_parameters = {};
       return container;
     }
   });
+
+  query2_parameters.principal_cents = apply_defaults({
+    param_name: "principal_cents",
+    name: "Principal",
+    construct_html: function(amt_cents) {
+      amt_cents = amt_cents || "";
+      var container = generate_container(this.param_name);
+      var label = generate_label(this.param_name, "Principal");
+      var help_block = generate_simple_help_block(this.param_name, "Restrict the results to loans with exactly the specified principal.");
+      var control = generate_input_control(this.param_name, "number", "Principal");
+      control.attr('value', amt_cents / 100);
+      control.attr('step', '0.01');
+      control.attr('min', '0');
+      var remove_button = generate_remove_button(this.param_name);
+
+      combine_elements(this.param_name, container, { label: label, control: control, help_block: help_block, remove_button: remove_button });
+      return container;
+    },
+    fetch_params = function() {
+      return [ Math.floor(parseFloat(this.fetch_control.val()) * 100) ]
+    }
+  });
 })();
