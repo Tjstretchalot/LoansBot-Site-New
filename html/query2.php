@@ -153,7 +153,7 @@
        * @param options the options to be passed to the constructor
        */
       function append_query_parameter(param_name, options) {
-        for(var i = 0, len = existing_query_parameters.length(); i < len; i++) {
+        for(var i = 0, len = existing_query_parameters.length; i < len; i++) {
           var existing_param = existing_query_parameters[i];
           if(existing_param.param_name === param_name) 
             throw Error("Duplicate param name " + param_name + " (matches with existing param at index " + i + ")");
