@@ -92,7 +92,7 @@ var query2_parameters = {}
 
       return combine_elements(container, { label: label, control: control, help_block: help_block, remove_button: remove_button });
     },
-    fetch_control = function() {
+    fetch_control: function() {
       return $("#" + this.param_name + "-control");
     },
     validate_params: function() {
