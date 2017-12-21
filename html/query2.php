@@ -418,7 +418,7 @@
           var param = existing_query_parameters[i];
           param.send_params(params);
         }
-
+        console.log(params);
         $.get("https://redditloans.com/api/loans.php", params, function(data, stat) {
           load_results(data);
         }).fail(function(xhr) {
