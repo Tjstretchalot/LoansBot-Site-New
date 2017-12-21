@@ -89,7 +89,8 @@ var query2_parameters = {};
       control.attr("step", "1");
       var remove_button = generate_remove_button(this.param_name);
 
-      return combine_elements(this.param_name, container, { label: label, control: control, help_block: help_block, remove_button: remove_button });
+      combine_elements(this.param_name, container, { label: label, control: control, help_block: help_block, remove_button: remove_button });
+      return container;
     },
     fetch_control: function() {
       return $("#" + this.param_name + "-control");
