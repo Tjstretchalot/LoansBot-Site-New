@@ -105,6 +105,7 @@
           var ele = $("<option>");
           ele.data("param-name", valid_param.param_name);
           ele.text(valid_param.name);
+          select.add(ele);
         }
       }
 
