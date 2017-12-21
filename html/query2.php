@@ -23,12 +23,11 @@
       <section>
         <div class="container-fluid alert" id="saved-queries-status-text" style="display: none"></div>
         <form id="saved-queries-form" class="form-inline">
-          <div class="form-group">
-            <label for="saved-queries-select">Load Query</label>
-            <select class="form-control" id="saved-queries-select">
-              <option value="loading">Loading</option>
+          <div class="form-group justify-content-between">
+            <select class="form-control col-sm" id="saved-queries-select">
+              <option value="loading">Loading...</option>
             </select>
-            <button type="submit" class="btn btn-primary">Load</button>
+            <button type="submit" class="btn btn-primary col-sm">Load Query</button>
           </div>
         </form>
       </section>
@@ -37,22 +36,24 @@
         </form>
         <form id="add-parameter-form">
           <div class="form-group">
-            <select class="form-control" id="add-parameter-select">
+            <select class="form-control col-sm" id="add-parameter-select">
               <option>Loading...</option>
             </select>
+            <button type="submit" class="btn btn-primary col-sm">Add Parameter</button>
           </div>
-          <button type="submit" class="btn btn-primary">Add Parameter</button>
         </form>
         <div class="container-fluid alert" id="save-query-status-text" style="display: none"></div>
         <form id="save-query-form">
           <div class="form-group">
-            <input type="text" class="form-control" id="save-query-name" aria-label="Name for this query" placeholder="Name for this query">
+            <input type="text" class="form-control col-sm" id="save-query-name" aria-label="Name for this query" placeholder="Name for this query">
+            <button type="submit" class="btn btn-primary col-sm">Save Query</button>
           </div>
-          <button type="submit" class="btn btn-primary">Save Query</button>
         </form>
         <div class="container-fluid alert" id="get-results-status-text" style="display: none"></div>
         <form id="get-results-form">
-          <button type="submit" class="btn btn-primary">Get Results</button>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-block">Get Results</button>
+          </div>
         </form>
       </section>
       <section>

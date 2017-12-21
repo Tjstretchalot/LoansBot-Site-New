@@ -13,3 +13,11 @@
   margin-top: 0.15em;
   margin-bottom: 0.1em;
 }
+
+#saved-queries-form, #add-parameter-form, #save-query-form {
+  margin-bottom: 0.5em;
+}
+
+#get-results-form {
+  margin-bottom: 0.75em;
+}
