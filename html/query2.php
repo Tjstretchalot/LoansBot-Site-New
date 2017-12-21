@@ -412,7 +412,7 @@
         e.preventDefault();
 
         var params = {}
-        for(var i = 0; len = existing_query_parameters.length; i < len; i++) {
+        for(var i = 0, len = existing_query_parameters.length; i < len; i++) {
           var param = existing_query_parameters[i];
           param.send_params(params);
         }

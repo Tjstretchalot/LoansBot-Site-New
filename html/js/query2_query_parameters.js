@@ -10,7 +10,7 @@ var query2_parameters = {}
     return result;
   }
   function generate_container(param_name) {
-    var result = $("<div">);
+    var result = $("<div>");
     result.addClass("form-group");
     result.data("param-name", param_name);
 
