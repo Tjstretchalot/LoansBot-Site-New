@@ -33,7 +33,7 @@ table.bt tbody td::before {
   -ms-flex-shrink: 0;
   flex-shrink: 0;
   font-weight: bold;
-  width: 15em;
+  white-space: nowrap;
 }
 
 table.bt tfoot th.bt-hide,
