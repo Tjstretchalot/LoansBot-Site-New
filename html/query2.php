@@ -248,6 +248,7 @@
       function load_results(results) {
         var wrap = $("#results-table-wrapper");
         var tab = $("#results-table");
+
         wrap.slideUp('fast', function() {
           var have_admin_info = false;
           var have_modified_info = false;
@@ -257,6 +258,9 @@
           }
 
           tab.empty();
+          if(tab.parent().hasClass("bt-wrapper")) {
+            tab.basictable('destroy');
+          }
           
           var thead = $("<thead>");
           var tr = $("<tr>");
@@ -340,7 +344,8 @@
 
           tab.append(tbody);
           tab.basictable({
-            tableWrap: true
+            tableWrap: true,
+            breakpoint: 990
           });
           wrap.slideDown('fast');
         });
