@@ -84,7 +84,10 @@
         select.empty();
         for(var i = 0, len = saved_queries.length; i < len; i++) {
           var saved_query = saved_queries[i];
-          select.append("<option></option>").attr("value", saved_query.str_id).text(saved_query.name);
+          var opt = $("<option>");
+          opt.attr("value", saved_query.str_id);
+          opt.text(saved_query.name);
+          select.append(opt);
         }
       }
 
