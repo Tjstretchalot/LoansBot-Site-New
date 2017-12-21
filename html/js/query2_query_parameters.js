@@ -187,4 +187,38 @@ var query2_parameters = {};
       all_params[this.param_name] = new Date(this.fetch_params()[0]).getTime();
     }
   });
+
+  query2_parameters.borrower = apply_defaults({
+    param_name: "borrower_name",
+    name: "Borrower",
+    construct_html: function(borrower) {
+      borrower = borrower || "";
+      var container = generate_container(this.param_name);
+      var label = generate_label(this.param_name, "Borrower");
+      var help_block = generate_simple_help_block(this.param_name, "Restrict the results to loans where the username for the borrower fuzzily matches the specified input. This uses a LIKE operator in SQL to perform the evaluation, which means you can use percent signs (&#37;) to match any-number of any-character, and you can use underscores (_) to match exactly 1 of any character. So, for example, &#37;hn would match john or kahn. &#37;a&#37; would match any username with an a in it. _ob would match bob or cob or sob but not snob or prob.");
+      var control = generate_input_control(this.param_name, "text", "Borrower");
+      control.attr('value', borrower);
+      var remove_button = generate_remove_button(this.param_name);
+
+      combine_elements(this.param_name, container, { label: label, control: control, help_block: help_block, remove_button: remove_button });
+      return container;
+    }
+  });
+
+  query2_parameters.lender = apply_defaults({
+    param_name: "lender_name",
+    name: "Lender",
+    construct_html: function(lender) {
+      lender = lender || "";
+      var container = generate_container(this.param_name);
+      var label = generate_label(this.param_name, "Borrower");
+      var help_block = generate_simple_help_block(this.param_name, "Restrict the results to loans where the username for the lender fuzzily matches the specified input. This uses a LIKE operator in SQL to perform the evaluation, which means you can use percent signs (&#37;) to match any-number of any-character, and you can use underscores (_) to match exactly 1 of any character. So, for example, &#37;hn would match john or kahn. &#37;a&#37; would match any username with an a in it. _ob would match bob or cob or sob but not snob or prob.");
+      var control = generate_input_control(this.param_name, "text", "Borrower");
+      control.attr('value', lender);
+      var remove_button = generate_remove_button(this.param_name);
+
+      combine_elements(this.param_name, container, { label: label, control: control, help_block: help_block, remove_button: remove_button });
+      return container;
+    }
+  });
 })();
