@@ -211,9 +211,26 @@ var query2_parameters = {};
     construct_html: function(lender) {
       lender = lender || "";
       var container = generate_container(this.param_name);
-      var label = generate_label(this.param_name, "Borrower");
+      var label = generate_label(this.param_name, "Lender");
       var help_block = generate_simple_help_block(this.param_name, "Restrict the results to loans where the username for the lender fuzzily matches the specified input. This uses a LIKE operator in SQL to perform the evaluation, which means you can use percent signs (%) to match any-number of any-character, and you can use underscores (_) to match exactly 1 of any character. So, for example, %hn would match john or kahn. %a% would match any username with an a in it. _ob would match bob or cob or sob but not snob or prob. Note that for extremely vague searches (such as da%) the results may be inaccurate.");
-      var control = generate_input_control(this.param_name, "text", "Borrower");
+      var control = generate_input_control(this.param_name, "text", "Lender");
+      control.attr('value', lender);
+      var remove_button = generate_remove_button(this.param_name);
+
+      combine_elements(this.param_name, container, { label: label, control: control, help_block: help_block, remove_button: remove_button });
+      return container;
+    }
+  });
+
+  query2_parameters.includes_user_name = apply_defaults({
+    param_name: "includes_user_name",
+    name: "Includes User",
+    construct_html: function(includes_user_name) {
+      includes_user_name = includes_user_name || "";
+      var container = generate_container(this.param_name);
+      var label = generate_label(this.param_name, "Includes User");
+      var help_block = generate_simple_help_block(this.param_name, "Restrict the results to loans where the username for either the lender or the borrower fuzzily matches the specified input. This uses a LIKE operator in SQL to perform the evaluation, which means you can use percent signs (%) to match any-number of any-character, and you can use underscores (_) to match exactly 1 of any character. So, for example, %hn would match john or kahn. %a% would match any username with an a in it. _ob would match bob or cob or sob but not snob or prob. Note that for extremely vague searches (such as da%) the results may be inaccurate.");
+      var control = generate_input_control(this.param_name, "text", "Includes User");
       control.attr('value', lender);
       var remove_button = generate_remove_button(this.param_name);
 
