@@ -341,4 +341,63 @@ var query2_parameters = {};
       all_params.unpaid = this.fetch_params()[0] ? 1 : 0;
     }
   });
+
+  query2_parameters.repaid = apply_defaults({
+    param_name: "repaid",
+    name: "Repaid",
+    construct_html: function(only_repaid) {
+      only_unpaid = ("undefined" === typeof(only_repaid)) ? true : only_repaid == 'true';
+      var container = generate_container(this.param_name);
+      var label = generate_label(this.param_name, "Repaid");
+      var help_block = generate_simple_help_block(this.param_name, "Restrict the results to loans that either have a different principal repayment than principal, or have the same principal repayment as their principal.");
+      var control = $("<div>");
+      
+      var div1 = $("<div>");
+      div1.addClass("form-check");
+      div1.addClass("form-check-inline");
+      var lab1 = $("<label>");
+      lab1.addClass("form-check-label");
+      var inp1 = $("<input>");
+      inp1.addClass("form-check-input");
+      inp1.attr("type", "radio");
+      inp1.attr("name", "repaid-radio");
+      inp1.attr("value", "only-repaid");
+      inp1.attr("id", "repaid-radio-only-repaid");
+      if(only_repaid)
+        inp1.attr("checked", true);
+      lab1.append(inp1);
+      lab1.append("Only Repaid");
+      div1.append(lab1);
+      control.append(div1);
+
+      var div2 = $("<div>");
+      div2.addClass("form-check");
+      div2.addClass("form-check-inline");
+      var lab2 = $("<label>");
+      lab2.addClass("form-check-label");
+      var inp2 = $("<input>");
+      inp2.addClass("form-check-input");
+      inp2.attr("type", "radio");
+      inp2.attr("name", "repaid-radio");
+      inp2.attr("value", "no-repaid");
+      inp2.attr("id", "repaid-radio-no-repaid");
+      if(!only_repaid)
+        inp2.attr("checked", true);
+      lab2.append(inp2);
+      lab2.append("No Repaid");
+      div2.append(lab2);
+      control.append(div2);
+
+      var remove_button = generate_remove_button(this.param_name);
+
+      combine_elements(this.param_name, container, { label: label, control: control, help_block: help_block, remove_button: remove_button });
+      return container;
+    },
+    fetch_params: function() {
+      return [ $("#repaid-radio-only-repaid").is(":checked") ]
+    },
+    send_params: function(all_params) {
+      all_params.repaid = this.fetch_params()[0] ? 1 : 0;
+    }
+  });
 })();
