@@ -413,7 +413,7 @@
       $("#get-results-form").submit(function(e) {
         e.preventDefault();
 
-        var params = {}
+        var params = { format: 3 };
         for(var i = 0, len = existing_query_parameters.length; i < len; i++) {
           var param = existing_query_parameters[i];
           param.send_params(params);
