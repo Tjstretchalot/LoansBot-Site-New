@@ -431,7 +431,7 @@
         console.log(params);
         $.get("https://redditloans.com/api/loans.php", params, function(data, stat) {
           load_results(data);
-        }).fail(function(xhr) {3gt
+        }).fail(function(xhr) {
           var errMess = 'Unknown';
           if(xhr.responseType === 'json') {
             errMess = xhr.responseJSON.errors[0].error_message;
