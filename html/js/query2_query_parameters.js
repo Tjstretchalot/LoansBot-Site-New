@@ -159,6 +159,9 @@ var query2_parameters = {};
 
       combine_elements(this.param_name, container, { label: label, control: control, help_block: help_block, remove_button: remove_button });
       return container;
+    },
+    send_params: function(all_params) {
+      all_params[this.param_name] = new Date(this.fetch_params()[0]).getTime();
     }
   });
 
@@ -179,6 +182,9 @@ var query2_parameters = {};
 
       combine_elements(this.param_name, container, { label: label, control: control, help_block: help_block, remove_button: remove_button });
       return container;
+    },
+    send_params: function(all_params) {
+      all_params[this.param_name] = new Date(this.fetch_params()[0]).getTime();
     }
   });
 })();
