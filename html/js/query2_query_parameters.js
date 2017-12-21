@@ -256,7 +256,7 @@ var query2_parameters = {};
       combine_elements(this.param_name, container, { label: label, control: control, help_block: help_block, remove_button: remove_button });
       return container;
     },
-    fetch_params = function() {
+    fetch_params: function() {
       return [ Math.floor(parseFloat(this.fetch_control.val()) * 100) ]
     }
   });
