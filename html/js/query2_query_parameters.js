@@ -79,7 +79,6 @@ var query2_parameters = {};
     name: "Limit",
     construct_html: function(limit) {
       limit = limit || 10;
-      var control_id = generate_control_id(this.param_name);
       var container = generate_container(this.param_name);
       container.data("param-name", this.param_name);
       var label = generate_label(this.param_name, "Limit");
