@@ -1,4 +1,4 @@
-var query2_parameters = {}
+var query2_parameters = {};
 
 (function() {
   function generate_input_control(param_name, type, aria_label)  {
