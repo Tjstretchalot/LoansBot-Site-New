@@ -34,7 +34,7 @@
       <section>
         <form id="parameters-form">
         </form>
-        <form id="add-parameter-form">
+        <form id="add-parameter-form" class="form-inline">
           <div class="form-group">
             <select class="form-control col-sm" id="add-parameter-select">
               <option>Loading...</option>
@@ -43,14 +43,14 @@
           </div>
         </form>
         <div class="container-fluid alert" id="save-query-status-text" style="display: none"></div>
-        <form id="save-query-form">
+        <form id="save-query-form" class="form-inline">
           <div class="form-group">
             <input type="text" class="form-control col-sm" id="save-query-name" aria-label="Name for this query" placeholder="Name for this query">
             <button type="submit" class="btn btn-primary col-sm">Save Query</button>
           </div>
         </form>
         <div class="container-fluid alert" id="get-results-status-text" style="display: none"></div>
-        <form id="get-results-form">
+        <form id="get-results-form" class="form-inline">
           <div class="form-group">
             <button type="submit" class="btn btn-primary btn-block">Get Results</button>
           </div>
