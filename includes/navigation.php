@@ -17,6 +17,11 @@
     'name' => 'Search'
   );
 
+  $pages[] = array(
+    'link' => '/query2.php',
+    'name' => 'Search v2.0'
+  );
+
   if(!isset($logged_in_user) || $logged_in_user === null) {
     $pages[] = array(
       'link' => '/login.php',
