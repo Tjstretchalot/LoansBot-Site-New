@@ -46,7 +46,7 @@
         <div class="container-fluid alert" id="save-query-status-text" style="display: none"></div>
         <form id="save-query-form" class="form-inline">
           <div class="form-group w-100">
-            <input type="text" class="form-control col-sm" id="save-query-name" aria-label="Name for this query" placeholder="Name for this query">
+            <input type="text" class="form-control col-sm" id="save-query-name" aria-label="Name for this query" placeholder="Name for this query" required>
             <button type="submit" class="btn btn-primary col-sm">Save Query</button>
           </div>
         </form>
@@ -65,7 +65,7 @@
       </section>
     </div>
     <?php include('bootstrap_js.php') ?>
-    <script src="js/jquery.basictable.min.js"></script>
+    <script src="js/jquery.basictable.js"></script>
     <script src="js/query2_query_parameters.js"></script>
     <script type="text/javascript">
       var existing_query_parameters = [];
@@ -336,7 +336,7 @@
        *
        * This handles #saved-queries-status-text for user feedback
        */
-      function fetch_and_load_saved_queries() {
+      function fetch_and_load_saved_queries(succ_callback, fail_callback) {
         $.get("/api/my_saved_queries.php", {}, function(data, stat) {
           var queries = data.queries;
           setup_saved_queries(queries);
@@ -345,6 +345,9 @@
             var query = queries[i];
             loaded_saved_queries[query.str_id] = query;
           }
+          
+          if(succ_callback)
+            succ_callback();
         }).fail(function(xhr) {
           var statusText = $("#saved-queries-status-text");
           statusText.removeClass("alert-success").removeClass("alert-info");
@@ -358,6 +361,9 @@
           }
 
           statusText.html("<span class=\"glyphicon glyphicon-remove\"></span> Error loading saved queries: " + err_mess);
+
+          if(fail_callback) 
+            fail_callback(err_mess);
         });
       }
 
@@ -425,7 +431,7 @@
         console.log(params);
         $.get("https://redditloans.com/api/loans.php", params, function(data, stat) {
           load_results(data);
-        }).fail(function(xhr) {
+        }).fail(function(xhr) {3gt
           var errMess = 'Unknown';
           if(xhr.responseType === 'json') {
             errMess = xhr.responseJSON.errors[0].error_message;
@@ -439,6 +445,72 @@
             statusText.addClass('alert-danger');
             statusText.html("<span class=\"glyphicon glyphicon-remove\"></span> " + errMess);
             statusText.slideDown('fast');
+          });
+        });
+      });
+
+      $("#save-query-form").submit(function(e) {
+        e.preventDefault();
+
+        var statusText = $("#save-query-status-text");
+        statusText.slideUp('fast', function(e) {
+          statusText.removeClass('alert-success').removeClass('alert-danger');
+          statusText.addClass('alert-info');
+          statusText.html("<span class=\"glyphicon glyphicon-refresh glyphicon-refresh-animate\"></span> Saving...");
+          statusText.slideDown('fast', function(e) {
+            var nm = $("#save-query-name").val();
+            var params = [];
+            
+            for(var i = 0, len = existing_query_parameters.length; i < len; i++) {
+              var param = existing_query_parameters[i];
+
+              var tmp = [];
+              tmp.push(param.param_name);
+              tmp.push(param.fetch_params());
+
+              params.push(tmp);
+            }
+
+            console.log(params);
+            $.post("/api/save_query.php", params, function(data, stat) {
+              statusText.fadeOut('fast', function() {
+                statusText.html("<span class=\"glyphicon glyphicon-refresh glyphicon-refresh-animate\"></span> Reloading queries..");
+                statusText.fadeIn('fast', function() {
+                  fetch_and_load_saved_queries(function() {
+                    statusText.fadeOut('fast', function() {
+                      statusText.removeClass('alert-info');
+                      statusText.addClass('alert-success');
+                      statusText.html("<span class=\"glyphicon glyphicon-ok\"></span> Success!");
+                      statusText.fadeIn('fast');
+                      setTimeout(function() {
+                        statusText.slideUp('fast');
+                      }, 2000);
+                    });
+                  }, function(err_mess) {
+                    statusText.fadeOut('fast', function() {
+                      statusText.removeClass('alert-info');
+                      statusText.addClass('alert-danger');
+                      statusText.html("<span class=\"glyphicon glyphicon-remove\"></span> Failed to reload queries: " + err_mess);
+                      statusText.fadeIn('fast');
+                    });
+                  });
+                });
+              })
+            }).fail(function(xhr) {
+              statusText.fadeOut('fast', function() {
+                var err_mess = "Unknown";
+                if('json' === xhr.responseType) {
+                  err_mess = xhr.responseJSON.errors[0].error_message;
+                }else {
+                  err_mess = xhr.statusText;
+                }
+
+                statusText.removeClass('alert-info');
+                statusText.addClass('alert-danger');
+                statusText.html("<span class=\"glyphicon glyphicon-remove\"></span> Failed to save query: " + err_mess);
+                statusText.fadeIn('fast');
+              });
+            });
           });
         });
       });
