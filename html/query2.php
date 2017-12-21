@@ -419,7 +419,7 @@
 
         var str_id = option.attr("value");
 
-        var statusText = $("#save-query-status-text");
+        var statusText = $("#saved-queries-status-text");
         statusText.slideUp('fast', function() {
           statusText.removeClass("alert-success").removeClass("alert-danger");
           statusText.addClass("alert-info");
