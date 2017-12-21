@@ -146,7 +146,10 @@ var query2_parameters = {};
     param_name: "after_time",
     name: "Created After",
     construct_html: function(time) {
-      time = new Date(time) || new Date();
+      if(!time)
+        time = new Date();
+      else
+        time = new Date(time);
       var container = generate_container(this.param_name);
       var label = generate_label(this.param_name, "Created After");
       var help_block = generate_simple_help_block(this.param_name, "Restrict the results to loans that were created on or after midnight on the specified date. The created time, for loans after 2015, is the timestamp for the comment that generated the loan. For loans prior to 2015, created_at is the time when the loan was added to the database. For loans prior to 2015, this is using PST, for other loans it matches the reddit timezone.");
