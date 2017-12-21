@@ -83,7 +83,7 @@ var query2_parameters = {};
       container.data("param-name", this.param_name);
       var label = generate_label(this.param_name, "Limit");
       var help_block = generate_simple_help_block(this.param_name, "Restricts the number of results to no more than the specified amount.");
-      var control = generate_input(this.param_name, "number", "Limit");
+      var control = generate_input_control(this.param_name, "number", "Limit");
       control.attr("value", limit.toString());
       control.attr("min", "1");
       control.attr("step", "1");
