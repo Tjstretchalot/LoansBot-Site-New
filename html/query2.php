@@ -459,8 +459,9 @@
           statusText.html("<span class=\"glyphicon glyphicon-refresh glyphicon-refresh-animate\"></span> Saving...");
           statusText.slideDown('fast', function(e) {
             var nm = $("#save-query-name").val();
-            var params = [];
-            
+            var params = { name: nm };
+            var options = [];
+
             for(var i = 0, len = existing_query_parameters.length; i < len; i++) {
               var param = existing_query_parameters[i];
 
@@ -468,8 +469,9 @@
               tmp.push(param.param_name);
               tmp.push(param.fetch_params());
 
-              params.push(tmp);
+              options.push(tmp);
             }
+            params.options = options;
 
             console.log(params);
             $.post("/api/save_query.php", params, function(data, stat) {
