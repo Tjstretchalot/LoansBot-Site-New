@@ -1,11 +1,5 @@
 <?php
   include_once('connect_and_get_loggedin.php');
-
-  if(!isset($logged_in_user) || $logged_in_user === null || $logged_in_user->auth < 5) {
-    http_response_code(403);
-    $sql_conn->close();
-    return;
-  }
 ?>
 <!doctype html>
 <html lang="en">
