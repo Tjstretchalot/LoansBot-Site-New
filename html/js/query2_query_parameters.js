@@ -188,7 +188,7 @@ var query2_parameters = {};
     }
   });
 
-  query2_parameters.borrower = apply_defaults({
+  query2_parameters.borrower_name = apply_defaults({
     param_name: "borrower_name",
     name: "Borrower",
     construct_html: function(borrower) {
@@ -205,7 +205,7 @@ var query2_parameters = {};
     }
   });
 
-  query2_parameters.lender = apply_defaults({
+  query2_parameters.lender_name = apply_defaults({
     param_name: "lender_name",
     name: "Lender",
     construct_html: function(lender) {
