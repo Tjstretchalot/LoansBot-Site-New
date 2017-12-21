@@ -80,7 +80,6 @@ var query2_parameters = {};
     construct_html: function(limit) {
       limit = limit || 10;
       var container = generate_container(this.param_name);
-      container.data("param-name", this.param_name);
       var label = generate_label(this.param_name, "Limit");
       var help_block = generate_simple_help_block(this.param_name, "Restricts the number of results to no more than the specified amount. When not included, the server will assume a default limit of 10 to avoid accidentally making very large queries. Use '0' as the limit to remove this restriction.");
       var control = generate_input_control(this.param_name, "number", "Limit");
@@ -95,24 +94,39 @@ var query2_parameters = {};
     fetch_control: function() {
       return $("#" + this.param_name + "-control");
     },
-    validate_params: function() {
-      var params = this.fetch_params();
-      if(params.length !== 1)
-        return "Unexpected params length (1 expected, got " + params.length + ")";
-
-      if("number" !== typeof params[0])
-        return "Bad type of first parameter (limit) (expected number but got " + typeof(params[0]) + ")";
-
-      if(params[0] < 1)
-        return "Invalid value for first parameter (limit) (expected strictly positive but got " + params[0] + ")";
-
-      return null;
-    },
     fetch_params: function() {
       return [ parseInt(this.fetch_control().val()) ];
     },
     send_params: function(all_params) {
       all_params.limit = this.fetch_params()[0];
     }
-  }
+  };
+
+  query2_parameters.id = {
+    param_name: "id",
+    name: "Loan ID",
+    construct_html: function(id) {
+      id = id || 0;
+      var container = generate_container(this.param_name);
+      var label = generate_label(this.param_name, "Loan ID");
+      var help_block = generate_simple_help_block(this.param_name, "Restrict the result to only the loan id with the specified ID. Since loan ids are unique, this guarantees either 0 or 1 results");
+      var control = generate_input_control(this.param_name, "number", "Loan identifier");
+      control.attr("value", id.toString());
+      control.attr("min", "1");
+      control.attr("step", "1");
+      var remove_button = generate_remove_button(this.param_name);
+
+      combine_elements(this.param_name, container, { label: label, control: control, help_block: help_block, remove_button: remove_button });
+      return container;
+    },
+    fetch_control: function() {
+      return $("#" + this.param_name + "-control");
+    },
+    fetch_params: function() {
+      return [ parseInt(this.fetch_control().val()) ];
+    },
+    send_params: function(all_params) {
+      all_params.id = this.fetch_params()[0];
+    }
+  };
 })();
