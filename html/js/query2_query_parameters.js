@@ -287,7 +287,7 @@ var query2_parameters = {};
     param_name: "unpaid",
     name: "Unpaid",
     construct_html: function(only_unpaid) {
-      only_unpaid = only_unpaid === null ? true : false;
+      only_unpaid = only_unpaid === null ? true : only_unpaid;
       var container = generate_container(this.param_name);
       var label = generate_label(this.param_name, "Unpaid");
       var help_block = generate_simple_help_block(this.param_name, "Restrict the results to loans that either have been flagged as unpaid or have not been flagged unpaid.");
