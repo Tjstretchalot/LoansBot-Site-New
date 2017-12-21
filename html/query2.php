@@ -467,11 +467,11 @@
 
               var tmp = [];
               tmp.push(param.param_name);
-              tmp.push(param.fetch_params());
+              tmp = tmp.concat(param.fetch_params());
 
               options.push(tmp);
             }
-            params.options = options;
+            params.params = options;
 
             console.log(params);
             $.post("/api/save_query.php", params, function(data, stat) {
