@@ -434,9 +434,7 @@
             statusText.html("<span class=\"glyphicon glyphicon-remove\"></span> " + errMess);
             statusText.slideDown('fast');
           });
-         }
-
-
+         });
         });
       });
     </script>
