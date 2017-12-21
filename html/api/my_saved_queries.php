@@ -43,7 +43,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   $err_prefix = 'html/api/my_saved_queries.php';
   $sql_params = array();
   $query = 'SELECT sq.id as id, sq.name as name from sq.saved_queries WHERE sq.always_shared = 1';
-  if(!$only_deafults) {
+  if(!$only_defaults) {
     $query .= ' AND sq.id NOT IN (SELECT saved_query_id FROM saved_query_users WHERE user_id = ? AND inverse = 1)';
     $sql_params[] = array('i', $logged_in_user->id);
     $query .= ' OR sq.id IN (SELECT saved_query_id FROM saved_query_users WHERE user_id = ? AND inverse = 0)';
