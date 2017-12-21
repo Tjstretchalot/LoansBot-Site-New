@@ -420,7 +420,7 @@
         }
 
         $.get("https://redditloans.com/api/loans.php", params, function(data, stat) {
-          load_results(data.loans);
+          load_results(data);
         }).fail(function(xhr) {
           var errMess = 'Unknown';
           if(xhr.responseType === 'json') {
