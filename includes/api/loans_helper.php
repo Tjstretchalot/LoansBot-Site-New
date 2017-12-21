@@ -294,7 +294,7 @@ class ParameterParser {
     
     $result = new SelectQueryCallback('borrower_name', array('borrower_name' => $borrower_name));
     $result->where_callback = function($helper) {
-      return '(borrower_id = (SELECT user_id FROM usernames WHERE username LIKE ? LIMIT 1))';
+      return '(borrower_id IN (SELECT user_id FROM usernames WHERE username LIKE ?))';
     };
     $result->bind_where_callback = function($helper) use ($borrower_name) {
       return array(array('s', $borrower_name));
@@ -317,7 +317,7 @@ class ParameterParser {
 
     $result = new SelectQueryCallback('lender_name', array('lender_name' => $lender_name));
     $result->where_callback = function($helper) {
-      return '(lender_id = (SELECT user_id FROM usernames WHERE username LIKE ? LIMIT 1))';
+      return '(lender_id IN (SELECT user_id FROM usernames WHERE username LIKE ?))';
     };
     $result->bind_where_callback = function($helper) use ($lender_name) {
       return array(array('s', $lender_name));
@@ -340,8 +340,9 @@ class ParameterParser {
     }
 
     $result = new SelectQueryCallback('includes_user_name', array('includes_user_name' => $includes_user_name));
+
     $result->where_callback = function($helper) {
-      return '(loans.lender_id = (SELECT user_id FROM usernames WHERE username LIKE ?) OR loans.borrower_id = (SELECT user_id FROM usernames WHERE username LIKE ?))';
+      return '(loans.lender_id IN (SELECT user_id FROM usernames WHERE username LIKE ?) OR loans.borrower_id IN (SELECT user_id FROM usernames WHERE username LIKE ?))';
     };
     $result->bind_where_callback = function($helper) use ($includes_user_name) {
       return array(array('s', $includes_user_name), array('s', $includes_user_name));

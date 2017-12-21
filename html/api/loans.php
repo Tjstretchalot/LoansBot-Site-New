@@ -97,7 +97,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   }
 
   handle_param_error($helper->check_authorization($auth));
-  handle_param_error($helper->check_sanity());
+  handle_param_error($helper->check_sanity($sql_conn));
 
   $after_params = microtime();
   error_log('parsing params took: ' . ($after_params - $before_params));

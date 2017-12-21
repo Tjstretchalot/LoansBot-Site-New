@@ -40,7 +40,7 @@ class SelectQueryCallback {
 
   // may be null
   // called after all callbacks have been loaded
-  // accepts ($helper) and returns null if the command passes the sanity check, and an array('error_mess'=>'a string', 'error_ident'=> 'another string')
+  // accepts ($helper, $sql_conn) and returns null if the command passes the sanity check, and an array('error_mess'=>'a string', 'error_ident'=> 'another string')
   // otherwise
   public $sanity_callback;
 
@@ -115,11 +115,11 @@ class SelectQueryHelper {
     }
   }
 
-  public function check_sanity() {
+  public function check_sanity($sql_conn) {
     foreach ($this->callbacks as $callback) {
       if($callback->sanity_callback !== null) {
         $tmp = $callback->santiy_callback;
-        $res = $tmp($this);
+        $res = $tmp($this, $sql_conn);
         if($res !== null) {
           return $res;
         }
