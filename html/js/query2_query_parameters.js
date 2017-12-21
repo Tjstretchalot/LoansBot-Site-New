@@ -231,7 +231,7 @@ var query2_parameters = {};
       var label = generate_label(this.param_name, "Includes User");
       var help_block = generate_simple_help_block(this.param_name, "Restrict the results to loans where the username for either the lender or the borrower fuzzily matches the specified input. This uses a LIKE operator in SQL to perform the evaluation, which means you can use percent signs (%) to match any-number of any-character, and you can use underscores (_) to match exactly 1 of any character. So, for example, %hn would match john or kahn. %a% would match any username with an a in it. _ob would match bob or cob or sob but not snob or prob. Note that for extremely vague searches (such as da%) the results may be inaccurate.");
       var control = generate_input_control(this.param_name, "text", "Includes User");
-      control.attr('value', lender);
+      control.attr('value', includes_user_name);
       var remove_button = generate_remove_button(this.param_name);
 
       combine_elements(this.param_name, container, { label: label, control: control, help_block: help_block, remove_button: remove_button });
