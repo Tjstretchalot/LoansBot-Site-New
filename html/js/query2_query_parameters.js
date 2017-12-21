@@ -31,11 +31,11 @@ var query2_parameters = {};
     
     var header = $("<h1>");
     header.text("Help");
-    result.add(header);
+    result.append(header);
     
     var body = $("<p>");
     body.text(content);
-    result.add(body);
+    result.append(body);
 
     return result;
   }
@@ -55,22 +55,22 @@ var query2_parameters = {};
       if(things.control) {
         things.label.attr("for", param_name + "-control");
       }
-      container.add(things.label);
+      container.append(things.label);
     }
 
     if(things.control) {
-      container.add(things.control);
+      container.append(things.control);
     }
 
     if(things.help_block) {
       if(things.control) {
         things.control.attr("aria-describedby", param_name + "-helpblock");
       }
-      container.add(things.help_block);
+      container.append(things.help_block);
     }
 
     if(things.remove_button) {
-      container.add(things.remove_button);
+      container.append(things.remove_button);
     }
   }
 

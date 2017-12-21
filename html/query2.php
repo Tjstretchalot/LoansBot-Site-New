@@ -105,7 +105,7 @@
           var ele = $("<option>");
           ele.data("param-name", valid_param.param_name);
           ele.text(valid_param.name);
-          select.add(ele);
+          select.append(ele);
         }
       }
 
@@ -181,7 +181,7 @@
         });
 
         var params_form = $("#parameters-form");
-        params_form.add(new_form_element);
+        params_form.append(new_form_element);
       }
 
       /*
@@ -252,24 +252,24 @@
           
           var thead = $("<thead>");
           var tr = $("<tr>");
-          tr.add("<th>ID</th>");
-          tr.add("<th>Lender</th>");
-          tr.add("<th>Borrower</th>");
-          tr.add("<th>Principal</th>");
-          tr.add("<th>Repayment</th>");
-          tr.add("<th>Unpaid?</th>");
+          tr.append("<th>ID</th>");
+          tr.append("<th>Lender</th>");
+          tr.append("<th>Borrower</th>");
+          tr.append("<th>Principal</th>");
+          tr.append("<th>Repayment</th>");
+          tr.append("<th>Unpaid?</th>");
           if(have_admin_info)
-            tr.add("<th>Deleted?</th>");
-          tr.add("<th>Created At</th>");
+            tr.append("<th>Deleted?</th>");
+          tr.append("<th>Created At</th>");
           if(have_admin_info) {
-            tr.add("<th>Deleted At</th>");
-            tr.add("<th>Deleted Reason</th>");
+            tr.append("<th>Deleted At</th>");
+            tr.append("<th>Deleted Reason</th>");
           }
           if(have_modified_info)
-            tr.add("<th>Refresh</th>");
+            tr.append("<th>Refresh</th>");
           
-          thead.add(tr);
-          tab.add(thead);
+          thead.append(tr);
+          tab.append(thead);
 
           var tbody = $("<tbody>");
           for(var i = 0, len = results.loans.length; i < len; i++) {
@@ -278,48 +278,48 @@
             tr = $("<tr>");
             var td = $("<td>");
             td.text(loan.loan_id.toString());
-            tr.add(td);
+            tr.append(td);
             td = $("<td>");
             td.text(loan.lender_name);
-            tr.add(td);
+            tr.append(td);
             td = $("<td>");
             td.text(loan.borrower_name);
-            tr.add(td);
+            tr.append(td);
             td = $("<td>");
             td.text(format_money(loan.principal_cents));
-            tr.add(td);
+            tr.append(td);
             td = $("<td>");
             td.text(format_money(loan.principal_repayment_cents));
-            tr.add(td);
+            tr.append(td);
             td = $("<td>");
             td.text((loan.unpaid ? "Yes" : "No"));
-            tr.add(td);
+            tr.append(td);
             if(have_admin_info) {
               td = $("<td");
               td.text((loan.deleted ? "Yes" : "No"));
-              tr.add(td);
+              tr.append(td);
             }
             td = $("<td>");
             td.text(format_time(loan.created_at));
-            tr.add(td);
+            tr.append(td);
             if(have_admin_info) {
               td = $("<td>");
               td.text(format_time(loan.deleted_at));
-              tr.add(td);
+              tr.append(td);
               td = $("<td>");
               td.text(loan.deleted_reason ? loan.deleted_reason : "null");
-              tr.add(td);
+              tr.append(td);
             }
             if(have_modified_info) {
               td = $("<td>");
               td.text("<i><b>REFRESH REQUIRED</b></i>");
-              tr.add(td);
+              tr.append(td);
             }
 
-            tbody.add(tr);
+            tbody.append(tr);
           }
 
-          tab.add(tbody);
+          tab.append(tbody);
           tab.basictable({
             tableWrapper: true
           });
