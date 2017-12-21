@@ -3,6 +3,11 @@
   font-weight: 500;
 }
 
+.form-check label {
+  font-size: 1rem !important;
+  font-weight: 400 !important;
+}
+
 .help-block {
   font-size: smaller;
 }
