@@ -151,7 +151,7 @@ var query2_parameters = {};
       var label = generate_label(this.param_name, "Created After");
       var help_block = generate_simple_help_block(this.param_name, "Restrict the results to loans that were created after the specified date. The created time, for loans after 2015, is the timestamp for the comment that generated the loan. For loans prior to 2015, created_at is the time when the loan was added to the database.");
       var control = generate_input_control(this.param_name, "date", "Created after date");
-      control.valueAsDate = time;
+      control.attr('value', time.toISOString().slice(0, 10));
       var remove_button = generate_remove_button(this.param_name);
 
       combine_elements(this.param_name, container, { label: label, control: control, help_block: help_block, remove_button: remove_button });
