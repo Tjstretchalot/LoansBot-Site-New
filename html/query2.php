@@ -22,7 +22,7 @@
       <div class="container-fluid alert" id="statusText" style="display: none"></div>
       <section>
         <div class="container-fluid alert" id="saved-queries-status-text" style="display: none"></div>
-        <form id="saved-queries-form" class="form-inline">
+        <form id="saved-queries-form" class="form-inline w-100">
           <div class="form-group justify-content-between">
             <select class="form-control col-sm" id="saved-queries-select">
               <option value="loading">Loading...</option>
@@ -34,7 +34,7 @@
       <section>
         <form id="parameters-form">
         </form>
-        <form id="add-parameter-form" class="form-inline">
+        <form id="add-parameter-form" class="form-inline w-100">
           <div class="form-group">
             <select class="form-control col-sm" id="add-parameter-select">
               <option>Loading...</option>
@@ -43,14 +43,14 @@
           </div>
         </form>
         <div class="container-fluid alert" id="save-query-status-text" style="display: none"></div>
-        <form id="save-query-form" class="form-inline">
+        <form id="save-query-form" class="form-inline w-100">
           <div class="form-group">
             <input type="text" class="form-control col-sm" id="save-query-name" aria-label="Name for this query" placeholder="Name for this query">
             <button type="submit" class="btn btn-primary col-sm">Save Query</button>
           </div>
         </form>
         <div class="container-fluid alert" id="get-results-status-text" style="display: none"></div>
-        <form id="get-results-form" class="form-inline">
+        <form id="get-results-form" class="form-inline w-100">
           <div class="form-group">
             <button type="submit" class="btn btn-primary btn-block">Get Results</button>
           </div>
