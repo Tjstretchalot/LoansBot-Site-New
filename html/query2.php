@@ -285,52 +285,52 @@
 
             tr = $("<tr>");
             var td = $("<td>");
-            td.data("th", "ID");
+            td.attr("data-th", "ID");
             td.text(loan.loan_id.toString());
             tr.append(td);
             td = $("<td>");
-            td.data("th", "Lender");
+            td.attr("data-th", "Lender");
             td.text(loan.lender_name);
             tr.append(td);
             td = $("<td>");
-            td.data("th", "Borrower");
+            td.attr("data-th", "Borrower");
             td.text(loan.borrower_name);
             tr.append(td);
             td = $("<td>");
-            td.data("th", "Principal");
+            td.attr("data-th", "Principal");
             td.text(format_money(loan.principal_cents));
             tr.append(td);
             td = $("<td>");
-            td.data("th", "Repayment");
+            td.attr("data-th", "Repayment");
             td.text(format_money(loan.principal_repayment_cents));
             tr.append(td);
             td = $("<td>");
-            td.data("th", "Unpaid?");
+            td.attr("data-th", "Unpaid?");
             td.text((loan.unpaid ? "Yes" : "No"));
             tr.append(td);
             if(have_admin_info) {
               td = $("<td>");
-              td.data("th", "Deleted?");
+              td.attr("data-th", "Deleted?");
               td.text((loan.deleted ? "Yes" : "No"));
               tr.append(td);
             }
             td = $("<td>");
-            td.data("th", "Created At");
+            td.attr("data-th", "Created At");
             td.text(format_time(loan.created_at));
             tr.append(td);
             if(have_admin_info) {
               td = $("<td>");
-              td.data("th", "Deleted At");
+              td.attr("data-th", "Deleted At");
               td.text(format_time(loan.deleted_at));
               tr.append(td);
               td = $("<td>");
-              td.data("th", "Deleted Reason");
+              td.attr("data-th", "Deleted Reason");
               td.text(loan.deleted_reason ? loan.deleted_reason : "null");
               tr.append(td);
             }
             if(have_modified_info) {
               td = $("<td>");
-              td.data("th", "Refresh?");
+              td.attr("data-th", "Refresh?");
               td.text("<i><b>REFRESH REQUIRED</b></i>");
               tr.append(td);
             }
