@@ -215,7 +215,7 @@
       }
 
       function format_money(cents) {
-        var str = "$" + math.floor(cents / 100) + ".";
+        var str = "$" + Math.floor(cents / 100) + ".";
         
         var pennies = cents % 100;
         if(pennies !== 0) {
