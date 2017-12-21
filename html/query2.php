@@ -345,7 +345,7 @@
           tab.append(tbody);
           tab.basictable({
             tableWrap: true,
-            breakpoint: 990
+            breakpoint: 991
           });
           wrap.slideDown('fast');
         });
