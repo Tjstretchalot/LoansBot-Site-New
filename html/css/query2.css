@@ -35,7 +35,6 @@ table th,
 table td {
   border: none;
   border-bottom: 1px solid #e4ebeb;
-  font-family: 'Lato', sans-serif;
   font-size: .875rem;
 }
 
@@ -53,7 +52,7 @@ table th {
 
 table tr td {
   background: #eaf3f5;
-  color: #999999;
+  color: #777;
 }
 
 table tr:nth-of-type(2n+2) td {
