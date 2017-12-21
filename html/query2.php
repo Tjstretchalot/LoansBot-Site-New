@@ -28,7 +28,8 @@
             <select class="form-control col-sm" id="saved-queries-select">
               <option value="loading">Loading...</option>
             </select>
-            <button type="submit" class="btn btn-primary col-sm">Load Query</button>
+            <button type="submit" class="btn btn-primary col-sm" value="Load">Load Query</button>
+            <button type="button" id="delete-query-button" class="btn btn-danger col-sm" value="Delete">Delete Query</button>
           </div>
         </form>
       </section>
@@ -399,14 +400,75 @@
         if(option.length === 0)
           return;
 
-        var param_name = option.attr("value");
-        var query = loaded_saved_queries[param_name];
+        var str_id = option.attr("value");
+        var query = loaded_saved_queries[str_id];
         if("undefined" === typeof(query)) {
-          console.log("failed to find a loaded saved query named " + param_name + "!");
+          console.log("failed to find a loaded saved query with identifier " + str_id + "!");
           return;
         }
 
         load_saved_query(query);
+      });
+
+      $("#delete-query-button").click(function(e) {
+        e.preventDefault();
+
+        var option = $("#saved-queries-select :selected");
+        if(option.length === 0)
+          return;
+
+        var str_id = option.attr("value");
+
+        var statusText = $("#save-query-status-text");
+        statusText.slideUp('fast', function() {
+          statusText.removeClass("alert-success").removeClass("alert-danger");
+          statusText.addClass("alert-info");
+          statusText.html("<span class=\"glyphicon glyphicon-refresh glyphicon-refresh-animate\"></span> Deleting..");
+
+          statusText.slideDown('fast', function() {
+            var params = { str_id: str_id };
+            console.log(params);
+            $.post("/api/delete_saved_query.php", params, function(data, stat) {
+              statusText.fadeOut('fast', function() {
+                statusText.html("<span class=\"glyphicon glyphicon-refresh glyphicon-refresh-animate\"></span> Reloading saved queries..");
+                statusText.fadeIn('fast', function() {
+                  fetch_and_load_saved_queries(function() {
+                    statusText.fadeOut('fast', function() {
+                      statusText.removeClass('alert-info');
+                      statusText.addClass('alert-success');
+                      statusText.html("<span class=\"glyphicon glyphicon-ok\"></span> Success!");
+                      statusText.fadeIn('fast');
+                      setTimeout(function() {
+                        statusText.slideUp('fast');
+                      }, 2000);
+                    });
+                  }, function(err_mess) {
+                    statusText.fadeOut('fast', function() {
+                      statusText.removeClass('alert-info');
+                      statusText.addClass('alert-danger');
+                      statusText.html("<span class=\"glyphicon glyphicon-remove\"></span> Failed to reload queries: " + err_mess);
+                      statusText.fadeIn('fast');
+                    });
+                  });
+                });
+              });
+            }).fail(function(xhr) {
+              statusText.fadeOut('fast', function() {
+                statusText.removeClass('alert-info');
+                statusText.addClass('alert-danger');
+                
+                var err_mess = 'Unknown';
+                if('object' === typeof(xhr.responseJSON))
+                  err_mess = xhr.responseJSON.errors[0].error_message;
+                else
+                  err_mess = xhr.statusText;
+
+                statusText.html("<span class=\"glyphicon glyphicon-remove\"></span> Failed to delete query: " + err_mess);
+                statusText.fadeIn('fast');
+              });
+            });
+          });
+        });
       });
 
       $("#add-parameter-form").submit(function(e) {
