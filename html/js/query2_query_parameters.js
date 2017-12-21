@@ -100,6 +100,8 @@ var query2_parameters = {};
     if("undefined" === typeof(partial_param.send_params)) {
       partial_param.send_params = default_send_params;
     }
+
+    return partial_param;
   }
 
   query2_parameters.limit = apply_defaults({
