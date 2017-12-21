@@ -356,7 +356,7 @@
           var err_mess = "Unknown error";
           if(xhr.status < 400 || xhr.status >= 500 || xhr.status === 404) {
             err_mess = "Strange response status code: " + xhr.statusText;
-          }else if(xhr.responseType === "json") {
+          }else if("object" === typeof(xhr.responseJSON)) {
             err_mess = xhr.responseJSON.errors[0].error_message;
           }
 
@@ -433,7 +433,7 @@
           load_results(data);
         }).fail(function(xhr) {
           var errMess = 'Unknown';
-          if(xhr.responseType === 'json') {
+          if("object" === typeof(xhr.responseJSON)) {
             errMess = xhr.responseJSON.errors[0].error_message;
           }else {
             errMess = xhr.statusText;
@@ -499,7 +499,7 @@
             }).fail(function(xhr) {
               statusText.fadeOut('fast', function() {
                 var err_mess = "Unknown";
-                if('json' === xhr.responseType) {
+                if("object" === typeof(xhr.responseType)) {
                   err_mess = xhr.responseJSON.errors[0].error_message;
                 }else {
                   err_mess = xhr.statusText;
