@@ -22,6 +22,12 @@
     'name' => 'Search v2.0'
   );
 
+  $pages[] = array(
+    'link' => '/mobile_query.php',
+    'name' => 'Mobile Check'
+  );
+
+
   if(!isset($logged_in_user) || $logged_in_user === null) {
     $pages[] = array(
       'link' => '/login.php',

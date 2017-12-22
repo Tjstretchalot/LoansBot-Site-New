@@ -49,7 +49,7 @@
     $outstanding = intval($_GET["outstanding"]) === 1;
   }
 
-  $sql_conn = create_db_connection();
+  include_once 'connect_and_get_loggedin.php'; 
   if($checkname && !$checkid) {
     $query = 'select user_id from usernames where username=? limit 1';
     $stmt = $sql_conn->prepare($query);
@@ -63,6 +63,12 @@
     }else {
       $checkid = $checkname_userid;
       $stmt->close();
+    }
+  }
+
+  if(!$checkid) {
+    if(isset($logged_in_user) && $logged_in_user !== null) {
+      $checkid = $logged_in_user->id;
     }
   }
   
