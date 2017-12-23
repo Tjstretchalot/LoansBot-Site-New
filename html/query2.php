@@ -232,6 +232,43 @@
       function format_time(time) {
         return new Date(time).toLocaleDateString();
       }
+      
+      function resolve_thread(callingA, loan_id) {
+        callingA = $(callingA);
+        if(callingA.data("resolving") == 1)
+          return true;
+        if(callingA.data("resolved") == 1)
+          return true;
+        callingA.data("resolving", 1);
+
+        $.get('https://redditloans.com/api/get_creation_info.php', { loan_id: loan_id }, function(data, status) {
+          console.log("retrieved loan creation info: ");
+          console.log(JSON.stringify(data));
+
+          callingA.data("resolved", 1);
+          callingA.removeData("resolving");
+
+          if(!data.results[loan_id]) {
+            callingA.html("No thread found (code 0)");
+          }else {
+            var info = data.results[loan_id];
+            if(info.type == 0) {
+              callingA.attr("href", info.thread);
+              callingA.html("Thread");
+            }else {
+              callingA.html("No thread found (code " + info.type.toString() + ")");
+            }
+          }
+        }).fail(function(xhr) {
+          var err_mess = 'Unknown Error';
+          if("undefined" === typeof(xhr.responseJSON))
+            err_mess = xhr.statusText;
+          else
+            err_mess = xhr.responseJSON.errors[0].error_message;
+          callingA.html(errMess)
+        });
+        return false;
+      }
 
       /*
        * Prepare the results table with the specified successful response
@@ -263,6 +300,7 @@
           tr.append("<th>Borrower</th>");
           tr.append("<th>Principal</th>");
           tr.append("<th>Repayment</th>");
+          tr.append("<th>Thread</th>");
           tr.append("<th>Unpaid?</th>");
           if(have_admin_info)
             tr.append("<th>Deleted?</th>");
@@ -301,6 +339,13 @@
             td = $("<td>");
             td.attr("data-th", "Repayment");
             td.text(format_money(loan.principal_repayment_cents));
+            tr.append(td);
+            td = $("<td>");
+            var a = $("<a>");
+            a.attr("href", "#");
+            a.attr("onclick", "return resolve_thread(this, " + loan.loan_id + ");");
+            a.text("Fetch thread");
+            td.append(a);
             tr.append(td);
             td = $("<td>");
             td.attr("data-th", "Unpaid?");
