@@ -346,7 +346,7 @@ var query2_parameters = {};
     param_name: "repaid",
     name: "Repaid",
     construct_html: function(only_repaid) {
-      only_unpaid = ("undefined" === typeof(only_repaid)) ? true : only_repaid == 'true';
+      only_repaid = ("undefined" === typeof(only_repaid)) ? true : only_repaid == 'true';
       var container = generate_container(this.param_name);
       var label = generate_label(this.param_name, "Repaid");
       var help_block = generate_simple_help_block(this.param_name, "Restrict the results to loans that either have a different principal repayment than principal, or have the same principal repayment as their principal.");
