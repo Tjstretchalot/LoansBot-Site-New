@@ -145,7 +145,7 @@ class UserParameterParser {
     };
 
     $result->join_callback = function($helper) {
-      return 'LEFT OUTER JOIN (SELECT user_id, GROUP_CONCAT(username SEPERATOR \' AKA \') AS concat_username FROM usernames GROUP BY user_id) unames ON users.id = unames.user_id';
+      return 'LEFT OUTER JOIN (SELECT user_id, GROUP_CONCAT(username SEPARATOR \' AKA \') AS concat_username FROM usernames GROUP BY user_id) unames ON users.id = unames.user_id';
     };
 
     $result->result_callback = function($helper, $row, &$response_res) {
