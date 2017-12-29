@@ -51,7 +51,7 @@ function get_error_message(xhr) {
 function fetch_all_loans() {
   return new Promise(function(resolve, reject) {
     $.get('https://redditloans.com/api/loans.php', { format: 1, limit: 0 }, function(data, stat) {
-      resolve(data.data.loans);
+      resolve(data.loans);
     }).fail(function(xhr) {
       var err_mess = get_error_message(xhr);
       reject(err_mess);
@@ -67,10 +67,10 @@ function fetch_all_loans() {
 function fetch_username(user_id) {
   return new Promise(function(resolve, reject) {
     $.get('https://redditloans.com/api/users.php', { format: 3, limit: 1, id: user_id }, function(data, stat) {
-      if(data.data.users.length === 0)
+      if(data.users.length === 0)
         reject("Empty result");
 
-      resolve(data.data.users[0].username);
+      resolve(data.users[0].username);
     }).fail(function(xhr) {
       var err_mess = get_error_message(xhr);
       set_status("danger", FAILURE_GLYPHICON + " Failed to find username for user id=" + user_id + ": " + err_mess);
