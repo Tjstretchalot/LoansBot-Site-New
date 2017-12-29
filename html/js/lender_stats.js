@@ -252,7 +252,8 @@ function cfetch_or_fetch_usernames(loans, cache, user_ids) {
 
   return new Promise(function(resolve, reject) {
     var promises = [];
-    for(var id in user_ids) {
+    for(var ind = 0, len = user_ids.length; ind < len; ind++) {
+      var id = user_ids[ind];
       if(!cache.users.hasOwnProperty(id.toString()))  {
         var tmp = null;
         tmp = cache.users[id.toString()] = fetch_username(id).then(function(username) {
@@ -271,7 +272,8 @@ function cfetch_or_fetch_usernames(loans, cache, user_ids) {
 
     Promise.all(promises).then(function() {
       var result = {};
-      for(var id in user_ids) {
+      for(var ind = 0, len = user_ids.length; ind < len; ind++) {
+        var id = user_ids[ind];
         result[id] = cache.users[id];
       }
       resolve(result);
@@ -341,12 +343,14 @@ function calculate_most_active_overall(loans, cache) {
     }
 
     var usernames_promise = cfetch_or_fetch_usernames(loans, cache, top_five_as_user_id_array).then(function(usernames) {
-      for(var obj in top_five) {
+      for(var ind = 0, len = top_five.length; ind < len; ind++) {
+        var obj = top_five[ind];
         obj.username = usernames[obj.user_id.toString()];
       }
     });
     var activity_summaries_promise = cfetch_or_calculate_activity_summaries(loans, cache, top_five_as_user_id_array).then(function(activity_summaries) {
-      for(var obj in top_five) {
+      for(var ind = 0, len = top_five.length; ind < len; ind++) {
+        var obj = top_five[ind];
         var activity_summ = activity_summaries[obj.user_id.toString()];
 
         for(var key in activity_summ) {
