@@ -263,18 +263,15 @@ function cfetch_or_fetch_usernames(loans, cache, user_ids) {
         promises.push(tmp);
       }else {
         var tmp = cache.users[id.toString()];
-
-        if(typeof(tmp.then) === "function") {
-          promises.push(tmp);
-        }
+        promises.push(tmp);
       }
     }
 
-    Promise.all(promises).then(function() {
+    Promise.all(promises).then(function(data) {
       var result = {};
       for(var ind = 0, len = user_ids.length; ind < len; ind++) {
         var id = user_ids[ind];
-        result[id] = cache.users[id];
+        result[id] = data[ind];
       }
       resolve(result);
     }, function(reject_reason) {
@@ -347,7 +344,7 @@ function calculate_most_active_overall(loans, cache) {
         var obj = top_five[ind];
         obj.username = usernames[obj.user_id.toString()];
       }
-    });
+    }).then(function(){});
     var activity_summaries_promise = cfetch_or_calculate_activity_summaries(loans, cache, top_five_as_user_id_array).then(function(activity_summaries) {
       for(var ind = 0, len = top_five.length; ind < len; ind++) {
         var obj = top_five[ind];
@@ -359,7 +356,7 @@ function calculate_most_active_overall(loans, cache) {
           }
         }
       }
-    });
+    }).then(function(){});
 
     Promise.all([ usernames_promise, activity_summaries_promise ]).then(function() {
       resolve(top_five);
