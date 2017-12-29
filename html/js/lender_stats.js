@@ -338,12 +338,12 @@ function calculate_most_active_overall(loans, cache) {
       top_five_as_user_id_array.push(top_five[key].user_id);
     }
 
-    var usernames_promise = cfetch_or_fetch_usernames(top_five_as_user_id_array).then(function(usernames) {
+    var usernames_promise = cfetch_or_fetch_usernames(loans, cache, top_five_as_user_id_array).then(function(usernames) {
       for(var obj in top_five) {
         obj.username = usernames[obj.user_id.toString()];
       }
     });
-    var activity_summaries_promise = cfetch_or_calculate_activity_summaries(top_five_as_user_id_array).then(function(activity_summaries) {
+    var activity_summaries_promise = cfetch_or_calculate_activity_summaries(loans, cache, top_five_as_user_id_array).then(function(activity_summaries) {
       for(var obj in top_five) {
         var activity_summ = activity_summaries[obj.user_id.toString()];
 
@@ -386,3 +386,7 @@ function do_everything() {
     });
   });
 };
+
+$(function() {
+  do_everything();
+});
