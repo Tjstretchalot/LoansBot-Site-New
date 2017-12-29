@@ -166,6 +166,7 @@ function setup_most_active_overall(info) {
     tableWrap: true,
     breakpoint: 991
   });
+  tabl.addClass("w-100");
   tabl.slideDown('fast');
 }
 
