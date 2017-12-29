@@ -1,6 +1,6 @@
-var SUCCESS_GLYPHICON = '<i class=\"far fa-check\"></span>';
-var FAILURE_GLYPHICON = '<i class=\"far fa-exclamation-triangle\"></span>';
-var LOADING_GLYPHICON = '<i class=\"far fa-sync fa-spin\"></span>';
+var SUCCESS_GLYPHICON = '<i class=\"far fa-check\"></i>';
+var FAILURE_GLYPHICON = '<i class=\"far fa-exclamation-triangle\"></i>';
+var LOADING_GLYPHICON = '<i class=\"far fa-sync fa-spin\"></i>';
 /*
  * Set the main status to the specified type, returning a promise
  * for when it is visible to the user
@@ -368,7 +368,7 @@ function calculate_most_active_overall(loans, cache) {
  */
 function do_everything() {
   set_status('info', LOADING_GLYPHICON + " Fetching bulk data...").then(function() {
-    fetch_all_loans.then(function(loans) {
+    fetch_all_loans().then(function(loans) {
       console.log("fetch_all_loans succeeded");
       set_status('info', LOADING_GLYPHICON + " Calculating statistics...").then(function() {
         var cache = {}
