@@ -223,7 +223,7 @@ function cfetch_or_calculate_activity_summaries(loans, cache, user_ids) {
         sum_repayment += loan[4];
 
         if(loan[5]) {
-          sum_unpaid += loan[3] - loan[4];
+          sum_unpaid += (loan[3] - loan[4]);
         }
         
         var borrower_id = loan[2];
@@ -238,7 +238,7 @@ function cfetch_or_calculate_activity_summaries(loans, cache, user_ids) {
       number_loans: num_loans, 
       sum_loan_principal_cents: sum_principal, 
       sum_loan_principal_repayment_cents: sum_repayment, 
-      sum_unpaid: sum_unpaid,
+      sum_unpaid_cents: sum_unpaid,
       sum_unique_borrowers: sum_unique_borrowers 
     };
   }
