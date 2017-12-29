@@ -2,6 +2,7 @@
 require_once 'database/common.php';
 require_once 'api/common.php';
 require_once 'api/select_query_helper.php';
+require_once 'api/users_helper.php';
 
 if($_SERVER['REQUEST_METHOD'] === 'GET') {
   $params = $_GET;
