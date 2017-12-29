@@ -219,7 +219,7 @@ function cfetch_or_calculate_activity_summaries(loans, cache, user_ids) {
           result[id_str] = true_cache_val;
         }, function(reject_reason) {
           reject(reject_reason);
-        });
+        }));
       }else {
         result[id_str] = cache_val;
       }
