@@ -1,5 +1,6 @@
 <?php
   require_once 'api/common.php';
+  require_once('database/helper.php');
   $pages = array();
 
   $pages[] = array(
