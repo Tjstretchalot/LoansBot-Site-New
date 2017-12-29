@@ -196,7 +196,7 @@ class UserParameterParser {
     if(isset($helper->callbacks_dict['filter_id']))
       return array('error_ident' => 'INVALID_ARGUMENT', 'error_mess' => 'Cannot filter by id and by username!');
 
-    $result = new SelectQueryCallback('filter_username', array('username' => $username);
+    $result = new SelectQueryCallback('filter_username', array('username' => $username));
 
     $result->where_callback = function($helper) {
       return 'WHERE users.id IN (SELECT user_id FROM usernames WHERE username LIKE ?)'
