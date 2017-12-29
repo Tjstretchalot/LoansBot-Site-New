@@ -12,7 +12,7 @@ function set_status(type, html) {
   console.log("set_status('" + type + "', '" + html + "')");
   var stat_text = $("#stats-status");
 
-  return new Promise(resolve, reject) {
+  return new Promise(function(resolve, reject) {
     var was_hidden = stat_text.is(":hidden");
     stat_text.fadeOut('fast', function() {
       stat_text.empty();
@@ -30,7 +30,7 @@ function set_status(type, html) {
         });
       }
     });
-  };
+  });
 }
 
 function get_error_message(xhr) {
@@ -49,14 +49,14 @@ function get_error_message(xhr) {
  * @return promise of list (of loans/compact)
  */
 function fetch_all_loans() {
-  return new Promise(resolve, reject) {
+  return new Promise(function(resolve, reject) {
     $.get('https://redditloans.com/api/loans.php', { format: 1, limit: 0 }, function(data, stat) {
       resolve(data.data.loans);
     }).fail(function(xhr) {
       var err_mess = get_error_message(xhr);
       reject(err_mess);
     });
-  };
+  });
 }
 
 /*
@@ -65,7 +65,7 @@ function fetch_all_loans() {
  * @ return promise of string
  */
 function fetch_username(user_id) {
-  return new Promise(resolve, reject) {
+  return new Promise(function(resolve, reject) {
     $.get('https://redditloans.com/api/users.php', { format: 3, limit: 1, id: user_id }, function(data, stat) {
       if(data.data.users.length === 0)
         reject("Empty result");
@@ -76,7 +76,7 @@ function fetch_username(user_id) {
       set_status("danger", FAILURE_GLYPHICON + " Failed to find username for user id=" + user_id + ": " + err_mess);
       reject(err_mess);
     });
-  };
+  });
 }
 
 /*
@@ -202,7 +202,7 @@ function cfetch_or_calculate_activity_summaries(loans, cache, user_ids) {
   }
 
 
-  return new Promise(resolve, reject) { 
+  return new Promise(function(resolve, reject) { 
     var result = {};
     var promises = [];
     for(var ind = 0, len = user_ids.length; ind < len; ind++) {
@@ -230,7 +230,7 @@ function cfetch_or_calculate_activity_summaries(loans, cache, user_ids) {
     }, function(reject_reason) {
       reject(reject_reason);
     });
-  };
+  });
 }
 
 /*
@@ -248,7 +248,7 @@ function cfetch_or_fetch_usernames(loans, cache, user_ids) {
   if(!cache.hasOwnProperty("users"))
     cache.users = {};
 
-  return new Promise(resolve, reject) {
+  return new Promise(function(resolve, reject) {
     var promises = [];
     for(var id in user_ids) {
       if(!cache.users.hasOwnProperty(id.toString()))  {
@@ -276,7 +276,7 @@ function cfetch_or_fetch_usernames(loans, cache, user_ids) {
     }, function(reject_reason) {
       reject(reject_reason);
     });
-  };
+  });
 }
 
 /*
@@ -288,7 +288,7 @@ function cfetch_or_fetch_usernames(loans, cache, user_ids) {
  * @return a promise for something that can be passed to setup_most_active_overall
  */
 function calculate_most_active_overall(loans, cache) {
-  return new Promise(resolve, reject) {
+  return new Promise(function(resolve, reject) {
     // user ids to loan count
     var loan_count = {};
 
@@ -360,7 +360,7 @@ function calculate_most_active_overall(loans, cache) {
     }, function(reject_reason) {
       reject(reject_reason);
     });
-  };
+  });
 }
 
 /*
