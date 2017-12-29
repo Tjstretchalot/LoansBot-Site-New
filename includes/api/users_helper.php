@@ -173,7 +173,7 @@ class UserParameterParser {
     $result = new SelectQueryCallback('filter_id', array('id' => $id));
 
     $result->where_callback = function($helper) {
-      return 'WHERE users.id = ?';
+      return 'users.id = ?';
     };
 
     $result->bind_where_callback = function($helper) use ($id) {
@@ -199,7 +199,7 @@ class UserParameterParser {
     $result = new SelectQueryCallback('filter_username', array('username' => $username));
 
     $result->where_callback = function($helper) {
-      return 'WHERE users.id IN (SELECT user_id FROM usernames WHERE username LIKE ?)';
+      return 'users.id IN (SELECT user_id FROM usernames WHERE username LIKE ?)';
     };
 
     $result->bind_where_callback = function($helper) use ($username) {
