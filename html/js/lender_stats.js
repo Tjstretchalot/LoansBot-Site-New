@@ -112,6 +112,7 @@ function fetch_username(user_id) {
  *   number_loans: number,
  *   sum_loan_principal_cents: number,
  *   sum_loan_principal_repayment_cents: number,
+ *   sum_unpaid_cents: number,
  *   sum_unique_borrowers: number
  * }
  */
@@ -125,6 +126,7 @@ function setup_most_active_overall(info) {
   tr.append("<th>Num. Loans</th>");
   tr.append("<th>Sum Principal</th>");
   tr.append("<th>Sum Repayment</th>");
+  tr.append("<th>Sum Unpaid</th>");
   tr.append("<th>Num. Unique Borr.</th>");
   thead.append(tr);
   tabl.append(thead);
@@ -152,6 +154,11 @@ function setup_most_active_overall(info) {
     td = $("<td>");
     td.text( "$" + (row.sum_loan_principal_repayment_cents / 100).toFixed(2) );
     td.attr("data-th", "Sum Loan Princ. Repayment");
+    tr.append(td);
+
+    td = $("<td>");
+    td.text( "$" + (row.sum_unpaid_cents / 100).toFixed(2) );
+    td.attr("data-th", "Sum Unpaid Principal");
     tr.append(td);
 
     td = $("<td>");
@@ -203,6 +210,7 @@ function cfetch_or_calculate_activity_summaries(loans, cache, user_ids) {
     var num_loans = 0;
     var sum_principal = 0;
     var sum_repayment = 0;
+    var sum_unpaid = 0;
     var sum_unique_borrowers = 0;
     var unique_borrowers = {}; // user ids as strings for keys, the boolean 'true' as values.
 
@@ -213,6 +221,10 @@ function cfetch_or_calculate_activity_summaries(loans, cache, user_ids) {
         num_loans++;
         sum_principal += loan[3];
         sum_repayment += loan[4];
+
+        if(loan[5]) {
+          sum_unpaid += loan[3] - loan[4];
+        }
         
         var borrower_id = loan[2];
         if(!unique_borrowers.hasOwnProperty(borrower_id.toString())) {
@@ -222,7 +234,13 @@ function cfetch_or_calculate_activity_summaries(loans, cache, user_ids) {
       }
     }
 
-    return { number_loans: num_loans, sum_loan_principal_cents: sum_principal, sum_loan_principal_repayment_cents: sum_repayment, sum_unique_borrowers: sum_unique_borrowers };
+    return { 
+      number_loans: num_loans, 
+      sum_loan_principal_cents: sum_principal, 
+      sum_loan_principal_repayment_cents: sum_repayment, 
+      sum_unpaid: sum_unpaid,
+      sum_unique_borrowers: sum_unique_borrowers 
+    };
   }
 
 
