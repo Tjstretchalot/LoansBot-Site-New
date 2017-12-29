@@ -96,7 +96,7 @@ function fetch_username(user_id) {
  */
 function setup_most_active_overall(info) {
   var tabl = $("#most-active-lenders-overall");
-  table.attr("style", "display: none");
+  tabl.attr("style", "display: none");
 
   var thead = $("<thead>");
   var tr = $("<tr>");
