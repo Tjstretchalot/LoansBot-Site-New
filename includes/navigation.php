@@ -44,7 +44,7 @@
 
     $lender_perms = true;
     if($logged_in_user->auth < 1) {
-      $rel_loans_row = DatabaseHelper->fetch_one($sql_conn, 'SELECT COUNT(*) as num_loans_as_lend FROM loans WHERE lender_id=? AND (principal_cents = principal_repayment_cents OR unpaid = 1)', array(array('i', $logged_in_user->id)));
+      $rel_loans_row = DatabaseHelper::fetch_one($sql_conn, 'SELECT COUNT(*) as num_loans_as_lend FROM loans WHERE lender_id=? AND (principal_cents = principal_repayment_cents OR unpaid = 1)', array(array('i', $logged_in_user->id)));
       if($rel_loans_row->num_loans_as_lend < 5) {
         $lender_perms = false;
       }
