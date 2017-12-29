@@ -61,6 +61,16 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   $stmt->close();
   $sql_conn->close();
 
+  $response_type = 'UNKNOWN';
+  if($helper->format === 0) {
+    $response_type = 'USERS_ULTRACOMPACT';
+  }elseif($helper->format === 1) {
+    $response_type = 'USERS_COMPACT';
+  }elseif($helper->format === 2) {
+    $response_type = 'USERS_STANDARD';
+  }elseif($helper->format === 3) {
+    $response_type = 'USERS_EXTENDED';
+  }
   echo_success($response_type, array( 'users' => $response_users ));
 }else {
   echo_fail(405, 'METHOD_NOT_ALLOWED', 'You must use a GET request at this endpoint');
