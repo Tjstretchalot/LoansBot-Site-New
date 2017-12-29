@@ -33,6 +33,27 @@ function set_status(type, html) {
   });
 }
 
+/*
+ * Hide the main status alert
+ */
+function hide_status() {
+  console.log("hide_status()");
+  var stat_text = $("#stats-status");
+
+  return new Promise(function(resolve, reject) {
+    stat_text.slideUp(function() {
+      resolve();
+    });
+  });
+}
+
+/*
+ * Get a human-readable error message based on the response from the server
+ * for an ajax query.
+ *
+ * @param xhr the thing passed to the failure callback
+ * @return human-readable string
+ */
 function get_error_message(xhr) {
   var err_mess = "Unknown";
   if(xhr.hasOwnProperty('responseJSON')) {
@@ -375,12 +396,21 @@ function do_everything() {
       console.log("fetch_all_loans succeeded");
       set_status('info', LOADING_GLYPHICON + " Calculating statistics...").then(function() {
         var cache = {}
-        calculate_most_active_overall(loans, cache).then(function(data) {
+        var promises = [];
+        promises.push(calculate_most_active_overall(loans, cache).then(function(data) {
           console.log("calculate_most_active_overall succeeded");
           setup_most_active_overall(data);
         }, function(reject_reason) {
           console.log("calculate_most_active_overall failed with reason " + reject_reason);
           set_status('danger', FAILURE_GLYPHICON + " " + reject_reason); 
+        }));
+
+        Promise.all(promises).then(function() {
+          set_status('success', SUCCESS_GLYPHICON + " Success!").then(function() {
+            setTimeout(function() {
+              hide_status();
+            }, 3000);
+          }); 
         });
       });
     }, function(reject_reason) {
