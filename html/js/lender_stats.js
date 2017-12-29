@@ -67,8 +67,10 @@ function fetch_all_loans() {
 function fetch_username(user_id) {
   return new Promise(function(resolve, reject) {
     $.get('https://redditloans.com/api/users.php', { format: 3, limit: 1, id: user_id }, function(data, stat) {
-      if(data.users.length === 0)
+      if(data.users.length === 0) {
         reject("Empty result");
+        return;
+      }
 
       resolve(data.users[0].username);
     }).fail(function(xhr) {
