@@ -243,6 +243,8 @@ function setup_most_active_recent(since, data) {
     td.text(data.amount_outstanding_loans);
     td.attr("data-th", "Loans Outstanding");
     tr.append(td);
+
+    tbody.append(tr);
   }
 
   tabl.append(tbody);
@@ -667,7 +669,7 @@ function do_everything() {
         var since = new Date(now.getUTCFullYear() + "-" + now.getUTCMonth());
         promises.push(calculate_most_active_recent(loans, cache, since).then(function(data) {
           console.log("calculate_most_active_recent succeeded");
-          setup_most_active_recent(since, data);;
+          setup_most_active_recent(since, data);
         }, function(reject_reason) {
           console.log("calculate_most_active_recent failed with reason " + reject_reason);
           set_status("danger", FAILURE_GLYPHICON + " " + reject_reason);
