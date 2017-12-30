@@ -671,7 +671,7 @@ function do_everything() {
         }, function(reject_reason) {
           console.log("calculate_most_active_recent failed with reason " + reject_reason);
           set_status("danger", FAILURE_GLYPHICON + " " + reject_reason);
-        });
+        }));
 
         Promise.all(promises).then(function() {
           set_status('success', SUCCESS_GLYPHICON + " Success!").then(function() {
