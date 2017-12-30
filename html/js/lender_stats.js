@@ -411,7 +411,7 @@ function cfetch_or_calculate_recent_activity_summaries(loans, cache, user_ids, s
         cache.recent_activity_summary[id_str] = calculate_recent_activity_summary(id, since);
       }
 
-      var cache_val = cache.activity_summary[id_str];
+      var cache_val = cache.recent_activity_summary[id_str];
 
       if(typeof(cache_val.then) === 'function') {
         promises.push(cache_val.then(function(true_cache_val) {
