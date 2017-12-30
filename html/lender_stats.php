@@ -42,7 +42,7 @@
       <table id="most-active-lenders-overall">
       </table>
 
-      <h3>Most Active Lenders <span id="most-active-lenders-recent-since">(Recent)</span></h3>
+      <h3 class="pt-3">Most Active Lenders <span id="most-active-lenders-recent-since">(Recent)</span></h3>
       <table id="most-active-lenders-recent">
       </table>
     </div>
