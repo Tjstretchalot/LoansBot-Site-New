@@ -198,7 +198,7 @@ function setup_most_active_recent(since, data) {
   var since_span = $("#most-active-lenders-recent-since");
   since_span.fadeOut('fast', function() {
     since_span.empty();
-    since_span.html(pretty_since);
+    since_span.text("(Since " + pretty_since + ")");
     since_span.fadeIn('fast');
   });
 
@@ -217,30 +217,31 @@ function setup_most_active_recent(since, data) {
 
   var tbody = $("<tbody>");
   for(var ind = 0, len = data.length; ind < len; ind++) {
+    var row = data[ind];
     tr = $("<tr>");
 
     var td = $("<td>");
-    td.text(data.username);
+    td.text(row.username);
     td.attr("data-th", "Username");
     tr.append(td);
 
     td = $("<td>");
-    td.text(data.number_new_loans);
+    td.text(row.number_new_loans);
     td.attr("data-th", "New Loans");
     tr.append(td);
 
     td = $("<td>");
-    td.text( "$" + (data.new_principal_cents / 100).toFixed(2) );
+    td.text( "$" + (row.new_principal_cents / 100).toFixed(2) );
     td.attr("data-th", "New Principal");
     tr.append(td);
 
     td = $("<td>");
-    td.text( "$" + (data.amount_outstanding_cents / 100).toFixed(2) );
+    td.text( "$" + (row.amount_outstanding_cents / 100).toFixed(2) );
     td.attr("data-th", "Principal Outstanding");
     tr.append(td);
 
     td = $("<td>");
-    td.text(data.amount_outstanding_loans);
+    td.text(row.amount_outstanding_loans);
     td.attr("data-th", "Loans Outstanding");
     tr.append(td);
 
