@@ -667,7 +667,7 @@ function do_everything() {
         }));
 
         var now = new Date();
-        var since = new Date(now.getUTCFullYear() + "-" + now.getUTCMonth());
+        var since = new Date(now.getUTCFullYear() + "-" + (now.getUTCMonth() + 1));
         promises.push(calculate_most_active_recent(loans, cache, since).then(function(data) {
           console.log("calculate_most_active_recent succeeded");
           setup_most_active_recent(since, data);
