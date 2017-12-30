@@ -631,7 +631,7 @@ function calculate_most_active_recent(loans, cache, since) {
 
         for(var key in rec_activity_summ) {
           if(rec_activity_summ.hasOwnProperty(key)) {
-            obj[key] = activity_summ[key];
+            obj[key] = rec_activity_summ[key];
           }
         }
       }
