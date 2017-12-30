@@ -386,12 +386,14 @@ function cfetch_or_calculate_recent_activity_summaries(loans, cache, user_ids, s
     for(var i = 0, len = loans.length; i < len; i++) {
       var loan = loans[i];
 
-      if(loan[1] === user_id && loan[6] > since_n) {
-        num_loans++;
-        new_principal += loan[3];
+      if(loan[1] === user_id) {
         if(loan[6] !== 1 && loan[3] != loan[4]) {
           outstanding_cents += (loan[3] - loan[4]);
           outstanding_loans++;
+        }
+        if(loan[6] > since_n) {
+          num_loans++;
+          new_principal += loan[3];
         }
       }
     }
