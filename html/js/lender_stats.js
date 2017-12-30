@@ -193,7 +193,7 @@ function setup_most_active_overall(info) {
  *        }
  */
 function setup_most_active_recent(since, data) {
-  var pretty_since = since.getUTCFullYear() + "-" + since.getUTCMonth();
+  var pretty_since = since.getUTCFullYear() + "-" + (since.getUTCMonth() + 1);
 
   var since_span = $("#most-active-lenders-recent-since");
   since_span.fadeOut('fast', function() {
