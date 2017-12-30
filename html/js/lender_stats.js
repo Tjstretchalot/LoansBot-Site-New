@@ -178,6 +178,83 @@ function setup_most_active_overall(info) {
 }
 
 /*
+ * Sets up the most active recent table. This replaces the "Recent" in the
+ * header for the section with "Since xx/xx/xx" to reduce ambiguity.
+ *
+ * @param since a Date for after when we were focusing on
+ * @param data an array of objects, ordered from most active to least active, where each
+ *        object is of the form
+ *        {
+ *          username: string,
+ *          number_new_loans: number,
+ *          new_principal_cents: number,
+ *          amount_outstanding_cents: number,
+ *          amount_outstanding_loans: number
+ *        }
+ */
+function setup_most_active_recent(since, data) {
+  var pretty_since = since.toLocaleDateString();
+
+  var since_span = $("#most-active-lenders-recent-since");
+  since_span.fadeOut('fast', function() {
+    since_span.empty();
+    since_span.html(pretty_since);
+    since_span.fadeIn('fast');
+  });
+
+  var tabl = $("#most-active-lenders-recent");
+  tabl.attr("style", "display: none");
+  
+  var thead = $("<thead>");
+  var tr = $("<tr>");
+  tr.append("<th>Username</th>");
+  tr.append("<th>New Loans</th>");
+  tr.append("<th>Sum New Principal</th>");
+  tr.append("<th>Principal Outstanding</th>");
+  tr.append("<th>Loans Outstanding</th>");
+  thead.append(tr);
+  tabl.append(thead);
+
+  var tbody = $("<tbody>");
+  for(var ind = 0, len = data.length; ind < len; ind++) {
+    tr = $("<tr>");
+
+    var td = $("<td>");
+    td.text(data.username);
+    td.attr("data-th", "Username");
+    tr.append(td);
+
+    td = $("<td>");
+    td.text(data.number_new_loans);
+    td.attr("data-th", "New Loans");
+    tr.append(td);
+
+    td = $("<td>");
+    td.text( "$" + (data.new_principal_cents / 100).toFixed(2) );
+    td.attr("data-th", "New Principal");
+    tr.append(td);
+
+    td = $("<td>");
+    td.text( "$" + (data.amount_outstanding_cents / 100).toFixed(2) );
+    td.attr("data-th", "Principal Outstanding");
+    tr.append(td);
+
+    td = $("<td>");
+    td.text(data.amount_outstanding_loans);
+    td.attr("data-th", "Loans Outstanding");
+    tr.append(td);
+  }
+
+  tabl.append(tbody);
+  tabl.basictable({
+    tableWrap: true,
+    breakpoint: 991
+  });
+  tabl.addClass("w-100");
+  tabl.slideDown("fast");
+}
+
+/*
  * Cache information ( cachectrlf )
  *
  * At any point, any "object" in the cache may be a promise for that object.
@@ -188,10 +265,14 @@ function setup_most_active_overall(info) {
  * cache.activity_summary
  *   An object, the keys are user ids as strings, the values are objects of the form
  *     { number_loans: number, sum_loan_principal_cents: number, sum_loan_principal_repayment_cents: number, sum_unique_borrowers: number }
+ *
+ * cache.recent_activity_summary
+ *   An object, the keys are user ids as strings, the values are objects of the form
+ *     { number_new_loans: number, new_principal_cents: number, amount_outstanding_cents: number, amount_outstanding_loans: number }
  */
 
 /*
- * Fetch the activity summary for the specified user ids, as a object with
+ * Fetch the activity summary for the specified user ids, as an object with
  * user ids as strings for keys and activity summaries as values, from the
  * cache where possible. Otherwise, calculate them and place them in the cache,
  * as well as return them.
@@ -252,6 +333,82 @@ function cfetch_or_calculate_activity_summaries(loans, cache, user_ids) {
       var id_str = id.toString();
       if(!cache.activity_summary.hasOwnProperty(id_str)) {
         cache.activity_summary[id_str] = calculate_activity_summary(id);
+      }
+
+      var cache_val = cache.activity_summary[id_str];
+
+      if(typeof(cache_val.then) === 'function') {
+        promises.push(cache_val.then(function(true_cache_val) {
+          result[id_str] = true_cache_val;
+        }, function(reject_reason) {
+          reject(reject_reason);
+        }));
+      }else {
+        result[id_str] = cache_val;
+      }
+    }
+
+    Promise.all(promises).then(function() {
+      resolve(result); 
+    }, function(reject_reason) {
+      reject(reject_reason);
+    });
+  });
+}
+
+/*
+ * Fetch the recetn activity summary for the specified user ids, as an object
+ * with user ids as strings for keys and recent activity summaries for values, 
+ * from the cache where possible. Otherwise, calculate them and place them in 
+ * the cache, as well as return them.
+ *
+ * @param loans the loan information
+ * @param cache the cache (search cache + ctrlf no spaces no +)
+ * @param user_ids an array of user ids to fetch information on
+ * @param since the date to get loans after
+ * @return a promise for the recent activity summaries for the specified user ids
+ */
+function cfetch_or_calculate_recent_activity_summaries(loans, cache, user_ids, since) {
+  if(!cache.hasOwnProperty("recent_activity_summary")) {
+    cache.recent_activity_summary = {};
+  }
+
+  function calculate_recent_activity_summary(user_id, since) {
+    var since_n = since.getTime();
+    var num_loans = 0;
+    var new_principal = 0;
+    var outstanding_cents = 0;
+    var outstanding_loans = 0;
+
+    for(var i = 0, len = loans.length; i < len; i++) {
+      var loan = loans[i];
+
+      if(loan[1] === user_id && loan[6] > since_n) {
+        num_loans++;
+        new_principal += loan[3];
+        if(loan[6] !== 1 && loan[3] != loan[4]) {
+          outstanding_cents += (loan[3] - loan[4]);
+          outstanding_loans++;
+        }
+      }
+    }
+
+    return { 
+      number_new_loans: num_loans,
+      new_principal_cents: new_principal,
+      amount_outstanding_cents: outstanding_cents,
+      amount_outstanding_loans: outstanding_loans
+    };
+  }
+
+  return new Promise(function(resolve, reject) { 
+    var result = {};
+    var promises = [];
+    for(var ind = 0, len = user_ids.length; ind < len; ind++) {
+      var id = user_ids[ind];
+      var id_str = id.toString();
+      if(!cache.recent_activity_summary.hasOwnProperty(id_str)) {
+        cache.recent_activity_summary[id_str] = calculate_recent_activity_summary(id, since);
       }
 
       var cache_val = cache.activity_summary[id_str];
@@ -406,6 +563,88 @@ function calculate_most_active_overall(loans, cache) {
   });
 }
 
+function calculate_most_active_recent(loans, cache, since) {
+  return new Promise(function(resolve, reject) {
+    // user ids to loan count
+    var loan_count = {};
+    var since_n = since.getTime();
+
+    // group on count(loans)
+    for(var i = 0, len = loans.length; i < len; i++) {
+      var loan = loans[i];
+      if(loan[6] < since_n)
+        continue;
+
+      var lender_id = loan[1];
+      var key = lender_id.toString();
+      if(loan_count.hasOwnProperty(key)) {
+        loan_count[key] = loan_count[key] + 1;
+      }else {
+        loan_count[key] = 1;
+      }
+    }
+
+    // finding the top 5 
+    var top_five = [];
+    for(key in loan_count) {
+      var num_loans = loan_count[key];
+
+      if(top_five.length < 5) {
+        //insertion insert
+        var index = 0;
+        while(top_five.length > index && top_five[index].num_loans > num_loans) {
+          index++;
+        }
+        if(index === top_five.length) {
+          top_five.push({ user_id: parseInt(key), num_loans: num_loans });
+        }else {
+          top_five.splice(index, 0, { user_id: parseInt(key), num_loans: num_loans });
+        }
+      }else {
+        var index = 0;
+        while(top_five.length > index && top_five[index].num_loans > num_loans) {
+          index++;
+        }
+
+        if(index < 5) {
+          top_five.splice(index, 0, { user_id: parseInt(key), num_loans: num_loans });
+          top_five.pop()
+        }
+      }
+    }
+
+    var top_five_as_user_id_array = []
+    for(key in top_five) {
+      top_five_as_user_id_array.push(top_five[key].user_id);
+    }
+
+    var usernames_promise = cfetch_or_fetch_usernames(loans, cache, top_five_as_user_id_array).then(function(usernames) {
+      for(var ind = 0, len = top_five.length; ind < len; ind++) {
+        var obj = top_five[ind];
+        obj.username = usernames[obj.user_id.toString()];
+      }
+    }).then(function(){});
+    var recent_activity_summaries_promise = cfetch_or_calculate_recent_activity_summaries(loans, cache, top_five_as_user_id_array).then(function(recent_activity_summaries) {
+      for(var ind = 0, len = top_five.length; ind < len; ind++) {
+        var obj = top_five[ind];
+        var rec_activity_summ = recent_activity_summaries[obj.user_id.toString()];
+
+        for(var key in rec_activity_summ) {
+          if(rec_activity_summ.hasOwnProperty(key)) {
+            obj[key] = activity_summ[key];
+          }
+        }
+      }
+    }).then(function(){});
+
+    Promise.all([ usernames_promise, recent_activity_summaries_promise ]).then(function() {
+      resolve(top_five);
+    }, function(reject_reason) {
+      reject(reject_reason);
+    });
+  });
+}
+
 /*
  * This function glues all the other functions together
  */
@@ -423,6 +662,16 @@ function do_everything() {
           console.log("calculate_most_active_overall failed with reason " + reject_reason);
           set_status('danger', FAILURE_GLYPHICON + " " + reject_reason); 
         }));
+
+        var now = new Date();
+        var since = new Date(now.getUTCFullYear() + "-" + now.getUTCMonth());
+        promises.push(calculate_most_active_recent(loans, cache, since).then(function(data) {
+          console.log("calculate_most_active_recent succeeded");
+          setup_most_active_recent(since, data);;
+        }, function(reject_reason) {
+          console.log("calculate_most_active_recent failed with reason " + reject_reason);
+          set_status("danger", FAILURE_GLYPHICON + " " + reject_reason);
+        });
 
         Promise.all(promises).then(function() {
           set_status('success', SUCCESS_GLYPHICON + " Success!").then(function() {

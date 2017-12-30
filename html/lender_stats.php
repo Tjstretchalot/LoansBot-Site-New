@@ -41,6 +41,10 @@
       <h3>Most Active Lenders (Overall)</h3>
       <table id="most-active-lenders-overall">
       </table>
+
+      <h3>Most Active Lenders <span id="most-active-lenders-recent-since">(Recent)</span></h3>
+      <table id="most-active-lenders-recent">
+      </table>
     </div>
     <?php include('bootstrap_js.php') ?>
     <script src="js/jquery.basictable.min.js"></script>
