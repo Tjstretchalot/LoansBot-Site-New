@@ -624,7 +624,7 @@ function calculate_most_active_recent(loans, cache, since) {
         obj.username = usernames[obj.user_id.toString()];
       }
     }).then(function(){});
-    var recent_activity_summaries_promise = cfetch_or_calculate_recent_activity_summaries(loans, cache, top_five_as_user_id_array).then(function(recent_activity_summaries) {
+    var recent_activity_summaries_promise = cfetch_or_calculate_recent_activity_summaries(loans, cache, top_five_as_user_id_array, since).then(function(recent_activity_summaries) {
       for(var ind = 0, len = top_five.length; ind < len; ind++) {
         var obj = top_five[ind];
         var rec_activity_summ = recent_activity_summaries[obj.user_id.toString()];
