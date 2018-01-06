@@ -4,6 +4,9 @@
 
   if(!is_trusted()) {
     on_failed_auth();
+
+    if(is_moderator()) 
+      var_dump($logged_in_user);
     return;
   }
 ?>
