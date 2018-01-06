@@ -75,10 +75,12 @@ function set_status_text(st_div, new_text, new_alert_type, auto_fold) {
 
  function resolve_with_auto_fold(resolve, reject) {
    var prom2 = new Promise(function(resolve2, reject2) {
-     if(auto_fold)
-       resolve2(setup_auto_fold());
-     else
-       reject2("auto-folding not requested");
+     setTimeout(function() {
+       if(auto_fold)
+         resolve2(setup_auto_fold());
+       else
+         reject2("auto-folding not requested");
+     }, 2000);
    });
    resolve({ promise: prom2 });
  }
