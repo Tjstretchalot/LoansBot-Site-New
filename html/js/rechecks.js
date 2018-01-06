@@ -120,17 +120,17 @@ $(function() {
 
     var fullname = fullname_div.val();
 
-    function finish_up(success, text) {
-      set_status_text(status_text, text, success ? "success" : "danger", !success).then(function(fk_prom) {
-        thread_link_div.addClass(success ? "is-valid" : "is-invalid");
+    function finish_up(success, text, alert_type, autofold) {
+      set_status_text(status_text, text, alert_type, autofold).then(function(fk_prom) {
+        fullname_div.addClass(success ? "is-valid" : "is-invalid");
         fk_prom.promise.finally(function() {
-          thread_link_div.removeClass(success ? "is-valid" : "is-invalid");
+          fullname_div.removeClass(success ? "is-valid" : "is-invalid");
         });
       });
     }
 
     if(!fullname) {
-      finish_up(false, FAILURE_GLYPHICON + " Fullname is required!");
+      finish_up(false, FAILURE_GLYPHICON + " Fullname is required!", "danger", true);
       return;
     }
 
@@ -139,9 +139,9 @@ $(function() {
         var found = data.found;
 
         if(found) {
-          finish_up(true, "<i class=\"far fa-eye\"></i> The LoansBot <i>has</i> processed that.");
+          finish_up(true, "<i class=\"far fa-eye\"></i> The LoansBot <i>has</i> processed " + fullname + ".", "success", false);
         }else {
-          set_status_text(status_text, "<i class=\"far fa-eye-slash\"></i> The LoansBot has <i>not</i> processed that.", "warning", false);
+          finish_up(true, "<i class=\"far fa-eye-slash\"></i> The LoansBot has <i>not</i> processed " + fullname + ".", "warning", false);
         }
       }).fail(function(xhr) {
         var err_mess = "Unknown";
