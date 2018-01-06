@@ -11,6 +11,7 @@ include_once 'connect_and_get_loggedin.php';
  * Determine if the user is logged in
  */
 function is_logged_in() {
+  error_log('loc1');
   return (isset($logged_in_user) && $logged_in_user !== null);
 }
 
@@ -19,16 +20,22 @@ function is_logged_in() {
  * a manual flag or completed 5 loans as lender
  */
 function is_trusted() {
-  if(!is_logged_in())
+  error_log('loc2');
+  if(!is_logged_in()) {
+    error_log('loc3');
     return false;
-
+  }
+  error_log('loc4');
   if($logged_in_user->auth < 1) {
+    error_log('loc5');
     $rel_loans_row = DatabaseHelper::fetch_one($sql_conn, 'SELECT COUNT(*) as num_loans_as_lend FROM loans WHERE lender_id=? AND (principal_cents = principal_repayment_cents OR unpaid = 1)', array(array('i', $logged_in_user->id)));
     if($rel_loans_row->num_loans_as_lend < 5) {
+      error_log('loc6');
       return false;
     }
+    error_log('loc7');
   }
-
+  error_log('loc8');
   return true;
 }
 
