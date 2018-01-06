@@ -40,7 +40,6 @@ function set_status_text(st_div, new_text, new_alert_type, auto_fold) {
        reject("there was a future call to set_status_text prior to auto folding");
        return;
      }
-     st_div.data("current-promise", me);
      st_div.data("shown", false);
      st_div.data("hiding", true);
      st_div.slideUp('fast', function() {
@@ -50,6 +49,7 @@ function set_status_text(st_div, new_text, new_alert_type, auto_fold) {
        resolve(true);
      });
    });
+   st_div.data("current-promise", me);
    return me;
  }
 
@@ -82,7 +82,6 @@ function set_status_text(st_div, new_text, new_alert_type, auto_fold) {
    if(was_showing) {
      // After the promise is down were visible, so this is still under "showing"
      var me = new Promise(function(resolve, reject) {
-       st_div.data("current-promise", me);
        latest_promise.then(function(b) {
          st_div.data("showing", true); // after a "showing" promise finishes its now "shown", we undo that
          st_div.data("shown", false);
@@ -99,10 +98,10 @@ function set_status_text(st_div, new_text, new_alert_type, auto_fold) {
          reject(reject_reason);
        });
      });
+     st_div.data("current-promise", me);
      return me;
    }else if(was_hiding) {
      var me = new Promise(function(resolve, reject) {
-       st_div.data("current-promise", me);
        st_div.data("hidden", false); // after a "hiding" promise finishes its now "hidden" and we are going to show
        st_div.data("showing", true);
        latest_promise.then(function(b) {
@@ -117,13 +116,13 @@ function set_status_text(st_div, new_text, new_alert_type, auto_fold) {
          reject(reject_reason)
        });
      });
+     st_div.data("current-promise", me);
      return me;
    }
  }
  if(was_hidden) {
    var me = new Promise(function(resolve, reject) {
      actually_set_status_text();
-     st_div.data("current-promise", me);
      st_div.data("hidden", false);
      st_div.data("showing", true);
      st_div.slideDown('fast', function() {
@@ -133,10 +132,10 @@ function set_status_text(st_div, new_text, new_alert_type, auto_fold) {
        resolve_with_auto_fold(resolve, reject);
      });
    });
+   st_div.data("current-promise", me);
    return me;
  }else if(was_shown) {
    var me = new Promise(function(resolve, reject) {
-     st_div.data("current-promise", me);
      st_div.data("shown", false);
      st_div.data("showing", true);
      st_div.fadeOut('fast', function() {
@@ -149,6 +148,7 @@ function set_status_text(st_div, new_text, new_alert_type, auto_fold) {
        });
      });
    });
+   st_div.data("current-promise", me);
    return me;
  }
 }
