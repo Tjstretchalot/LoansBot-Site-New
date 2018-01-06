@@ -36,7 +36,7 @@ function set_status_text(st_div, new_text, new_alert_type, auto_fold) {
 
  function setup_auto_fold() {
    var me = new Promise(function(resolve, reject) {
-     if(st_div.data("st-handled_by") !== my_id) {
+     if(st_div.data("st-handled-by") !== my_id) {
        reject("there was a future call to set_status_text prior to auto folding");
        return;
      }
@@ -76,7 +76,6 @@ function set_status_text(st_div, new_text, new_alert_type, auto_fold) {
 
  var latest_promise = st_div.data("current-promise");
  
- var new_promise = null;
  if(was_hiding || was_showing) {
    console.assert(latest_promise !== null, 'If status text was hiding or was showing we should have a promise for that to complete!');
    
