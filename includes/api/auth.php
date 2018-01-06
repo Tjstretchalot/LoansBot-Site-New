@@ -19,7 +19,11 @@ function is_logged_in() {
       error_log('loc1b');
     }
     error_log('loc1c');
+  }else {
+    error_log('loc1d');
+    var_dump($logged_in_user);
   }
+
   return (isset($logged_in_user) && $logged_in_user !== null);
 }
 
