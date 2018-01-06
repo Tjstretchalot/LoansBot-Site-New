@@ -28,6 +28,8 @@ function is_trusted() {
       return false;
     }
   }
+
+  return true;
 }
 
 function is_moderator() {
