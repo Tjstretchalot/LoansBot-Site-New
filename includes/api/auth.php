@@ -11,7 +11,7 @@ include_once 'connect_and_get_loggedin.php';
  * Determine if the user is logged in
  */
 function is_logged_in() {
-  error_log('is_logged_in, isset = ' . isset($logged_in_user));
+  error_log('is_logged_in, isset = ' . strval(isset($logged_in_user)));
   return (isset($logged_in_user) && $logged_in_user !== null);
 }
 
@@ -20,7 +20,7 @@ function is_logged_in() {
  * a manual flag or completed 5 loans as lender
  */
 function is_trusted() {
-  error_log('is_trusted; is_logged_in = ' . is_logged_in());
+  error_log('is_trusted; is_logged_in = ' . strval(is_logged_in()));
   if(!is_logged_in())
     return false;
 
