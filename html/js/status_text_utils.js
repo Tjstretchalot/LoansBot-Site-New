@@ -44,7 +44,7 @@ var status_text_id_counter = 1;
 * @param auto_fold if the div should auto minimize after some time
 * @return a promise resolving after visible, before auto fold, with a promise for after auto fold
 */
-function set_status_text(st_div, new_text, new_alert_type, auto_fold) {
+function set_status_text(st_div, new_text, new_alert_type, auto_fold, min_visible_duration = 2000) {
  var my_id = (status_text_id_counter++);
  st_div.data("st-handled-by", my_id);
 
@@ -80,7 +80,7 @@ function set_status_text(st_div, new_text, new_alert_type, auto_fold) {
          resolve2(setup_auto_fold());
        else
          reject2("auto-folding not requested");
-     }, 2000);
+     }, min_visible_duration);
    });
    resolve({ promise: prom2 });
  }
