@@ -81,7 +81,7 @@ function set_status_text(st_div, new_text, new_alert_type, auto_fold, min_visibl
        else
          reject2("auto-folding not requested");
      }, min_visible_duration);
-   });
+   }).catch(e => {}); // suppress chrome spam
    resolve({ promise: prom2 });
  }
 
