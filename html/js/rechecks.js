@@ -37,7 +37,7 @@
        };
          
        set_status_text(status_text, text, success ? "success" : "danger", true).then(function(af_prom) {
-         af_prom.then(cleanup, cleanup);
+         af_prom.promise.then(cleanup, cleanup);
        });
      }
 

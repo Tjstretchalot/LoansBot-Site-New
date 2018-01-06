@@ -18,6 +18,26 @@ var status_text_id_counter = 1;
 * set_status_text and will also always be rejected if auto_fold
 * is false
 *
+* **NOTE**
+* We cannot actually return a promise in this way, because doing so
+* would automatically have the promise resolved to true (this allows
+* fancy promise chaining). To avoid this behavior, the promise returned
+* from the promise is an object of the form {promise: Promise}
+*
+* Thus, if you want to do something when the status text is visible and
+* then something else when the status text is hidden:
+*
+*
+* function on_status_visible() { ... }
+* function on_status_hidden() { ... }
+* function on_status_hidden_fail() { ... } // another message was displayed instead of hiding this one
+*
+* set_status_text(st_div, "test", "primary", true).then(function(fake_prom) {
+*   var real_prom = fake_prom.promise;
+*   on_status_visible();
+*   real_prom.then(on_status_hidden, on_status_hidden_fail);
+* })
+*
 * @param st_div the div to insert the status text
 * @param new_text the new text for the div
 * @param new_alert_type the new alert type (primary, secondary, danger, info, etc)
@@ -60,7 +80,7 @@ function set_status_text(st_div, new_text, new_alert_type, auto_fold) {
      else
        reject2("auto-folding not requested");
    });
-   resolve(prom2);
+   resolve({ promise: prom2 });
  }
 
  var was_hiding = st_div.data("hiding") || false;
