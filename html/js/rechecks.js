@@ -159,7 +159,7 @@ $(function() {
   $("#make-recheck-form").on("submit", function(e) {
     e.preventDefault();
 
-    var status_text = $("#make-recheck-form");
+    var status_text = $("#make-recheck-form-status-text");
     var fullname_div = $("#make-recheck-fullname");
     var submit_button = $("#make-recheck-submit-button");
     var forgetcb = $("#make-recheck-forget-cb");
@@ -191,7 +191,7 @@ $(function() {
 
     set_status_text(status_text, LOADING_GLYPHICON + " Altering database...", "info", false).then(function(fk_prom) {
       $.post("https://redditloans.com/api/rechecks.php", { fullname: fullname, forget: forget, recheck: recheck }, function(data, stat) {
-        finish_up(true, SUCCESS_GLYPHICON + " Operation was successful. The LoansBot may take a few minutes to process the request (use the check form to see if he processed it yet)", "success", false);
+        finish_up(true, SUCCESS_GLYPHICON + " Operation was successful. The LoansBot may take a few minutes to process the request (use the check form to see if the LoansBot processed it yet)", "success", false);
       }).fail(function(xhr) {
         var err_mess = "Unknown";
         if(typeof(xhr.responseJSON) !== 'undefined') {
