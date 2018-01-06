@@ -80,7 +80,7 @@ $(function() {
 
     function finish_up(success, text) {
       set_status_text(status_text, text, success ? "success" : "danger", true).then(function(fk_prom) {
-        thread_link.div.addClass(success ? "is-valid" : "is-invalid");
+        thread_link_div.addClass(success ? "is-valid" : "is-invalid");
         fk_prom.promise.finally(function() {
           thread_link.div.removeClass(success ? "is-valid" : "is-invalid");
         });
