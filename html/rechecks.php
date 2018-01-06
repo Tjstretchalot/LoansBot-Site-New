@@ -67,8 +67,8 @@
           <button id="thread-submit-button" type="submit" class="col-auto btn btn-primary">Get Fullname</button>
         </div>
         <div class="form-group row">
-          <input type="text" class="form-control" id="thread-fullname" aria-label="Comment Fullname Output" placeholder="The fullname will be parsed and placed here" aria-describedby="commentFullnameHelpBlock" disabled>
-          <small id="commentFullnameHelpBlock" class="form-text text-muted">This will be filled with the fullname of the link when you press "Get Fullname"</small>
+          <input type="text" class="form-control" id="thread-fullname" aria-label="Thread Fullname Output" placeholder="The fullname will be parsed and placed here" aria-describedby="threadFullnameHelpBlock" disabled>
+          <small id="threadFullnameHelpBlock" class="form-text text-muted">This will be filled with the fullname of the link when you press "Get Fullname"</small>
         </div>
       </form>
 

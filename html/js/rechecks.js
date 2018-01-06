@@ -5,67 +5,106 @@
  * 
  * #parse-comment-fullname-form with input #permalink and alert container #parse-comment-fullname-status-text and submit button #comment-submit-button 
  *
- * #parse-thread-fullname-form with input #thread-link and alert container #parse-thread-fullname-status-text
+ * #parse-thread-fullname-form with input #thread-link and alert container #parse-thread-fullname-status-text and submit button #thread-submit-button
  *
  * #check-if-seen-form with input #check-if-seen-fullname and alert container #check-if-seen-status-text 
  *
  * #make-recheck-form with input #make-recheck-fullname, checkboxes #make-recheck-forget-cb and #make-recheck-recheck-cb, and alert container #make-recheck-status-text
  */
 
- $(function() {
-   $("#parse-comment-fullname-form").on("submit", function(e) {
-     e.preventDefault();
+$(function() {
+  $("#parse-comment-fullname-form").on("submit", function(e) {
+    e.preventDefault();
 
-     var status_text = $("#parse-comment-fullname-status-text");
-     var permalink_div = $("#permalink");
-     var output_div = $("#comment-fullname");
-     var comment_submit_button = $("#comment-submit-button");
+    var status_text = $("#parse-comment-fullname-status-text");
+    var permalink_div = $("#permalink");
+    var output_div = $("#comment-fullname");
+    var comment_submit_button = $("#comment-submit-button");
 
-     if(comment_submit_button.is(":disabled"))
-       return;
+    if(comment_submit_button.is(":disabled"))
+      return;
 
-     var permalink = permalink_div.val();
+    var permalink = permalink_div.val();
 
-     permalink_div.removeClass("is-invalid").removeClass("is-valid");
-     comment_submit_button.attr("disabled", true);
+    permalink_div.removeClass("is-invalid").removeClass("is-valid");
 
-     function finish_up(success, text) {
-       permalink_div.addClass(success ? "is-valid" : "is-invalid");
-       var cleanup = function() {
-         comment_submit_button.attr("disabled", false);
-         permalink_div.removeClass(success ? "is-valid" : "is-invalid");
-       };
-         
-       set_status_text(status_text, text, success ? "success" : "danger", true).then(function(af_prom) {
-         af_prom.promise.then(cleanup, cleanup);
-       });
-     }
+    function finish_up(success, text) {
+      set_status_text(status_text, text, success ? "success" : "danger", true).then(function(af_prom) {
+        permalink_div.addClass(success ? "is-valid" : "is-invalid");
+        af_prom.promise.finally(function() {
+          permalink_div.removeClass(success ? "is-valid" : "is-invalid");
+        });
+      });
+    }
 
-     function fail_with_error(error_mes) {
-       finish_up(false, FAILURE_GLYPHICON + " " + error_mes);
-     }
+    function fail_with_error(error_mes) {
+      finish_up(false, FAILURE_GLYPHICON + " " + error_mes);
+    }
 
-     function succeed_with_message(mess) {
-       finish_up(true, SUCCESS_GLYPHICON + " " + mess);
-     }
+    function succeed_with_message(mess) {
+      finish_up(true, SUCCESS_GLYPHICON + " " + mess);
+    }
 
-     if(!permalink) {
-       fail_with_error("Permalink must be set!");
-       return;
-     }
+    if(!permalink) {
+      fail_with_error("Permalink must be set!");
+      return;
+    }
 
-     var parts = permalink.split('/');
-     var id = parts.pop();
-     if(!id) {
-       if(parts.length < 1) {
-         fail_with_error("Invalid URL (splitting on '/' gave one blank element)");
-         return;
-       }
-       id = parts.pop();
-     }
+    var parts = permalink.split('/');
+    var id = parts.pop();
+    if(!id) {
+      if(parts.length < 1) {
+        fail_with_error("Invalid URL (splitting on '/' gave one blank element)");
+        return;
+      }
+      id = parts.pop();
+    }
 
-     var fullname = "t1_" + id;
-     output_div.val(fullname);
-     succeed_with_message("Success!");
-   });
+    var fullname = "t1_" + id;
+    output_div.val(fullname);
+    succeed_with_message("Success!");
+  });
+
+  $("#parse-thread-fullname-form").on('submit', function(e) {
+    e.preventDefault();
+
+    var status_text = $("#parse-thread-fullname-status-text");
+    var thread_link_div = $("#thread-link");
+    var output_div = $("#thread-fullname");
+    var thread_submit_button = $("#thread-submit-button");
+
+    if(thread_submit_button.is(":disabled"))
+      return;
+
+    var thread_link = thread_link_div.val();
+
+    function finish_up(success, text) {
+      set_status_text(status_text, text, success ? "success" : "danger", true).then(function(fk_prom) {
+        thread_link.div.addClass(success ? "is-valid" : "is-invalid");
+        fk_prom.promise.finally(function() {
+          thread_link.div.removeClass(success ? "is-valid" : "is-invalid");
+        });
+      });
+    }
+
+    if(!thread_link) {
+      finish_up(false, FAILURE_GLYPHICON + " Thread link is required!");
+      return;
+    }
+
+    var parts = thread_link.split('/');
+    if(parts.length < 3) {
+      finish_up(false, FAILURE_GLYPHICON + " That cannot possible be a valid thread link!");
+      return;
+    }
+    var id = parts.pop();
+    if(!id) {
+      parts.pop();
+    }
+    id = parts.pop();
+
+    var fullname = "t3_" + id;
+    output_div.val(fullname);
+    finish_up(true, SUCCESS_GLYPHICON + " Success!");
+  });
 });
