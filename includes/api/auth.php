@@ -12,6 +12,14 @@ include_once 'connect_and_get_loggedin.php';
  */
 function is_logged_in() {
   error_log('loc1');
+  if(isset($logged_in_user)) {
+    error_log('loc1a');
+
+    if($logged_in_user !== null) {
+      error_log('loc1b');
+    }
+    error_log('loc1c');
+  }
   return (isset($logged_in_user) && $logged_in_user !== null);
 }
 
