@@ -105,15 +105,17 @@ function set_status_text(st_div, new_text, new_alert_type, auto_fold) {
      // After the promise is down were visible, so this is still under "showing"
      var me = new Promise(function(resolve, reject) {
        latest_promise.then(function(b) {
-         st_div.data("showing", true); // after a "showing" promise finishes its now "shown", we undo that
-         st_div.data("shown", false);
-         st_div.fadeOut('fast', function() {
-           actually_set_status_text();
-           st_div.fadeIn('fast', function() {
-             st_div.data("shown", true);
-             st_div.data("showing", false);
-             st_div.data("current-promise", null);
-             resolve_with_auto_fold(resolve, reject);
+         b.promise.finally(function() {
+           st_div.data("showing", true); // after a "showing" promise finishes its now "shown", we undo that
+           st_div.data("shown", false);
+           st_div.fadeOut('fast', function() {
+             actually_set_status_text();
+             st_div.fadeIn('fast', function() {
+               st_div.data("shown", true);
+               st_div.data("showing", false);
+               st_div.data("current-promise", null);
+               resolve_with_auto_fold(resolve, reject);
+             });
            });
          });
        }, function(reject_reason) {
@@ -127,12 +129,14 @@ function set_status_text(st_div, new_text, new_alert_type, auto_fold) {
        st_div.data("hidden", false); // after a "hiding" promise finishes its now "hidden" and we are going to show
        st_div.data("showing", true);
        latest_promise.then(function(b) {
-         actually_set_status_text();
-         st_div.slideDown('fast', function() {
-           st_div.data("showing", false);
-           st_div.data("shown", true);
-           st_div.data("current-promise", null);
-           resolve_with_auto_fold(resolve, reject);
+         b.promise.finally(function() {
+           actually_set_status_text();
+           st_div.slideDown('fast', function() {
+             st_div.data("showing", false);
+             st_div.data("shown", true);
+             st_div.data("current-promise", null);
+             resolve_with_auto_fold(resolve, reject);
+           });
          });
        }, function(reject_reason) {
          reject(reject_reason)
