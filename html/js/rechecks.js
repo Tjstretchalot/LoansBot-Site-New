@@ -139,9 +139,9 @@ $(function() {
         var found = data.found;
 
         if(found) {
-          finish_up(true, SUCCESS_GLYPHICON + " The LoansBot <i>has</i> viewed that comment");
+          finish_up(true, "<i class=\"far fa-eye\"></i> The LoansBot <i>has</i> processed that.");
         }else {
-          finish_up(true, FAILURE_GLYPHICON + " The LoansBot has <i>not</i> viewed that comment");
+          set_status_text(status_text, "<i class=\"far fa-eye-slash\"></i> The LoansBot has <i>not</i> processed that.", "warning", false);
         }
       }).fail(function(xhr) {
         var err_mess = "Unknown";
