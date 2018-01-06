@@ -5,7 +5,6 @@
   if(!is_trusted()) {
     on_failed_auth();
 
-    var_dump($logged_in_user);
     return;
   }
 ?>
