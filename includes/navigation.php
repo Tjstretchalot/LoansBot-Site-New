@@ -55,6 +55,10 @@
         'link' => '/lender_stats.php',
         'name' => 'Lender Stats'
       );
+      $pages[] = array(
+        'link' => '/rechecks.php',
+        'name' => 'Rechecks'
+      );
     }
 
     $pages[] = array(
