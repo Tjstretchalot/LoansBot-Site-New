@@ -122,7 +122,7 @@ function set_status_text(st_div, new_text, new_alert_type, auto_fold) {
    }
  }
  if(was_hidden) {
-   var me = new Promise(resolve, reject) {
+   var me = new Promise(function(resolve, reject) {
      actually_set_status_text();
      st_div.data("current-promise", me);
      st_div.data("hidden", false);
@@ -136,7 +136,7 @@ function set_status_text(st_div, new_text, new_alert_type, auto_fold) {
    });
    return me;
  }else if(was_shown) {
-   var me = new Promise(resolve, reject) {
+   var me = new Promise(function(resolve, reject) {
      st_div.data("current-promise", me);
      st_div.data("shown", false);
      st_div.data("showing", true);

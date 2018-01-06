@@ -12,7 +12,7 @@
  * #make-recheck-form with input #make-recheck-fullname, checkboxes #make-recheck-forget-cb and #make-recheck-recheck-cb, and alert container #make-recheck-status-text
  */
 
- $(function()
+ $(function() {
    $("#parse-comment-fullname-form").on("submit", function(e) {
      e.preventDefault();
 
@@ -68,4 +68,4 @@
      output_div.val(fullname);
      succeed_with_message("Success!");
    });
- );
+});
