@@ -36,7 +36,7 @@
          permalink_div.removeClass(success ? "is-valid" : "is-invalid");
        };
          
-       set_status_text(status_text, text, "danger", true).then(function(af_prom) {
+       set_status_text(status_text, text, success ? "success" : "danger", true).then(function(af_prom) {
          af_prom.then(cleanup, cleanup);
        });
      }

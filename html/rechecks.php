@@ -22,7 +22,7 @@
       <h1>Rechecks</h1>
       <p>Users who have achieved trusted access or higher (which requires either 5 loans completed as lender or approval from Tjstretchalot) have access to this page. From here you can:</p>
       <ul>
-        <li>See if / when the LoansBot viewed a particular comment</li>
+        <li>See if the LoansBot viewed a particular comment</li>
         <li>Make the LoansBot forget it already processed a particular comment</li>
         <li>Ask the LoansBot to process a comment you've made it forget, or a comment it simply missed</li>
       </ul>
@@ -34,7 +34,7 @@
 
       <h3>Example - Comment</h3>
       <p>Go to the permalink of a comment, and look at your URL. It should look something like:</p>
-      <div style="font-family: monospace;">https://www.reddit.com/r/LoansBot/comments/2ea912/loansbot_basic_usage/<b>ck2aa1k</b>/</div>
+      <div class="mb-3" style="font-family: monospace;">https://www.reddit.com/r/LoansBot/comments/2ea912/loansbot_basic_usage/<b>ck2aa1k</b>/</div>
       <p>The important part of the comment id is at the end, in bold. This is the comment <em>id</em>. We prefix with "t1_" to get the comment fullname: <strong>t1_ck2aa1k</strong></p>
       <p>You can also paste the <i>permalink</i> in this form:</p>
       <div class="container-fluid alert" id="parse-comment-fullname-status-text" style="display: none"></div>
@@ -54,7 +54,7 @@
 
       <h3>Example - Thread</h3>
       <p>Go to the permalink of a thread, and look at your URL. It should look something like:</p>
-      <div style="font-family: monospace">https://www.reddit.com/r/LoansBot/comments/<b>2ea912</b>/loansbot_basic_usage/</div>
+      <div class="mb-3" style="font-family: monospace">https://www.reddit.com/r/LoansBot/comments/<b>2ea912</b>/loansbot_basic_usage/</div>
       <p>The important of the thread is is just prior to the shortened thread title, in bold. We prefix with "t3_" to get the thread fullname: <strong>t3_2ea912</strong></p>
       <p>You can also paste the <i>thread url</i> in this form:</p>
       <div class="container-fluid alert" id="parse-thread-fullname-status-text" style="display: none"></div>
