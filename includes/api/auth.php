@@ -11,18 +11,7 @@ include_once 'connect_and_get_loggedin.php';
  * Determine if the user is logged in
  */
 function is_logged_in() {
-  error_log('loc1');
-  if(isset($logged_in_user)) {
-    error_log('loc1a');
-
-    if($logged_in_user !== null) {
-      error_log('loc1b');
-    }
-    error_log('loc1c');
-  }else {
-    error_log('loc1d');
-    var_dump($logged_in_user);
-  }
+  global $logged_in_user;
 
   return (isset($logged_in_user) && $logged_in_user !== null);
 }
@@ -32,26 +21,23 @@ function is_logged_in() {
  * a manual flag or completed 5 loans as lender
  */
 function is_trusted() {
-  error_log('loc2');
+  global $logged_in_user, $sql_conn;
+
   if(!is_logged_in()) {
-    error_log('loc3');
     return false;
   }
-  error_log('loc4');
   if($logged_in_user->auth < 1) {
-    error_log('loc5');
     $rel_loans_row = DatabaseHelper::fetch_one($sql_conn, 'SELECT COUNT(*) as num_loans_as_lend FROM loans WHERE lender_id=? AND (principal_cents = principal_repayment_cents OR unpaid = 1)', array(array('i', $logged_in_user->id)));
     if($rel_loans_row->num_loans_as_lend < 5) {
-      error_log('loc6');
       return false;
     }
-    error_log('loc7');
   }
-  error_log('loc8');
   return true;
 }
 
 function is_moderator() {
+  global $logged_in_user;
+
   if(!is_logged_in())
     return false;
 
@@ -63,6 +49,8 @@ function is_moderator() {
  * be called prior to any actual HTML being outputted 
  */
 function on_failed_auth() {
+  global $sql_conn;
+
   http_response_code(401);
   echo '<html><head><title>Not Authorized</title></head><body><p>You are not authorized to view this page. <a href="/index.php">Go Back</a></p></body></html>';
 
