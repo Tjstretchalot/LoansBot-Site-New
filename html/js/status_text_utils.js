@@ -68,7 +68,7 @@ function set_status_text(st_div, new_text, new_alert_type, auto_fold) {
        st_div.data("current-promise", null);
        resolve(true);
      });
-   });
+   }).catch(e => {}); // this is to suppress the chrome spam
    st_div.data("current-promise", me);
    return me;
  }
