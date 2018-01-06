@@ -159,7 +159,7 @@ $(function() {
   $("#make-recheck-form").on("submit", function(e) {
     e.preventDefault();
 
-    var status_text = $("#make-recheck-form-status-text");
+    var status_text = $("#make-recheck-status-text");
     var fullname_div = $("#make-recheck-fullname");
     var submit_button = $("#make-recheck-submit-button");
     var forgetcb = $("#make-recheck-forget-cb");
