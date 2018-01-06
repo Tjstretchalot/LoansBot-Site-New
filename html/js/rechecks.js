@@ -7,7 +7,7 @@
  *
  * #parse-thread-fullname-form with input #thread-link and alert container #parse-thread-fullname-status-text and submit button #thread-submit-button
  *
- * #check-if-seen-form with input #check-if-seen-fullname and alert container #check-if-seen-status-text 
+ * #check-if-seen-form with input #check-if-seen-fullname and alert container #check-if-seen-status-text and submit button #check-if-seen-submit-button 
  *
  * #make-recheck-form with input #make-recheck-fullname, checkboxes #make-recheck-forget-cb and #make-recheck-recheck-cb, and alert container #make-recheck-status-text
  */
@@ -106,5 +106,53 @@ $(function() {
 
     var fullname = "t3_" + id;
     finish_up(true, SUCCESS_GLYPHICON + " Success!", fullname);
+  });
+
+  $("#check-if-seen-form").on("submit", function(e) {
+    e.preventDefault();
+
+    var status_text = $("#check-if-seen-status-text");
+    var fullname_div = $("#check-if-seen-fullname");
+    var submit_button = $("#check-if-seen-submit-button");
+
+    if(submit_button.is(":disabled"))
+      return;
+
+    var fullname = fullname_div.val();
+
+    function finish_up(success, text) {
+      set_status_text(status_text, text, success ? "success" : "danger", !success).then(function(fk_prom) {
+        thread_link_div.addClass(success ? "is-valid" : "is-invalid");
+        fk_prom.promise.finally(function() {
+          thread_link_div.removeClass(success ? "is-valid" : "is-invalid");
+        });
+      });
+    }
+
+    if(!fullname) {
+      finish_up(false, FAILURE_GLYPHICON + " Fullname is required!");
+      return;
+    }
+
+    set_status_text(status_text, LOADING_GLYPHICON + " Querying database about " + fullname + "...", "info", false).then(function(fk_prom) {
+      $.get("https://redditloans.com/api/rechecks.php", { fullname: fullname }, function(data, stat) {
+        var found = data.found;
+
+        if(found) {
+          finish_up(true, SUCCESS_GLYPHICON + " The LoansBot <i>has</i> viewed that comment");
+        }else {
+          finish_up(true, FAILURE_GLYPHICON + " The LoansBot has <i>not</i> viewed that comment");
+        }
+      }).fail(function(xhr) {
+        var err_mess = "Unknown";
+        if(typeof(xhr.responseJSON) !== 'undefined') {
+          err_mess = xhr.responseJSON.errors[0].error_message;
+        }else {
+          err_mess = xhr.status + ": " + xhr.statusText;
+        }
+
+        set_status_text(status_text, FAILURE_GLYPHICON + " An error occurred: " + err_mess, "danger", false);
+      });
+    });
   });
 });

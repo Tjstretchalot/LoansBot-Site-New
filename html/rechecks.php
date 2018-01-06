@@ -94,17 +94,17 @@
       <div class="container-fluid alert" id="make-recheck-status-text" style="display: none"></div>
       <form id="make-recheck-form">
         <div class="form-group row">
-          <input type="text" class="form-control" id="make-recheck-fullname" aria-label="Thing Fullname" placeholder="Thing FUllname" aria-describedby="makeRecheckFullnameHelpBlock" required>
+          <input type="text" class="form-control" id="make-recheck-fullname" aria-label="Thing Fullname" placeholder="Thing Fullname" aria-describedby="makeRecheckFullnameHelpBlock" required>
           <small id="makeRecheckFullnameHelpBlock" class="form-text text-muted">This needs to be a comment or thread fullname (such as t1_xxx or t3_xxx)</small>
         </div>
-        <div class="form-group row">
-          <div class="form-check">
+        <div class="form-group row justify-content-around">
+          <div class="form-check col-auto">
             <input class="form-check-input" type="checkbox" value="" id="make-recheck-forget-cb">
             <label class="form-check-label" for="make-recheck-forget-cb" checked>
               Make Forget
             </label>
           </div>
-          <div class="form-check">
+          <div class="form-check col-auto">
             <input class="form-check-input" type="checkbox" value="" id="make-recheck-recheck-cb">
             <label class="form-check-label" for="make-recheck-recheck-cb" checked>
               Queue Recheck
