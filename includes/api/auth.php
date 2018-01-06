@@ -19,6 +19,7 @@ function is_logged_in() {
  * a manual flag or completed 5 loans as lender
  */
 function is_trusted() {
+  error_log('is_trusted; is_logged_in = ' . is_logged_in());
   if(!is_logged_in())
     return false;
 
@@ -44,7 +45,8 @@ function is_moderator() {
  * be called prior to any actual HTML being outputted 
  */
 function on_failed_auth() {
-  http_response_code(403);
+  http_response_code(401);
+  echo '<html><head><title>Not Authorized</title></head><body><p>You are not authorized to view this page. <a href="/index.php">Go Back</a></p></body></html>';
 
   if(isset($sql_conn) && $sql_conn !== null) {
     $sql_conn->close();
