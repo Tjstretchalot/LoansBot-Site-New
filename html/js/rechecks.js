@@ -28,9 +28,10 @@ $(function() {
 
     permalink_div.removeClass("is-invalid").removeClass("is-valid");
 
-    function finish_up(success, text) {
+    function finish_up(success, text, output="") {
       set_status_text(status_text, text, success ? "success" : "danger", true).then(function(af_prom) {
         permalink_div.addClass(success ? "is-valid" : "is-invalid");
+        output_div.val(output);
         af_prom.promise.finally(function() {
           permalink_div.removeClass(success ? "is-valid" : "is-invalid");
         });
@@ -41,8 +42,8 @@ $(function() {
       finish_up(false, FAILURE_GLYPHICON + " " + error_mes);
     }
 
-    function succeed_with_message(mess) {
-      finish_up(true, SUCCESS_GLYPHICON + " " + mess);
+    function succeed_with_message(mess, fullname) {
+      finish_up(true, SUCCESS_GLYPHICON + " " + mess, fullname);
     }
 
     if(!permalink) {
@@ -61,8 +62,7 @@ $(function() {
     }
 
     var fullname = "t1_" + id;
-    output_div.val(fullname);
-    succeed_with_message("Success!");
+    succeed_with_message("Success!", fullname);
   });
 
   $("#parse-thread-fullname-form").on('submit', function(e) {
@@ -78,9 +78,10 @@ $(function() {
 
     var thread_link = thread_link_div.val();
 
-    function finish_up(success, text) {
+    function finish_up(success, text, output="") {
       set_status_text(status_text, text, success ? "success" : "danger", true).then(function(fk_prom) {
         thread_link_div.addClass(success ? "is-valid" : "is-invalid");
+        output_div.val(output);
         fk_prom.promise.finally(function() {
           thread_link_div.removeClass(success ? "is-valid" : "is-invalid");
         });
@@ -104,7 +105,6 @@ $(function() {
     id = parts.pop();
 
     var fullname = "t3_" + id;
-    output_div.val(fullname);
-    finish_up(true, SUCCESS_GLYPHICON + " Success!");
+    finish_up(true, SUCCESS_GLYPHICON + " Success!", fullname);
   });
 });
