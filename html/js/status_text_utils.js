@@ -43,7 +43,7 @@ function set_status_text(st_div, new_text, new_alert_type, auto_fold) {
      st_div.data("current-promise", me);
      st_div.data("shown", false);
      st_div.data("hiding", true);
-     st_div.slideOut('fast', function() {
+     st_div.slideUp('fast', function() {
        st_div.data("hiding", false);
        st_div.data("hidden", true);
        st_div.data("current-promise", null);
