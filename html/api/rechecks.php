@@ -121,6 +121,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
     $sql_conn->close();
     return;
   }
+  error_log("rechecksexecutecmmand userid=" . $logged_in_user->id . ", fullname=" . $fullname . ", forget=" . $forget . ", recheck=" . $recheck);
 
   if($forget) {
     DatabaseHelper::execute($sql_conn, 'DELETE FROM fullnames WHERE fullname = ?', array(array('s', $fullname)));

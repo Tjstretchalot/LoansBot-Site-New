@@ -9,7 +9,7 @@
  *
  * #check-if-seen-form with input #check-if-seen-fullname and alert container #check-if-seen-status-text and submit button #check-if-seen-submit-button 
  *
- * #make-recheck-form with input #make-recheck-fullname, checkboxes #make-recheck-forget-cb and #make-recheck-recheck-cb, and alert container #make-recheck-status-text
+ * #make-recheck-form with input #make-recheck-fullname, checkboxes #make-recheck-forget-cb and #make-recheck-recheck-cb, and alert container #make-recheck-status-text and subm. button #make-recheck-submit-button
  */
 
 $(function() {
@@ -143,6 +143,55 @@ $(function() {
         }else {
           finish_up(true, "<i class=\"far fa-eye-slash\"></i> The LoansBot has <i>not</i> processed " + fullname + ".", "warning", false);
         }
+      }).fail(function(xhr) {
+        var err_mess = "Unknown";
+        if(typeof(xhr.responseJSON) !== 'undefined') {
+          err_mess = xhr.responseJSON.errors[0].error_message;
+        }else {
+          err_mess = xhr.status + ": " + xhr.statusText;
+        }
+
+        set_status_text(status_text, FAILURE_GLYPHICON + " An error occurred: " + err_mess, "danger", false);
+      });
+    });
+  });
+
+  $("#make-recheck-form").on("submit", function(e) {
+    e.preventDefault();
+
+    var status_text = $("#make-recheck-form");
+    var fullname_div = $("#make-recheck-fullname");
+    var submit_button = $("#make-recheck-submit-button");
+    var forgetcb = $("#make-recheck-forget-cb");
+    var recheckcb = $("#make-recheck-recheck-cb");
+    
+    if(submit_button.is(":disabled"))
+      return;
+
+    var fullname = fullname_div.val();
+    var forget = forgetcb.is(":checked");
+    var recheck = recheckcb.is(":checked");
+
+    function finish_up(success, text, alert_type, autofold) {
+      set_status_text(status_text, text, alert_type, autofold).then(function(fk_prom) {
+        fullname_div.addClass(success ? "is-valid" : "is-invalid");
+        fk_prom.promise.finally(function() {
+          fullname_div.removeClass(success ? "is-valid" : "is-invalid");
+        });
+      });
+    }
+
+    if(!fullname) {
+      finish_up(false, FAILURE_GLYPHICON + " Fullname is required!", "danger", true);
+    }
+
+    if(!recheck && !forget) {
+      finish_up(false, FAILURE_GLYPHICON + " That operation would not do anything", "warning", true);
+    }
+
+    set_status_text(status_text, LOADING_GLYPHICON + " Altering database...", "info", false).then(function(fk_prom) {
+      $.post("https://redditloans.com/api/rechecks.php", { fullname: fullname, forget: forget, recheck: recheck }, function(data, stat) {
+        finish_up(true, SUCCESS_GLYPHICON + " Operation was successful. The LoansBot may take a few minutes to process the request (use the check form to see if he processed it yet)", "success", false);
       }).fail(function(xhr) {
         var err_mess = "Unknown";
         if(typeof(xhr.responseJSON) !== 'undefined') {

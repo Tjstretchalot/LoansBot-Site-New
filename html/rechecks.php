@@ -111,6 +111,9 @@
             </label>
           </div>
         </div>
+        <div class="form-group row">
+          <button id="make-recheck-submit-button" type="submit" class="col-auto btn btn-primary">Alter Database</button>
+        </div>
       </form>
     </div>
     <?php include('bootstrap_js.php') ?>
