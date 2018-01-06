@@ -18,7 +18,7 @@
 
      var status_text = $("#parse-comment-fullname-status-text");
      var permalink_div = $("#permalink");
-     var output_div = $("comment-fullname");
+     var output_div = $("#comment-fullname");
      var comment_submit_button = $("#comment-submit-button");
 
      if(comment_submit_button.is(":disabled"))
