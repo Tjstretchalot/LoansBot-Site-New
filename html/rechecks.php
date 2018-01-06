@@ -99,14 +99,14 @@
         </div>
         <div class="form-group row justify-content-around">
           <div class="form-check col-auto">
-            <input class="form-check-input" type="checkbox" value="" id="make-recheck-forget-cb">
-            <label class="form-check-label" for="make-recheck-forget-cb" checked>
+            <input class="form-check-input" type="checkbox" value="" id="make-recheck-forget-cb" checked>
+            <label class="form-check-label" for="make-recheck-forget-cb">
               Make Forget
             </label>
           </div>
           <div class="form-check col-auto">
-            <input class="form-check-input" type="checkbox" value="" id="make-recheck-recheck-cb">
-            <label class="form-check-label" for="make-recheck-recheck-cb" checked>
+            <input class="form-check-input" type="checkbox" value="" id="make-recheck-recheck-cb" checked>
+            <label class="form-check-label" for="make-recheck-recheck-cb">
               Queue Recheck
             </label>
           </div>
