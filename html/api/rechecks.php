@@ -69,7 +69,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   $forget = null;
   $recheck = null;
 
-  if(isset($_POST['fullname']) {
+  if(isset($_POST['fullname'])) {
     $fullname = $_POST['fullname'];
   }
 
