@@ -13,6 +13,7 @@
     <?php include('metatags.php'); ?>
 
     <?php include('bootstrap_css.php'); ?>
+    <link rel="stylesheet" href="css/logs.css">
   </head>
   <body>
     <?php include('navigation.php'); ?>
@@ -74,13 +75,38 @@
       }
 
       // parses one raw line into
-      // { timestamp: Date, text: string }
+      // { timestamp: Date, type: text, level: string, text: string }
       function parse_raw_line(line) {
         // starts with something like 2018-Jan-13 16:36:12 PM
         // always 23 characters
+        if(line.length < 24)
+          return null; // malformed
         var timestamp_str = line.slice(0, 23);
         var timestamp = moment(timestamp_str + " +00:00", "YYYY-MMM-DD hh:mm:ss A ZZ").toDate();
-        return { timestamp: timestamp, text: line.slice(24) };
+        if(isNaN(timestamp.getTime()))
+          return null; // malformed
+
+        var ch_ind = 24;
+        while(line[ch_ind] != ']') {
+          if(ch_ind >= line.length)
+            return null; // malformed
+          ch_ind++;
+        }
+        var type = line.slice(24, ch_ind);
+
+    
+        ch_ind++; // skip the space
+        var level_start = ch_ind;
+        while(line[ch_ind] != ' ') {
+          if(ch_ind >= line.length)
+            return null; // malformed
+
+          ch_ind++;
+        }
+
+        var level = line.slice(level_start, ch_ind);
+        var text = line.slice(ch_ind + 2);
+        return { timestamp: timestamp, type: type, level: level, text: text };
       }
 
       // returns a promise to set ul to raw
@@ -91,8 +117,12 @@
             ul.empty();
             var spl_on_line = raw.split("\n");
             for(var i = 0, len = spl_on_line.length; i < len; i++) {
-              var parsed = parse_raw_line(spl_on_line[i]);
+              var raw_line = spl_on_line[i];
+              var parsed = parse_raw_line(raw_line);
+              if(parsed === null)
+                continue;
               var li = $("<li>");
+              li.addClass("level-" + parsed.level.toLowerCase());
               var time = $("<span>");
               time.addClass("short-timestamp");
               time.attr("data-toggle", "tooltip");
@@ -102,9 +132,12 @@
               var text = $("<span>");
               text.addClass("log-message");
               text.html(parsed.text);
+              text.attr("data-toggle", "tooltip");
+              text.attr("title", raw_line);
               li.append(text);
               ul.append(li);
-              li.tooltip();
+              time.tooltip();
+              text.tooltip();
             }
             ul.slideDown('fast', function() {
               resolve(true);
