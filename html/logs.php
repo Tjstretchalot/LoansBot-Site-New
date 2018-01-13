@@ -86,16 +86,16 @@
         if(isNaN(timestamp.getTime()))
           return null; // malformed
 
-        var ch_ind = 24;
+        var ch_ind = 25;
         while(line[ch_ind] != ']') {
           if(ch_ind >= line.length)
             return null; // malformed
           ch_ind++;
         }
-        var type = line.slice(24, ch_ind);
+        var type = line.slice(25, ch_ind);
 
     
-        ch_ind++; // skip the space
+        ch_ind += 2; // skip space
         var level_start = ch_ind;
         while(line[ch_ind] != ' ') {
           if(ch_ind >= line.length)
