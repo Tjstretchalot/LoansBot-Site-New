@@ -1,5 +1,6 @@
 <?php
 require_once 'api/auth.php';
+require_once 'api/common.php';
 
 if($_SERVER['REQUEST_METHOD'] === 'GET') {
   if(!is_moderator()) {
@@ -19,5 +20,4 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
 }else {
   echo_fail(405, 'METHOD_NOT_ALLOWED', 'You must use a GET request at this endpoint');
 }
-?>
 ?>

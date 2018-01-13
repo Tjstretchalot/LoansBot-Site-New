@@ -26,6 +26,7 @@
             <button id="download-button" type="button" class="col-auto btn btn-primary">Download</button>
             <button id="fetch-latest-button" type="button" class="col-auto btn btn-secondary">Fetch latest</button>
             <button id="apply-filters-button" type="button" class="col-auto btn btn-secondary">Apply filters</button>
+            <button id="reboot-bot-button" type="button" class="col-auto btn btn-danger">Restart Bot</button>
           </div>
           <div class="form-group row">
             <input id="after-time" name="timestamp" type="time" step="1" class="form-control" aria-label="After Time" aria-describedby="after-time-helpblock" value="00:00">
@@ -316,6 +317,25 @@
       $("#apply-filters-button").on('click', function(e) {
         e.preventDefault();
         on_filter_changed();
+      }i);
+
+      $("#restart-button").on('click', function(e) {
+        e.preventDefault();
+        var st_div = $("#status-text");
+        set_status_text(st_div, LOADING_GLYPHICON + ' Requesting restart..', 'info', true).then(function() {
+          $.post('https://redditloans.com/api/restart.php', {}, function(data) {
+            set_status_text(st_div, SUCCESS_GLYPHICON + ' Restart requested (watch logs to see if it worked)', 'success', true);
+          }).fail(function(xhr) {
+            var err_mess = 'Unknown';
+            if(typeof(xhr.responseJSON) !== 'undefined') {
+              err_mess = xhr.responseJSON.errors[0].error_message;
+            }else {
+              err_mess = xhr.status + ": " + xhr.statusText;
+            }
+
+            set_status_text(st_div, FAILURE_GLYPHICON + ' Something went wrong: ' + err_mess, 'danger', true);
+          });
+        });
       });
 
       $(".filter-control").change(on_filter_changed);
