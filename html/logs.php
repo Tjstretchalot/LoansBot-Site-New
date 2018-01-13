@@ -32,7 +32,7 @@
             <small id="after-time-helpblock" class="form-text text-muted">Limit to responses after this time today. Press apply filters to apply</small>
           </div>
           <div class="form-group row">
-            <select class="filter-control" id="severity" aria-label="Minimum severity" aria-describedby="severity-helpblock" value="trace">
+            <select class="form-control filter-control" id="severity" aria-label="Minimum severity" aria-describedby="severity-helpblock" value="trace">
               <option value="trace">Trace</option>
               <option value="debug">Debug</option>
               <option value="info">Info</option>
