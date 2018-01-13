@@ -75,7 +75,7 @@
       }
 
       // parses one raw line into
-      // { timestamp: Date, type: text, level: string, text: string }
+      // { timestamp: Date, type: text, level: string, file: string, text: string }
       function parse_raw_line(line) {
         // starts with something like 2018-Jan-13 16:36:12 PM
         // always 23 characters
@@ -105,8 +105,20 @@
         }
 
         var level = line.slice(level_start, ch_ind);
-        var text = line.slice(ch_ind + 2);
-        return { timestamp: timestamp, type: type, level: level, text: text };
+        
+        ch_ind += 1;
+        var file_start = ch_ind;
+        while(line[ch_ind] != ' ') {
+          if(ch_ind >= line.length)
+            return null; // malformed
+          
+          ch_ind++;
+        }
+
+        var file = line.slice(file_start, ch_ind);
+        ch_ind++; // first character past the space
+        var text = line.slice(ch_ind);
+        return { timestamp: timestamp, type: type, level: level, file: file, text: text };
       }
 
       // returns a promise to set ul to raw

@@ -1,19 +1,19 @@
 .level-trace {
-  background-color: '#F5F5F5';
+  background-color: #F5F5F5;
 }
 
 .level-debug {
-  background-color: '#ccccff';
+  background-color: #ccccff;
 }
 
 .level-info {
-  background-color: '#7777ff';
+  background-color: #7777ff;
 }
 
 .level-warn {
-  background-color: '#ff7777';
+  background-color: #ff7777;
 }
 
 .level-error {
-  background-color: '#ff4444';
+  background-color: #ff4444;
 }
