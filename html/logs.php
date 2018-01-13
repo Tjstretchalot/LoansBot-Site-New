@@ -78,9 +78,9 @@
       function parse_raw_line(line) {
         // starts with something like 2018-Jan-13 16:36:12 PM
         // always 23 characters
-        var timestamp_str = line.splice(0, 23);
+        var timestamp_str = line.slice(0, 23);
         var timestamp = moment(timestamp_str + " +00:00", "YYYY-MMM-DD hh:mm:ss A ZZ").toDate();
-        return { timestamp: timestamp, text: line.splice(24) };
+        return { timestamp: timestamp, text: line.slice(24) };
       }
 
       // returns a promise to set ul to raw
