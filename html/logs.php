@@ -69,7 +69,7 @@
                 reject(err_mess);
               });
             });
-          });_ 
+          });
         });
       }
 
@@ -161,6 +161,7 @@
             return set_status_text(st_div, SUCCESS_GLYPHICON + ' Success!', 'success', true);
           }); 
         });
+      
     </script>
   </body>
 </html>
