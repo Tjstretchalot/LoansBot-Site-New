@@ -26,7 +26,7 @@
             <button id="download-button" type="button" class="col-auto btn btn-primary">Download</button>
             <button id="fetch-latest-button" type="button" class="col-auto btn btn-secondary">Fetch latest</button>
             <button id="apply-filters-button" type="button" class="col-auto btn btn-secondary">Apply filters</button>
-            <button id="reboot-bot-button" type="button" class="col-auto btn btn-danger">Restart Bot</button>
+            <button id="restart-bot-button" type="button" class="col-auto btn btn-danger">Restart Bot</button>
           </div>
           <div class="form-group row">
             <input id="after-time" name="timestamp" type="time" step="1" class="form-control" aria-label="After Time" aria-describedby="after-time-helpblock" value="00:00">
