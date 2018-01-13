@@ -110,57 +110,58 @@
             });
           });
         });
+      }
 
-        // returns a promise to set ul to raw
-        function set_ul_to_raw_with_status_text(raw) {
-          return new Promise(function(resolve, reject) {
-            var st_div = $("#status-text");
-            set_status_text(st_div, LOADING_GLYPHICON + ' Parsing raw log file..', 'info', true).then(function() {
-              set_ul_to_raw(raw).then(function() {
-                set_status_text(st_div, SUCCESS_GLYPHICON + ' Success!', 'success', true).then(function() {
-                  resolve(true);
-                });
-              }, function(reject_reason) {
-                reject(reject_reason)
+      // returns a promise to set ul to raw
+      function set_ul_to_raw_with_status_text(raw) {
+        return new Promise(function(resolve, reject) {
+          var st_div = $("#status-text");
+          set_status_text(st_div, LOADING_GLYPHICON + ' Parsing raw log file..', 'info', true).then(function() {
+            set_ul_to_raw(raw).then(function() {
+              set_status_text(st_div, SUCCESS_GLYPHICON + ' Success!', 'success', true).then(function() {
+                resolve(true);
               });
+            }, function(reject_reason) {
+              reject(reject_reason)
             });
           });
+        });
+      }
+
+      $("#fetch-latest-button").on('click', function(e) {
+        e.preventDefault();
+
+        var b = $("#controls-form div button");
+        b.attr("disabled", true);
+        latest_raw = fetch_raw_with_status_text();
+        set_ul_to_raw_with_status_text(latest_raw).finally(function() {
+          b.attr("disabled", false);
+        });
+      });
+
+      $("#download-button").on('click', function(e) {
+        e.preventDefault();
+
+        var st_div = $("#status-text");
+        if(typeof(latest_raw !== 'string')) {
+          set_status_text(st_div, FAILURE_GLYPHICON + ' No logs loaded! Press fetch latest', 'danger', true);
         }
 
-        $("#fetch-latest-button").on('click', function(e) {
-          e.preventDefault();
+        set_status_text(st_div, LOADING_GLYPHICON + ' Downloading..', 'info', true).then(function() {
+          // modified from https://stackoverflow.com/questions/3665115/create-a-file-in-memory-for-user-to-download-not-through-server
+          var element = document.createElement('a');
+          element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(latest_raw));
+          element.setAttribute('download', 'logs.txt');
 
-          var b = $("#controls-form div button");
-          b.attr("disabled", true);
-          latest_raw = fetch_raw_with_status_text();
-          set_ul_to_raw_with_status_text(latest_raw).finally(function() {
-            b.attr("disabled", false);
-          });
-        });
+          element.style.display = 'none';
+          document.body.appendChild(element);
 
-        $("#download-button").on('click', function(e) {
-          e.preventDefault();
+          element.click();
 
-          var st_div = $("#status-text");
-          if(typeof(latest_raw !== 'string')) {
-            set_status_text(st_div, FAILURE_GLYPHICON + ' No logs loaded! Press fetch latest', 'danger', true);
-          }
-
-          set_status_text(st_div, LOADING_GLYPHICON + ' Downloading..', 'info', true).then(function() {
-            // modified from https://stackoverflow.com/questions/3665115/create-a-file-in-memory-for-user-to-download-not-through-server
-            var element = document.createElement('a');
-            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(latest_raw));
-            element.setAttribute('download', 'logs.txt');
-
-            element.style.display = 'none';
-            document.body.appendChild(element);
-
-            element.click();
-
-            document.body.removeChild(element);
-            return set_status_text(st_div, SUCCESS_GLYPHICON + ' Success!', 'success', true);
-          }); 
-        });
+          document.body.removeChild(element);
+          return set_status_text(st_div, SUCCESS_GLYPHICON + ' Success!', 'success', true);
+        }); 
+      });
       
     </script>
   </body>
