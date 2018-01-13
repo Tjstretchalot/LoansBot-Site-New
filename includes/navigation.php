@@ -40,6 +40,11 @@
         'link' => '/responses.php',
         'name' => 'Responses'
       );
+
+      $pages[] = array(
+        'link' => '/logs.php',
+        'name' => 'Logs'
+      );
     }
 
     $lender_perms = true;
