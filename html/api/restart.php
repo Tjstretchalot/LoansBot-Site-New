@@ -10,7 +10,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
   $sql_conn->close();
 
-  exec('touch /home/timothy/Documents/LoansBot/restart_requested.touchme');
+  exec('touch /home/public/restart_requested.touchme');
 
   echo_success('RESTART_SUCCESS', array());
 }else {
