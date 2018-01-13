@@ -319,7 +319,7 @@
         on_filter_changed();
       });
 
-      $("#restart-button").on('click', function(e) {
+      $("#restart-bot-button").on('click', function(e) {
         e.preventDefault();
         var st_div = $("#status-text");
         set_status_text(st_div, LOADING_GLYPHICON + ' Requesting restart..', 'info', true).then(function() {
