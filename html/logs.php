@@ -89,8 +89,9 @@
           var ul = $("#log-list");
           ul.slideUp('fast', function() {
             ul.empty();
-            for(var i = 0, len = raw.length; i < len; i++) {
-              var parsed = parse_raw_line(raw[i]);
+            var spl_on_line = raw.split("\n");
+            for(var i = 0, len = spl_on_line.length; i < len; i++) {
+              var parsed = parse_raw_line(spl_on_line[i]);
               var li = $("<li>");
               var time = $("<span>");
               time.addClass("short-timestamp");
