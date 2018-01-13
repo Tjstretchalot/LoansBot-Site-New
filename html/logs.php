@@ -27,7 +27,7 @@
             <button id="fetch-latest-button" type="button" class="col-auto btn btn-secondary">Fetch latest</button>
           </div>
           <div class="form-group row">
-            <input id="after-time" name="timestamp" step="1" class="form-control filter-control" aria-label="After Time" aria-describedby="after-time-helpblock">00:00</input>
+            <input id="after-time" name="timestamp" step="1" class="form-control filter-control" aria-label="After Time" aria-describedby="after-time-helpblock" value="00:00">
             <small id="after-time-helpblock" class="form-text text-muted">Limit to responses after this date</small>
           </div>
         </form>
