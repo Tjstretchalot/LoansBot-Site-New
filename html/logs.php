@@ -317,7 +317,7 @@
       $("#apply-filters-button").on('click', function(e) {
         e.preventDefault();
         on_filter_changed();
-      }i);
+      });
 
       $("#restart-button").on('click', function(e) {
         e.preventDefault();
