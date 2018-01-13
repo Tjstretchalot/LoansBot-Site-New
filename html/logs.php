@@ -292,8 +292,9 @@
         e.preventDefault();
 
         var st_div = $("#status-text");
-        if(typeof(latest_raw !== 'string')) {
+        if(typeof(latest_raw) !== 'string') {
           set_status_text(st_div, FAILURE_GLYPHICON + ' No logs loaded! Press fetch latest', 'danger', true);
+          return;
         }
 
         set_status_text(st_div, LOADING_GLYPHICON + ' Downloading..', 'info', true).then(function() {
