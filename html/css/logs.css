@@ -22,14 +22,16 @@
   display: flex;
   flex-direction: column;
   list-style: none;
+  font-family: monospace;
 }
 
 .li-log {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 
 .short-timestamp {
   white-space: nowrap;
+  margin-right: 5px;
 }
