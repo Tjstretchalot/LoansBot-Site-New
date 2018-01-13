@@ -22,7 +22,7 @@
         <div class="container-fluid alert" id="status-text" style="display: none"></div>
 
         <form id="controls-form">
-          <div class="form-group row">
+          <div class="form-group row justify-content-around">
             <button id="download-button" type="button" class="col-auto btn btn-primary">Download</button>
             <button id="fetch-latest-button" type="button" class="col-auto btn btn-secondary">Fetch latest</button>
             <button id="apply-filters-button" type="button" class="col-auto btn btn-secondary">Apply filters</button>
