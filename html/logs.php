@@ -52,7 +52,7 @@
             }
             reject(err_mess);
           });
-        };
+        });
       }
 
       // Return promise for raw log file
