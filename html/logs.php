@@ -106,7 +106,10 @@
 
         var level = line.slice(level_start, ch_ind);
         
-        ch_ind += 1;
+        while(line[ch_ind] === ' ') {
+          ch_ind++; // sometimes theres multiple spaces here
+        }
+
         var file_start = ch_ind;
         while(line[ch_ind] != ' ') {
           if(ch_ind >= line.length)
@@ -135,6 +138,7 @@
                 continue;
               var li = $("<li>");
               li.addClass("level-" + parsed.level.toLowerCase());
+              li.addClass("li-log");
               var time = $("<span>");
               time.addClass("short-timestamp");
               time.attr("data-toggle", "tooltip");
@@ -144,12 +148,9 @@
               var text = $("<span>");
               text.addClass("log-message");
               text.html(parsed.text);
-              text.attr("data-toggle", "tooltip");
-              text.attr("title", raw_line);
               li.append(text);
               ul.append(li);
               time.tooltip();
-              text.tooltip();
             }
             ul.slideDown('fast', function() {
               resolve(true);

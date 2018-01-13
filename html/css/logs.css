@@ -17,3 +17,14 @@
 .level-error {
   background-color: #ff4444;
 }
+
+#log-list {
+  display: flex;
+  flex-direction: column;
+}
+
+#li-log {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
