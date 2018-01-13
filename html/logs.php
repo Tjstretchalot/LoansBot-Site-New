@@ -26,6 +26,10 @@
             <button id="download-button" type="button" class="col-auto btn btn-primary">Download</button>
             <button id="fetch-latest-button" type="button" class="col-auto btn btn-secondary">Fetch latest</button>
           </div>
+          <div class="form-group row">
+            <input id="after-time" name="timestamp" step="1" class="form-control filter-control" aria-label="After Time" aria-describedby="after-time-helpblock">00:00</input>
+            <small id="after-time-helpblock" class="form-text text-muted">Limit to responses after this date</small>
+          </div>
         </form>
         <ul id="log-list">
         </ul>
@@ -36,6 +40,20 @@
     <script src="js/status_text_utils.js"></script>
     <script type="text/javascript">
       var latest_raw = null;
+      var latest_parsed = null;
+      var filters = [
+        function() {
+          var after_time = $("#after-time").val();
+          var after_date = new Date();
+          after_date.setMilliseconds(0);
+          after_date.setSeconds(0);
+          after_date.setMinutes(parseInt(after_time.slice(3)));
+          after_date.setHours(parseInt(after_time.slice(0, 2)));
+          return function(parsed_line) {
+            return parsed_line.timestamp >= after_date;
+          };
+        }
+      ];
 
       // Return promise for raw log file
       function fetch_raw() {
@@ -124,18 +142,45 @@
         return { timestamp: timestamp, type: type, level: level, file: file, text: text };
       }
 
-      // returns a promise to set ul to raw
-      function set_ul_to_raw(raw) {
+      // returns a promise to parse the specified raw
+      function parse_raw(raw) {
         return new Promise(function(resolve, reject) {
+          var parsed = [];
+          var spl_on_line = raw.split("\n");
+          for(var i = 0, len = spl_on_line.length; i < len; i++) {
+            var parsed_line = parse_raw_line(spl_on_line[i]);
+
+            if(parsed_line !== null) {
+              parsed.push(parsed_line);
+            }
+          }
+          resolve(parsed);
+        });
+      }
+
+      // returns a promise to set ul to raw
+      function set_ul_to_parsed(all_parsed) {
+        return new Promise(function(resolve, reject) {
+          var filter_fns = [];
+          for(var i = 0, len = filters.length; i < len; i++) {
+            filter_fns.push(filters[i]());
+          }
+
           var ul = $("#log-list");
           ul.slideUp('fast', function() {
             ul.empty();
-            var spl_on_line = raw.split("\n");
-            for(var i = 0, len = spl_on_line.length; i < len; i++) {
-              var raw_line = spl_on_line[i];
-              var parsed = parse_raw_line(raw_line);
-              if(parsed === null)
+            for(var i = 0, len = all_parsed.length; i < len; i++) {
+              var parsed = all_parsed[i];
+              var filtered_out = false;
+              for(var j = 0, len2 = filter_fns.length; j < len2; j++) {
+                if(!filter_fns[j](parsed)) {
+                  filtered_out = true;
+                  break;
+                }
+              }
+              if(filtered_out)
                 continue;
+
               var li = $("<li>");
               li.addClass("level-" + parsed.level.toLowerCase());
               li.addClass("li-log");
@@ -159,18 +204,33 @@
         });
       }
 
-      // returns a promise to set ul to raw
+      // returns a promise to parsed
       function set_ul_to_raw_with_status_text(raw) {
         return new Promise(function(resolve, reject) {
           var st_div = $("#status-text");
           set_status_text(st_div, LOADING_GLYPHICON + ' Parsing raw log file..', 'info', true).then(function() {
-            set_ul_to_raw(raw).then(function() {
-              set_status_text(st_div, SUCCESS_GLYPHICON + ' Success!', 'success', true).then(function() {
-                resolve(true);
-              });
+            parse_raw(raw).then(function(parsed) {
+              set_status_text(st_div, LOADING_GLYPHICON + ' Formatting parsed log file..', 'info', true).then(function() {
+                set_ul_to_parsed(parsed).then(function() {
+                  set_status_text(st_div, SUCCESS_GLYPHICON + ' Success!', 'success', true).then(function() {
+                    resolve(parsed);
+                  });
+                });
+              })
             }, function(reject_reason) {
               reject(reject_reason)
             });
+          });
+        });
+      }
+
+      function on_filter_changed() {
+        var st_div = $("#status-text");
+        set_status_text(st_div, LOADING_GLYPHICON + ' Formatting parsed log file..', 'info', true).then(function() {
+          set_ul_to_parsed(latest_parsed).then(function() {
+            set_status_text(st_div, SUCCESS_GLYPHICON + ' Success', 'success', true);
+          }, function(rej_reason) {
+            set_status_text(st_div, FAILURE_GLYPHICON + ' Something went wrong! ' + rej_reason, 'danger', true);
           });
         });
       }
@@ -182,7 +242,9 @@
         b.attr("disabled", true);
         fetch_raw_with_status_text().then(function(raw) {
           latest_raw = raw;
-          set_ul_to_raw_with_status_text(latest_raw).finally(function() {
+          set_ul_to_raw_with_status_text(latest_raw).then(function(parsed) {
+            latest_parsed = parsed;
+          }).finally(function() {
             b.attr("disabled", false);
           });
         });
@@ -212,6 +274,7 @@
         }); 
       });
       
+      $(".filter-control").change(on_filter_changed);
     </script>
   </body>
 </html>
