@@ -133,9 +133,11 @@
 
         var b = $("#controls-form div button");
         b.attr("disabled", true);
-        latest_raw = fetch_raw_with_status_text();
-        set_ul_to_raw_with_status_text(latest_raw).finally(function() {
-          b.attr("disabled", false);
+        fetch_raw_with_status_text().then(function(raw) {
+          latest_raw = raw;
+          set_ul_to_raw_with_status_text(latest_raw).finally(function() {
+            b.attr("disabled", false);
+          });
         });
       });
 
