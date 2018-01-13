@@ -25,10 +25,21 @@
           <div class="form-group row">
             <button id="download-button" type="button" class="col-auto btn btn-primary">Download</button>
             <button id="fetch-latest-button" type="button" class="col-auto btn btn-secondary">Fetch latest</button>
+            <button id="apply-filters-button" type="button" class="col-auto btn btn-secondary">Apply filters</button>
           </div>
           <div class="form-group row">
-            <input id="after-time" name="timestamp" type="time" step="1" class="form-control filter-control" aria-label="After Time" aria-describedby="after-time-helpblock" value="00:00">
-            <small id="after-time-helpblock" class="form-text text-muted">Limit to responses after this date</small>
+            <input id="after-time" name="timestamp" type="time" step="1" class="form-control" aria-label="After Time" aria-describedby="after-time-helpblock" value="00:00">
+            <small id="after-time-helpblock" class="form-text text-muted">Limit to responses after this time today. Press apply filters to apply</small>
+          </div>
+          <div class="form-group row">
+            <select class="filter-control" id="severity" aria-label="Minimum severity" aria-describedby="severity-helpblock" value="trace">
+              <option value="trace">Trace</option>
+              <option value="debug">Debug</option>
+              <option value="info">Info</option>
+              <option value="warn">Warn</option>
+              <option value="error">Error</option>
+            </select>
+            <small id="severity-helpblock" class="form-text text-muted">Limit to messages of the specified severity or higher</small>
           </div>
         </form>
         <ul id="log-list">
@@ -52,6 +63,31 @@
           return function(parsed_line) {
             return parsed_line.timestamp >= after_date;
           };
+        },
+        function() {
+          var filter_severity = $("#severity").val();
+
+          function sev_to_num(sev) {
+            var lowered = sev.toLowerCase();
+
+            if(lowered === 'trace')
+              return 0;
+            else if(lowered === 'debug')
+              return 1;
+            else if(lowered === 'info')
+              return 2;
+            else if(lowered === 'warn')
+              return 3;
+            else if(lowered === 'error')
+              return 4;
+            else
+              return 5;
+          }
+
+          var filter_severity_num = sev_to_num(filter_severity); 
+          return function(parsed_line) {
+            return sev_to_num(parsed_line.level) >= filter_severity_num;
+          }
         }
       ];
 
@@ -168,38 +204,40 @@
 
           var ul = $("#log-list");
           ul.slideUp('fast', function() {
-            ul.empty();
-            for(var i = 0, len = all_parsed.length; i < len; i++) {
-              var parsed = all_parsed[i];
-              var filtered_out = false;
-              for(var j = 0, len2 = filter_fns.length; j < len2; j++) {
-                if(!filter_fns[j](parsed)) {
-                  filtered_out = true;
-                  break;
+            setTimeout(function() { // hiding a lot of nodes requires more time than jquery thinks
+              ul.empty();
+              for(var i = 0, len = all_parsed.length; i < len; i++) {
+                var parsed = all_parsed[i];
+                var filtered_out = false;
+                for(var j = 0, len2 = filter_fns.length; j < len2; j++) {
+                  if(!filter_fns[j](parsed)) {
+                    filtered_out = true;
+                    break;
+                  }
                 }
-              }
-              if(filtered_out)
-                continue;
+                if(filtered_out)
+                  continue;
 
-              var li = $("<li>");
-              li.addClass("level-" + parsed.level.toLowerCase());
-              li.addClass("li-log");
-              var time = $("<span>");
-              time.addClass("short-timestamp");
-              time.attr("data-toggle", "tooltip");
-              time.attr("title", parsed.timestamp.toLocaleString());
-              time.html(parsed.timestamp.toLocaleTimeString());
-              li.append(time);
-              var text = $("<span>");
-              text.addClass("log-message");
-              text.html(parsed.text);
-              li.append(text);
-              ul.append(li);
-              time.tooltip();
-            }
-            ul.slideDown('fast', function() {
-              resolve(true);
-            });
+                var li = $("<li>");
+                li.addClass("level-" + parsed.level.toLowerCase());
+                li.addClass("li-log");
+                var time = $("<span>");
+                time.addClass("short-timestamp");
+                time.attr("data-toggle", "tooltip");
+                time.attr("title", parsed.timestamp.toLocaleString());
+                time.html(parsed.timestamp.toLocaleTimeString());
+                li.append(time);
+                var text = $("<span>");
+                text.addClass("log-message");
+                text.html(parsed.text);
+                li.append(text);
+                ul.append(li);
+                time.tooltip();
+              }
+              ul.slideDown('fast', function() {
+                resolve(true);
+              });
+            }, 50);
           });
         });
       }
@@ -273,7 +311,12 @@
           return set_status_text(st_div, SUCCESS_GLYPHICON + ' Success!', 'success', true);
         }); 
       });
-      
+
+      $("#apply-filters-button").on('click', function(e) {
+        e.preventDefault();
+        on_filter_changed();
+      });
+
       $(".filter-control").change(on_filter_changed);
     </script>
   </body>
