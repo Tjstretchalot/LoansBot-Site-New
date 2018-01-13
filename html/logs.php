@@ -119,7 +119,7 @@
         }
 
         var file = line.slice(file_start, ch_ind);
-        ch_ind++; // first character past the space
+        ch_ind += 3; // skip " - "
         var text = line.slice(ch_ind);
         return { timestamp: timestamp, type: type, level: level, file: file, text: text };
       }
