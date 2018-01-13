@@ -21,9 +21,10 @@
 #log-list {
   display: flex;
   flex-direction: column;
+  list-style: none;
 }
 
-#li-log {
+.li-log {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
