@@ -716,12 +716,8 @@ function loadData() {
    * In case this function takes a while, there is also a div that looks like:
    * <div id="fetch-data-status-text" hidden></div>
    *
-   * This div can be further styled using any of the bootstrap backgrounds, 
-   * such as bg-info, bg-success, or bg-danger. When loading, the following glyphicons are
-   * helpful:
-   *  <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> - Pretty loading animation
-   *  <span class="glyphicon glyphicon-ok"></span>                                - Pretty checkmark
-   *  <span class="glyphicon glyphicon-remove"></span>                            - An X
+   * This div can be further styled using any of the bootstrap backgrounds. See 
+   * status_text_utils for information on how that works.
    *
    * Finally, in the event of failure, the user should be directed to contact me via
    * reddit (CONTACT_ME_REDDIT_LINK) or through email (CONTACT_ME_EMAIL_LINK)

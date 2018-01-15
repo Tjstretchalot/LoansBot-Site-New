@@ -374,7 +374,7 @@
         tex2jax: {inlineMath: [['\\(', '\\)']]}
       });
     </script>
-    <script src="/js/MathJax/MathJax.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js"></script>
   </body>
 </html>
 <?php
