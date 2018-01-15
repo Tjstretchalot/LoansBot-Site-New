@@ -15,7 +15,7 @@
       <section>
         <div id="loansbot-pulse">
           <h1>Statistics<!-- and Graphs <small>WIP</small> <button type="btn btn-default" role="button" id="fetch-data-button">Load Statistics</button>--></h1> 
-          <div id="fetch-data-status-text" class="status-text" style="display: none;"></div>
+          <div class="container-fluid alert" id="fetch-data-status-text" style="display: none"></div>
           <div class="statistics-text">
             <h2>Overview</h2>
             <div class="data-table">
@@ -365,6 +365,7 @@
     <script src="/js/moment.js"></script>    
     <script src="/js/Chart.min.js"></script>
     <script src="/js/decimal.min.js"></script>
+    <script src="js/status_text_utils.js"></script>
     <script src="/js/index.js"></script>
     <script type="text/x-mathjax-config">
       MathJax.Hub.Config({

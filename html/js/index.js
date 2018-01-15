@@ -728,77 +728,51 @@ function loadData() {
    **/
   var statusText = $("#fetch-data-status-text");
 
-  var setBackground = function(bg) {
-    var bgs = [ 'bg-primary', 'bg-success', 'bg-info', 'bg-warning', 'bg-danger' ];
-    if($.inArray(bg, bgs) === -1) {
-      console.log("WARNING: implementLoadDataButton unexpected background " + bg + ", contact administrator");
-    }
-
-    // Prevent weirdness if you remove then add the same class by not doing that
-    for(var i = 0; i < bgs.length; i++) {
-      if(bgs[i] !== bg) {
-        statusText.removeClass(bgs[i]);
-      }
-    }
-    statusText.addClass(bg);
-  };
-
   // Configuration
-  var statusTextSlidingSpeed = 400;
-  var fetchingDataText = '<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Fetching data...';
-  var fetchingDataBackground = 'bg-info';
+  var fetchingDataText = LOADING_GLYPHICON + ' Fetching data...';
+  var fetchingDataBackground = 'info';
 
-  var fetchDataFailedText = '<span class="glyphicon glyphicon-remove"></span> Failed to fetch data! If this keeps happening, contact me through '
+  var fetchDataFailedText = FAILURE_GLYPHICON + ' Failed to fetch data! If this keeps happening, contact me through '
                           + '<a href="' + CONTACT_ME_REDDIT_LINK + '">reddit</a> or <a href="' + CONTACT_ME_EMAIL_LINK + '">email</a>.';
-  var fetchDataFailedBackground = 'bg-danger';
+  var fetchDataFailedBackground = 'danger';
 
-  var analyzingDataText = '<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Analyzing data...';
-  var analyzingDataBackground = 'bg-info';
+  var analyzingDataText = LOADING_GLYPHICON + ' Analyzing data...';
+  var analyzingDataBackground = 'info';
 
-  var analyzingDataFailedText = '<span class="glyphicon glyphicon-remove"></span> Failed to analyze data! This is definitely <b>not</b> your fault - '
+  var analyzingDataFailedText = FAILURE_GLYPHICON + ' Failed to analyze data! This is definitely <b>not</b> your fault - '
                               + 'this page may be undergoing maintanence, so wait a few minutes and try again. If it still doesn\'t work, contact me '
                               + 'through <a href="' + CONTACT_ME_REDDIT_LINK + '">reddit</a> or <a href="' + CONTACT_ME_EMAIL_LINK + '">email</a>.';
-  var analyzingDataFailedBackground = 'bg-danger';
+  var analyzingDataFailedBackground = 'danger';
 
-  var successText = '<span class="glyphicon glyphicon-ok"></span> Success!';
-  var successBackground = 'bg-success';
-  var successShowTimeSeconds = 1;
+  var successText = SUCCESS_GLYPHICON + ' Success!';
+  var successBackground = 'success';
 
   // Implementation
-  statusText.slideDown(statusTextSlidingSpeed);
-  setBackground(fetchingDataBackground);
-  statusText.html(fetchingDataText);
+  set_status_text(statusText, fetchingDataText, fetchingDataBackground, true); 
 
   var lbData = new LBData();
   lbData.fetch(function() {
-    setBackground(analyzingDataBackground);
-    statusText.html(analyzingDataText);
-       
-    // Delay processing to allow status text update
-    setTimeout(function() {
-      try {
-        analyzeData(lbData);
+    set_status_text(statusText, analyzingDataText, analyzingDataBackground, true).then(function() {
+      // Delay processing to allow status text update
+      setTimeout(function() {
+        try {
+          analyzeData(lbData);
 
-        setBackground(successBackground);
-        statusText.html(successText);
-        setTimeout(function() {
-          statusText.slideUp(statusTextSlidingSpeed);
-        }, successShowTimeSeconds * 1000);
-      }catch(err) {
-        console.log(err);
-        if(typeof(err.stack) !== 'undefined') {
-          console.log(err.stack);
+          set_status_text(statusText, successText, successBackground, true);
+        }catch(err) {
+          console.log(err);
+          if(typeof(err.stack) !== 'undefined') {
+            console.log(err.stack);
+          }
+          if(typeof(err.line) !== 'undefined') {
+            console.log(err.line);
+          }
+          set_status_text(statusText, analyzingDataFailedText, analyzingDataFailedBackground, false);
         }
-        if(typeof(err.line) !== 'undefined') {
-          console.log(err.line);
-        }
-        setBackground(analyzingDataFailedBackground);
-        statusText.html(analyzingDataFailedText);
-      }
-    }, 100);
+      }, 100);
+    });
   }, function() {
-    setBackground(fetchDataFailedBackground);
-    statusText.html(fetchDataFailedText);
+    set_status_text(statusText, fetchDataFailedText, fetchDataFailedBackground, false);
   });
 }
 
