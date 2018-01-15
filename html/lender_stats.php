@@ -38,6 +38,7 @@
     </div>
     <?php include('bootstrap_js.php') ?>
     <script src="js/jquery.basictable.min.js"></script>
+    <script src="js/status_text_utils.js"></script>
     <script src="js/lender_stats.js"></script>
   </body>
 </html>

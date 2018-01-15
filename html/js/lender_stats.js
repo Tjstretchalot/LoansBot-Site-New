@@ -1,6 +1,3 @@
-var SUCCESS_GLYPHICON = '<i class=\"far fa-check\"></i>';
-var FAILURE_GLYPHICON = '<i class=\"far fa-exclamation-triangle\"></i>';
-var LOADING_GLYPHICON = '<i class=\"far fa-sync fa-spin\"></i>';
 /*
  * Set the main status to the specified type, returning a promise
  * for when it is visible to the user
@@ -9,42 +6,7 @@ var LOADING_GLYPHICON = '<i class=\"far fa-sync fa-spin\"></i>';
  * @param html the html for the status text
  */
 function set_status(type, html) {
-  console.log("set_status('" + type + "', '" + html + "')");
-  var stat_text = $("#stats-status");
-
-  return new Promise(function(resolve, reject) {
-    var was_hidden = stat_text.is(":hidden");
-    stat_text.fadeOut('fast', function() {
-      stat_text.empty();
-      stat_text.removeClass();
-      stat_text.addClass("container-fluid").addClass("alert");
-      stat_text.addClass("alert-" + type);
-      stat_text.html(html);
-      if(!was_hidden) {
-        stat_text.fadeIn('fast', function() {
-          resolve();
-        });
-      }else {
-        stat_text.slideDown('fast', function() {
-          resolve();
-        });
-      }
-    });
-  });
-}
-
-/*
- * Hide the main status alert
- */
-function hide_status() {
-  console.log("hide_status()");
-  var stat_text = $("#stats-status");
-
-  return new Promise(function(resolve, reject) {
-    stat_text.slideUp(function() {
-      resolve();
-    });
-  });
+  set_status_text($("#stats-status"), html, type, true);   
 }
 
 /*
@@ -679,11 +641,7 @@ function do_everything() {
         }));
 
         Promise.all(promises).then(function() {
-          set_status('success', SUCCESS_GLYPHICON + " Success!").then(function() {
-            setTimeout(function() {
-              hide_status();
-            }, 3000);
-          }); 
+          set_status('success', SUCCESS_GLYPHICON + " Success!");
         });
       });
     }, function(reject_reason) {
