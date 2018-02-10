@@ -6,7 +6,7 @@
  * @param html the html for the status text
  */
 function set_status(type, html) {
-  set_status_text($("#stats-status"), html, type, true);   
+  return set_status_text($("#stats-status"), html, type, true);   
 }
 
 /*
