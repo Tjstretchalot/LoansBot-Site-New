@@ -40,29 +40,29 @@
       <div class="container-fluid alert" id="perc-req-fulfilled-status" style="display: none"></div>
       <p>For this table you may configure when and who to look at:</p>
       <form id="perc-req-fulfilled-form">
-        <div class="form-group">
-          <label for="perc-req-fulfilled-start-date">Start</label>
-          <input type="date" id="perc-req-fulfilled-start-date" class="form-control" aria-describedby="#perc-req-fulfilled-start-date-help"> 
-          <small id="perc-req-fulfilled-start-date-help" class="form-text text-muted">Only includes loans starting at midnight on this day in the below statistics</small>
-        </div>
         <div class="form-group row justify-content-between">
+          <div class="col col-md-auto">
+            <label for="perc-req-fulfilled-start-date">Start</label>
+            <input type="date" id="perc-req-fulfilled-start-date" class="form-control" aria-describedby="#perc-req-fulfilled-start-date-help"> 
+            <small id="perc-req-fulfilled-start-date-help" class="form-text text-muted">Only includes loans starting at midnight on this day in the below statistics</small>
+          </div>
           <div class="col col-md-auto">
             <label for="perc-req-fulfilled-end-date">End</label>
             <input type="date" id="perc-req-fulfilled-end-date" class="form-control" aria-describedby="#perc-req-fulfilled-end-date-help"> 
             <small id="perc-req-fulfilled-end-date-help" class="form-text text-muted">Only includes loans before midnight on this day in the below statistics</small>
           </div>
-          <div class="col col-md-auto">
-            <label for="perc-req-fulfilled-who-select">Who to include?</label>
-            <select multiple id="perc-req-fulfilled-who-select" aria-describedby="perc-req-fulfilled-who-help">
-              <option value="top5">Top 5 over this Period</option>
-            </select>
-            <small id="perc-req-fulfilled-who-help" class="form-text text-muted">Who is included in the below statistics</small>
-          </div>
+        </div>
+        <div class="form-group">
+          <label for="perc-req-fulfilled-who-select">Who to include?</label>
+          <select multiple id="perc-req-fulfilled-who-select" aria-describedby="perc-req-fulfilled-who-help" class="form-control">
+            <option value="top5">Top 5 over this Period</option>
+          </select>
+          <small id="perc-req-fulfilled-who-help" class="form-text text-muted">Who is included in the below statistics</small>
         </div>
         <div class="form-group row justify-content-between">
           <div class="col col-md-auto">
             <label for="perc-req-fulfilled-add-person">Add option to who</label>
-            <input type="text" id="perc-req-fulfilled-add-person" aria-describedby="perc-req-fulfilled-add-person-help" placeholder="Username">
+            <input class="form-control" type="text" id="perc-req-fulfilled-add-person" aria-describedby="perc-req-fulfilled-add-person-help" placeholder="Username">
             <small id="perc-req-fulfilled-add-person-help" class="form-text text-muted">Adds a username option to Who to include?</small>
           </div>
           <div class="col col-sm-auto">
