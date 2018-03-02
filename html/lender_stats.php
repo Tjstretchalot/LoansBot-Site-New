@@ -36,7 +36,7 @@
       <table id="most-active-lenders-recent">
       </table>
       
-      <h3 class="pt-3">Percent Requests Fulfilled <span id="percent-requests-fulfilled-when">(Recent)</span></h3>
+      <h3 class="pt-3">Percent Requests Fulfilled</h3>
       <div class="container-fluid alert" id="perc-req-fulfilled-status" style="display: none"></div>
       <p>For this table you may configure when and who to look at:</p>
       <form id="perc-req-fulfilled-form">

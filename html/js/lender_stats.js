@@ -141,7 +141,9 @@ function setup_most_active_overall(info) {
 
 /*
  * Sets up the most active recent table. This replaces the "Recent" in the
- * header for the section with "Since xx/xx/xx" to reduce ambiguity.
+ * header for the section with "Since xx/xx/xx" to reduce ambiguity. It also
+ * uses the given data to apply it to the table, ensuring that the table is 
+ * not visible while being modified.
  *
  * @param since a Date for after when we were focusing on
  * @param data an array of objects, ordered from most active to least active, where each
@@ -217,6 +219,29 @@ function setup_most_active_recent(since, data) {
   });
   tabl.addClass("w-100");
   tabl.slideDown("fast");
+}
+
+/*
+ * Sets up the percent requests fulfilled table and related graphics using 
+ * the specified information which has been parsed in a convenient format.
+ *
+ * @param start - Date for when loans started being parsed at
+ * @param stop  - Date for when loans stopped being parsed at 
+ * @param who   - Array of usernames that were monitored
+ * @param total_loans - The total number of loans that occurred in this interval
+ * @param total_principal - The total principal in cents that occurred in this interval
+ * @param data  - an array of objects, ordered from most requests fulfilled to least
+ *                where each object is of the form 
+ *                {
+ *                  username: string,
+ *                  number_loans: number,
+ *                  perc_loans: number
+ *                  principal: number,
+ *                  perc_principal: number
+ *                }
+ */
+function setup_perc_recent_requests(start, stop, who, total_loans, total_principal, data) {
+  var tabl = $("#percent-requests-fulfilled");
 }
 
 /*
