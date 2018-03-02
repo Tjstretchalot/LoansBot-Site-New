@@ -40,7 +40,7 @@
       <div class="container-fluid alert" id="perc-req-fulfilled-status" style="display: none"></div>
       <p>For this table you may configure when and who to look at:</p>
       <form id="perc-req-fulfilled-form">
-        <div class="form-group row justify-content-between">
+        <div class="form-group row justify-content-between mb-3">
           <div class="col col-md-auto">
             <label for="perc-req-fulfilled-start-date">Start</label>
             <input type="date" id="perc-req-fulfilled-start-date" class="form-control" aria-describedby="#perc-req-fulfilled-start-date-help"> 
@@ -52,14 +52,14 @@
             <small id="perc-req-fulfilled-end-date-help" class="form-text text-muted">Only includes loans before midnight on this day in the below statistics</small>
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-group mb-3">
           <label for="perc-req-fulfilled-who-select">Who to include?</label>
           <select multiple id="perc-req-fulfilled-who-select" aria-describedby="perc-req-fulfilled-who-help" class="form-control">
             <option value="top5">Top 5 over this Period</option>
           </select>
           <small id="perc-req-fulfilled-who-help" class="form-text text-muted">Who is included in the below statistics</small>
         </div>
-        <div class="form-group row justify-content-between">
+        <div class="form-group row justify-content-start align-items-center mb-3">
           <div class="col col-md-auto">
             <label for="perc-req-fulfilled-add-person">Add option to who</label>
             <input class="form-control" type="text" id="perc-req-fulfilled-add-person" aria-describedby="perc-req-fulfilled-add-person-help" placeholder="Username">
