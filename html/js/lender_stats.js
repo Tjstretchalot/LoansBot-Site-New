@@ -242,6 +242,24 @@ function setup_most_active_recent(since, data) {
  */
 function setup_perc_recent_requests(start, stop, who, total_loans, total_principal, data) {
   var tabl = $("#percent-requests-fulfilled");
+  tabl.attr('style', 'display: none;');
+  
+  var thead = $("<thead>");
+  var tr = $("<tr>"); 
+  tr.append("<th>Username</th>");
+  tr.append("<th>Loans over Period</th>");
+  tr.append("<th>Percent loans over Period</th>");
+  tr.append("<th>Principal over Period</th>");
+  tr.append("<th>Percent Principal over Period</th>");
+  thead.append(tr);
+  tabl.append(thead);
+
+  var tbody = $("<tbody>");
+  for(var row of data) {
+    var 
+  }
+
+  thead.slideDown('fast');
 }
 
 /*
