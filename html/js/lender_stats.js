@@ -280,8 +280,9 @@ function setup_perc_recent_requests(start, stop, data) {
     tr.append(td);
     tbody.append(tr);
   }
+  tabl.append(tbody);
 
-  thead.slideDown('fast');
+  tabl.slideDown('fast');
 }
 
 /*
