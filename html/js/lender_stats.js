@@ -871,17 +871,25 @@ $(function() {
 
     var user_id_promises = [];
     for(var username in usernames) {
-      user_id_promises.push(new Promise(function(resolve, reject) {
+      user_id_promises.push((function(username) { return new Promise(function(resolve, reject) {
         $.get("https://redditloans.com/api/users.php", { username: username }, function(data) {
-          resolve(data.users);
+          if(data.users.length < 1)
+            return undefined;
+          resolve(data.users[0].username);
         }).fail(function(xhr) {
           console.log(xhr);
           reject(xhr);
         });
-      }));
+      })})(username));
     }
 
     Promise.all(user_id_promises).then(function(user_ids) {
+      var cleaned_user_ids = [];
+      for(var user_id of user_ids) {
+        if(user_id !== undefined) {
+          cleaned_user_ids.push(user_id);
+        }
+      }
       new Promise(function(resolve, reject) {
         if(window.last_loans !== undefined && window.last_loans !== null) {
           resolve(window.last_loans);
@@ -895,7 +903,7 @@ $(function() {
       }).then(function(loans) {
         var start = $("#perc-req-fulfilled-start-date")[0].valueAsDate;
         var stop = $("#perc-req-fulfilled-end-date")[0].valueAsDate;
-        calculate_perc_requests_fulfilled(loans, window.cache, topn, user_ids, start, stop).then(function(data) {
+        calculate_perc_requests_fulfilled(loans, window.cache, topn, cleaned_user_ids, start, stop).then(function(data) {
           setup_perc_recent_requests(start, stop, data);
         });
       });
