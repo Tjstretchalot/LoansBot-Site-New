@@ -875,7 +875,7 @@ $(function() {
         $.get("https://redditloans.com/api/users.php", { username: username }, function(data) {
           if(data.users.length < 1)
             return undefined;
-          resolve(data.users[0].username);
+          resolve(data.users[0][0]);
         }).fail(function(xhr) {
           console.log(xhr);
           reject(xhr);
