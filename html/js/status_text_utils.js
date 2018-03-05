@@ -69,7 +69,6 @@ function set_status_text(st_div, new_text, new_alert_type, auto_fold, min_visibl
        resolve(true);
      });
    }).catch(e => {}); // this is to suppress the chrome spam
-   st_div.data("current-promise", me);
    return me;
  }
 
