@@ -240,6 +240,7 @@ function setup_most_active_recent(since, data) {
 function setup_perc_recent_requests(start, stop, data) {
   var tabl = $("#percent-requests-fulfilled");
   tabl.attr('style', 'display: none;');
+  tabl.empty();
   
   var thead = $("<thead>");
   var tr = $("<tr>"); 
