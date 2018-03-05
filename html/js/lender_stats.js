@@ -485,17 +485,19 @@ function cfetch_or_fetch_usernames(loans, cache, user_ids) {
     var promises = [];
     for(var ind = 0, len = user_ids.length; ind < len; ind++) {
       var id = user_ids[ind];
-      if(!cache.users.hasOwnProperty(id.toString()))  {
-        var tmp = null;
-        tmp = cache.users[id.toString()] = fetch_username(id).then(function(username) {
-          cache.users[id.toString()] = username;
-          return username;
-        });
-        promises.push(tmp);
-      }else {
-        var tmp = cache.users[id.toString()];
-        promises.push(tmp);
-      }
+      (function(id) {
+        if(!cache.users.hasOwnProperty(id.toString()))  {
+          var tmp = null;
+          tmp = cache.users[id.toString()] = fetch_username(id).then(function(username) {
+            cache.users[id.toString()] = username;
+            return username;
+          });
+          promises.push(tmp);
+        }else {
+          var tmp = cache.users[id.toString()];
+          promises.push(tmp);
+        }
+      })(id);
     }
 
     Promise.all(promises).then(function(data) {
