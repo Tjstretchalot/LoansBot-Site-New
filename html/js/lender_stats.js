@@ -836,7 +836,7 @@ $(function() {
     if(v.length === 0)
       return;
     
-    var opt = $("<option>">);
+    var opt = $("<option>");
     opt.attr('value', v);
     opt.text(v);
     opt.prop("selected", true);
