@@ -227,9 +227,6 @@ function setup_most_active_recent(since, data) {
  *
  * @param start - Date for when loans started being parsed at
  * @param stop  - Date for when loans stopped being parsed at 
- * @param who   - Array of usernames that were monitored
- * @param total_loans - The total number of loans that occurred in this interval
- * @param total_principal - The total principal in cents that occurred in this interval
  * @param data  - an array of objects, ordered from most requests fulfilled to least
  *                where each object is of the form 
  *                {
@@ -240,7 +237,7 @@ function setup_most_active_recent(since, data) {
  *                  perc_principal: number
  *                }
  */
-function setup_perc_recent_requests(start, stop, who, total_loans, total_principal, data) {
+function setup_perc_recent_requests(start, stop, data) {
   var tabl = $("#percent-requests-fulfilled");
   tabl.attr('style', 'display: none;');
   
@@ -256,7 +253,32 @@ function setup_perc_recent_requests(start, stop, who, total_loans, total_princip
 
   var tbody = $("<tbody>");
   for(var row of data) {
-    var 
+    var tr = $("<tr>");
+    var td = $("<td>");
+    td.text(row.username);
+    td.attr('data-th', 'Username');
+    tr.append(td);
+
+    td = $("<td>");
+    td.text(row.number_loans);
+    td.attr('data-th', '#Loans');
+    tr.append(td);
+
+    td = $("<td>");
+    td.text((row.perc_loans * 100).toFixed(2) + '%');
+    td.attr('data-th', '%Loans');
+    tr.append(td);
+
+    td = $("<td>");
+    td.text('$' + (row.principal / 100.0).toFixed(2));
+    td.attr('data-th', 'Principal');
+    tr.append(td);
+
+    td = $("<td>");
+    td.text((row.perc_principal * 100).toFixed(2) + '%');
+    td.attr('data-th', '%Principal');
+    tr.append(td);
+    tbody.append(tr);
   }
 
   thead.slideDown('fast');
@@ -655,15 +677,125 @@ function calculate_most_active_recent(loans, cache, since) {
   });
 }
 
+/**
+ * A promise to calculate the percent-requests-fulfilled table, which is an array of
+ * 
+ *        {
+ *          username: string,
+ *          number_loans: number,
+ *          perc_loans: number
+ *          principal: number,
+ *          perc_principal: number
+ *        }
+ *
+ * In sorted order where the earlier elements have a higher portion of new loans
+ * than later entries.
+ *
+ * Only considers loans between the start and stop Date
+ *
+ * @param loans Array of loans
+ * @param cache the information cache
+ * @param topn the number of top loans-lent to include
+ * @param users an array of user ids to include
+ * @param start Date (inclusive)
+ * @param stop Date (exclusive)
+ * @return promise for array
+ */
+function calculate_perc_requests_fulfilled(loans, cache, topn, users, start, stop) {
+  return new Promise(function (resolve, reject) {
+    var info_by_user_id = new Map(); // id -> result except username
+    var loan, info;
+    var sum_loans = loans.length;
+    var sum_princ = 0;
+    for(loan of loans) {
+      sum_princ += loan[3];
+      var lcreated_at = loan[6];
+      if(lcreated_at >= start && lcreated_at < stop) {
+        info = info_by_user_id.get(loan[1]);
+        if(info !== undefined) {
+          info.number_loans += 1;
+          info.principal += loan[3]; 
+        }else {
+          info_by_user_id.set(loan[1], { number_loans: 1, principal: loan[3] });
+        }
+      }
+    }
+
+    var result = []; // array of [ user_id, info ]
+    var user_id, ins_ind, kv;
+    if(topn > 0) {
+      for(kv of info_by_user_id.entries()) {
+        user_id = kv[0];
+        info = kv[1];
+        
+        if(result.length === topn && info.number_loans < result[topn - 1][1].number_loans)
+          continue;
+
+        for(ins_ind = 0; ins_ind < result.length && result[ins_ind][1].number_loans > info.number_loans; ins_ind++){}
+        
+        result.splice(ins_ind, 0, [user_id, info]);
+        if(result.length > topn) {
+          result.pop();
+        }
+      }
+    }
+
+    var row, found;
+    for(user_id of users) {
+      found = false;
+      for(row of result) {
+        if(row[0] === user_id) {
+          found = true;
+          break;
+        }
+      }
+
+      if(!found) {
+        for(kv of result) {
+          if(kv[0] === user_id) {
+            found = kv[1];
+            break;
+          }
+        }
+        if(!found) {
+          found = { number_loans: 0, principal: 0 };
+        }
+        for(ins_ind = 0; ins_ind < result.length && result[ins_ind][1].number_loans > found.number_loans; ins_ind++){}
+        result.splice(ins_ind, 0, [ user_id, found ]);
+      }
+    }
+
+    var user_ids = new Array(result.length);
+    for(row of result) {
+      user_ids.push(row[0]);
+    }
+    var usernames_promise = cfetch_or_fetch_usernames(loans, cache, user_ids).then(function(usernames) {
+      var result_reformatted = new Array(result.length);
+      for(var i = 0, len = result.length; i < len; i++) {
+        result_reformatted.push({ 
+          username: usernames[i], 
+          number_loans: result[i][1].number_loans, 
+          perc_loans: result[i][1].number_loans / sum_loans,
+          principal: result[i][1].principal,
+          perc_principal: result[i][1].principal / sum_princ
+        });
+      }
+      resolve(result_reformatted);
+    }).then(function(){});
+  });
+}
+
 /*
  * This function glues all the other functions together
  */
 function do_everything() {
   set_status('info', LOADING_GLYPHICON + " Fetching bulk data...").then(function() {
     fetch_all_loans().then(function(loans) {
+      window.last_loans = loans;
       console.log("fetch_all_loans succeeded");
       set_status('info', LOADING_GLYPHICON + " Calculating statistics...").then(function() {
         var cache = {}
+        window.cache = cache;
         var promises = [];
         promises.push(calculate_most_active_overall(loans, cache).then(function(data) {
           console.log("calculate_most_active_overall succeeded");
@@ -696,4 +828,69 @@ function do_everything() {
 
 $(function() {
   do_everything();
+
+  $("#perc-req-fulfilled-add-person-button").click(function(e) {
+    e.preventDefault();
+
+    var v = $(this).val().trim();
+    if(v.length === 0)
+      return;
+    
+    var opt = $("<option>">);
+    opt.attr('value', v);
+    opt.text(v);
+    opt.prop("selected", true);
+    $("#perc-req-fulfilled-who-select").append(opt);
+  });
+
+  $("#perc-req-fulfilled-search-btn").click(function(e) {
+    e.preventDefault();
+
+    var topn = 0;
+    var usernames = [];
+
+    var opts = $("#perc-req-fulfilled-who-select option:selected");
+    for(var opt of opts) {
+      opt = $(opt);
+
+      var v = opt.val();
+      if(v.startsWith('top')) {
+        topn = Math.max(topn, parseInt(v.substring(3)));
+      }else {
+        usernames.push(v);
+      }
+    }
+
+    var user_id_promises = [];
+    for(var username in usernames) {
+      user_id_promises.append(new Promise(function(resolve, reject) {
+        $.get("https://redditloans.com/api/users.php", { username: username }, function(data) {
+          resolve(data.users);
+        }).fail(function(xhr) {
+          console.log(xhr);
+          reject(xhr);
+        });
+      });
+    }
+
+    Promise.all(user_id_promises).then(function(user_ids) {
+      new Promise(function(resolve, reject) {
+        if(window.last_loans !== undefined && window.last_loans !== null) {
+          resolve(window.last_loans);
+        }else {
+          fetch_all_loans().then(function(loans) {
+            window.last_loans = loans;
+            window.cache = {};
+            resolve(loans);
+          });
+        }
+      }).then(function(loans) {
+        var start = $("#perc-req-fulfilled-start-date").valueAsDate;
+        var stop = $("#perc-req-fulfilled-end-date").valueAsDate;
+        calculate_perc_requests_fulfilled(loans, window.cache, topn, user_ids, start, stop).then(function(data) {
+          setup_perc_recent_requests(start, stop, data);
+        });
+      });
+    });
+  });
 });

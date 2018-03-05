@@ -57,13 +57,16 @@
           <select multiple id="perc-req-fulfilled-who-select" aria-describedby="perc-req-fulfilled-who-help" class="form-control">
             <option value="top5">Top 5 over this Period</option>
           </select>
-          <small id="perc-req-fulfilled-who-help" class="form-text text-muted">Who is included in the below statistics</small>
+          <small id="perc-req-fulfilled-who-help" class="form-text text-muted">Who is included in the below statistics. Ctrl+click to unselect.</small>
+        </div>
+        <div class="form-group mb-3">
+          <button class="btn btn-primary" type="button" id="perc-req-fulfilled-search-btn">Search</button>
         </div>
         <div class="form-group row justify-content-start align-items-center mb-3">
           <div class="col">
             <label for="perc-req-fulfilled-add-person">Add option to who</label>
             <input class="form-control" type="text" id="perc-req-fulfilled-add-person" aria-describedby="perc-req-fulfilled-add-person-help" placeholder="Username">
-            <small id="perc-req-fulfilled-add-person-help" class="form-text text-muted">Adds a username option to Who to include?</small>
+            <small id="perc-req-fulfilled-add-person-help" class="form-text text-muted">Adds a username option to Who to include? You may use the special name "top10" or "top15" or phrases like these to search top by number of loans.</small>
           </div>
           <div class="col">
             <button type="button" class="btn btn-primary" id="perc-req-fulfilled-add-person-button">Add Option</button>
