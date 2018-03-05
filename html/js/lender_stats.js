@@ -706,12 +706,13 @@ function calculate_perc_requests_fulfilled(loans, cache, topn, users, start, sto
   return new Promise(function (resolve, reject) {
     var info_by_user_id = new Map(); // id -> result except username
     var loan, info;
-    var sum_loans = loans.length;
+    var sum_loans = 0;
     var sum_princ = 0;
     for(loan of loans) {
-      sum_princ += loan[3];
       var lcreated_at = loan[6];
       if(lcreated_at >= start && lcreated_at < stop) {
+        sum_princ += loan[3];
+        sum_loans++;
         info = info_by_user_id.get(loan[1]);
         if(info !== undefined) {
           info.number_loans += 1;
@@ -776,7 +777,7 @@ function calculate_perc_requests_fulfilled(loans, cache, topn, users, start, sto
       var result_reformatted = new Array(result.length);
       for(i = 0, len = result.length; i < len; i++) {
         result_reformatted[i] = { 
-          username: usernames[i], 
+          username: usernames[result[i][0]], 
           number_loans: result[i][1].number_loans, 
           perc_loans: result[i][1].number_loans / sum_loans,
           principal: result[i][1].principal,
@@ -831,7 +832,10 @@ function do_everything() {
 
 $(function() {
   do_everything();
-
+  var now = moment.now().toDate();
+  var amonthAgo = moment.now().subtract(1, 'months');
+  $("#perc-req-fulfilled-start-date")[0].valueAsDate = now;
+  $("#perc-req-fulfilled-end-date")[0].valueAsDate = amonthAgo;
   $("#perc-req-fulfilled-add-person-button").click(function(e) {
     e.preventDefault();
 
