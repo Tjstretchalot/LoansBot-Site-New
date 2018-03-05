@@ -754,7 +754,7 @@ function calculate_perc_requests_fulfilled(loans, cache, topn, users, start, sto
       }
 
       if(!found) {
-        for(kv of result) {
+        for(kv of info_by_user_id.entries()) {
           if(kv[0] === user_id) {
             found = kv[1];
             break;
