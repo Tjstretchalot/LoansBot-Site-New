@@ -834,8 +834,8 @@ $(function() {
   do_everything();
   var now = moment().toDate();
   var amonthAgo = moment().subtract(1, 'months').toDate();
-  $("#perc-req-fulfilled-start-date")[0].valueAsDate = now;
-  $("#perc-req-fulfilled-end-date")[0].valueAsDate = amonthAgo;
+  $("#perc-req-fulfilled-start-date")[0].valueAsDate = amonthAgo;
+  $("#perc-req-fulfilled-end-date")[0].valueAsDate = now;
   $("#perc-req-fulfilled-add-person-button").click(function(e) {
     e.preventDefault();
 
