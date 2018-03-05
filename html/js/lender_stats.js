@@ -870,7 +870,7 @@ $(function() {
 
     var user_id_promises = [];
     for(var username in usernames) {
-      user_id_promises.append(new Promise(function(resolve, reject) {
+      user_id_promises.push(new Promise(function(resolve, reject) {
         $.get("https://redditloans.com/api/users.php", { username: username }, function(data) {
           resolve(data.users);
         }).fail(function(xhr) {
