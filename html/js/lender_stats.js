@@ -832,7 +832,7 @@ $(function() {
   $("#perc-req-fulfilled-add-person-button").click(function(e) {
     e.preventDefault();
 
-    var v = $(this).val().trim();
+    var v = $("#perc-req-fulfilled-add-person").val().trim();
     if(v.length === 0)
       return;
     
@@ -885,8 +885,8 @@ $(function() {
           });
         }
       }).then(function(loans) {
-        var start = $("#perc-req-fulfilled-start-date").valueAsDate;
-        var stop = $("#perc-req-fulfilled-end-date").valueAsDate;
+        var start = $("#perc-req-fulfilled-start-date")[0].valueAsDate;
+        var stop = $("#perc-req-fulfilled-end-date")[0].valueAsDate;
         calculate_perc_requests_fulfilled(loans, window.cache, topn, user_ids, start, stop).then(function(data) {
           setup_perc_recent_requests(start, stop, data);
         });
