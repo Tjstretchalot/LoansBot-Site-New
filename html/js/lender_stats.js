@@ -870,7 +870,7 @@ $(function() {
           console.log(xhr);
           reject(xhr);
         });
-      });
+      }));
     }
 
     Promise.all(user_id_promises).then(function(user_ids) {
