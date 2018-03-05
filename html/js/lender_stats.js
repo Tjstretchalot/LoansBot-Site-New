@@ -765,20 +765,22 @@ function calculate_perc_requests_fulfilled(loans, cache, topn, users, start, sto
       }
     }
 
+    var i, len;
     var user_ids = new Array(result.length);
-    for(row of result) {
-      user_ids.push(row[0]);
+    for(i = 0, len = result.length; i < len; i++) {
+      user_ids[i] = result[i][0];
     }
+
     var usernames_promise = cfetch_or_fetch_usernames(loans, cache, user_ids).then(function(usernames) {
       var result_reformatted = new Array(result.length);
-      for(var i = 0, len = result.length; i < len; i++) {
-        result_reformatted.push({ 
+      for(i = 0, len = result.length; i < len; i++) {
+        result_reformatted[i] = { 
           username: usernames[i], 
           number_loans: result[i][1].number_loans, 
           perc_loans: result[i][1].number_loans / sum_loans,
           principal: result[i][1].principal,
           perc_principal: result[i][1].principal / sum_princ
-        });
+        };
       }
       resolve(result_reformatted);
     }).then(function(){});
