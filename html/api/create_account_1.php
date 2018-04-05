@@ -10,8 +10,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
   /* PARSING ARGUMENTS */
   if(isset($_POST['username'])) {
     $_username = $_POST['username'];
-    if($_username !== null && strlen($_username) > 2) {
-      $username = $_username;
+    if($_username !== null && strlen($_username) > 2 && strlen(trim($_username)) > 2) {
+      $username = trim($_username);
     }
   }
 
