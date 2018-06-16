@@ -11,9 +11,9 @@
     }
 */
 
-require_once 'database/common.php'
-require_once 'api/common.php'
-require_once 'api/query_helper.php'
+require_once 'database/common.php';
+require_once 'api/common.php';
+require_once 'api/query_helper.php';
 
 if($_SERVER['REQUEST_METHOD'] === 'GET') {
   /* DEFAULT ARGUMENTS */
