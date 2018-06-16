@@ -31,7 +31,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
 
   /* VALIDATING AUTHORIZATION */
   $err_prefix = 'html/api/get_request_thread.php';
-  require_once 'auth.php';
+  require_once 'api/auth.php';
 
   if(!is_moderator()) {
     $is_deleted = DatabaseHelper::fetch_one($sql_conn, 'SELECT deleted FROM loans where id=?', array(array('i', $loan_id)));
