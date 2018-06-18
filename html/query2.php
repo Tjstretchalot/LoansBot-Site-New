@@ -528,7 +528,7 @@
         });
       });
 
-      $("#add-parameter-form").click(function(e) {
+      $("#add-parameter-form").submit(function(e) {
         e.preventDefault();
 
         var option = $("#add-parameter-select :selected");
@@ -542,7 +542,7 @@
         append_query_parameter(param_name, []);
       });
       
-      $("#run-query-button").submit(function(e) {
+      $("#run-query-button").click(function(e) {
         e.preventDefault();
 
         var params = { format: 3 };
