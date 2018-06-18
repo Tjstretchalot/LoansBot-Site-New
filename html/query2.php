@@ -255,6 +255,7 @@
             if(info.type == 0) {
               callingA.attr("href", info.thread);
               callingA.html("Thread");
+              window.open(info.thread, '_blank');
             }else {
               callingA.html("No thread found (code " + info.type.toString() + ")");
             }
