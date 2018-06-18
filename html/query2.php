@@ -528,7 +528,7 @@
         });
       });
 
-      $("#add-parameter-form").submit(function(e) {
+      $("#add-parameter-form").click(function(e) {
         e.preventDefault();
 
         var option = $("#add-parameter-select :selected");
