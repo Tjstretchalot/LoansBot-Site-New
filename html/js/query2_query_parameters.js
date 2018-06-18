@@ -84,8 +84,9 @@ var query2_parameters = {};
     return [ this.fetch_control().val() ];
   }
 
-  function default_send_params(all_params) {
-    all_params[this.param_name] = this.fetch_params()[0];
+  function default_send_params(all_params, fetched_params) {
+    fetched_params = fetched_params || this.fetch_params();
+    all_params[this.param_name] = fetched_params[0];
   }
 
   function apply_defaults(partial_param) {
@@ -160,8 +161,9 @@ var query2_parameters = {};
       combine_elements(this.param_name, container, { label: label, control: control, help_block: help_block, remove_button: remove_button });
       return container;
     },
-    send_params: function(all_params) {
-      all_params[this.param_name] = new Date(this.fetch_params()[0]).getTime();
+    send_params: function(all_params, fetched_params) {
+      fetched_params = fetched_params || this.fetch_params();
+      all_params[this.param_name] = new Date(fetched_params[0]).getTime();
     }
   });
 
@@ -183,8 +185,9 @@ var query2_parameters = {};
       combine_elements(this.param_name, container, { label: label, control: control, help_block: help_block, remove_button: remove_button });
       return container;
     },
-    send_params: function(all_params) {
-      all_params[this.param_name] = new Date(this.fetch_params()[0]).getTime();
+    send_params: function(all_params, fetched_params) {
+      fetched_params = fetched_params || this.fetch_params();
+      all_params[this.param_name] = new Date(fetched_params[0]).getTime();
     }
   });
 
@@ -337,8 +340,9 @@ var query2_parameters = {};
     fetch_params: function() {
       return [ $("#unpaid-radio-only-unpaid").is(":checked") ]
     },
-    send_params: function(all_params) {
-      all_params.unpaid = this.fetch_params()[0] ? 1 : 0;
+    send_params: function(all_params, fetched_params) {
+      fetched_params = fetched_params || this.fetch_params();
+      all_params.unpaid = fetched_params[0] ? 1 : 0;
     }
   });
 
@@ -396,8 +400,9 @@ var query2_parameters = {};
     fetch_params: function() {
       return [ $("#repaid-radio-only-repaid").is(":checked") ]
     },
-    send_params: function(all_params) {
-      all_params.repaid = this.fetch_params()[0] ? 1 : 0;
+    send_params: function(all_params, fetched_params) {
+      fetched_params = fetched_params || this.fetch_params();
+      all_params.repaid = fetched_params[0] ? 1 : 0;
     }
   });
 })();

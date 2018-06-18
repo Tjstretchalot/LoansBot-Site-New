@@ -23,6 +23,7 @@
               <option value="loading">Loading...</option>
             </select>
             <button type="submit" class="btn btn-primary col-sm" value="Load">Load Query</button>
+            <button type="button" id="run-query-button" class="btn btn-secondary col-sm" value="Run">Run Query</button>
             <button type="button" id="delete-query-button" class="btn btn-danger col-sm" value="Delete">Delete Query</button>
           </div>
         </form>
@@ -539,6 +540,46 @@
 
         var param_name = option.attr('value');
         append_query_parameter(param_name, []);
+      });
+      
+      $("#run-query-button").submit(function(e) {
+        e.preventDefault();
+
+        var params = { format: 3 };
+        var option = $("#saved-queries-select :selected");
+        if(option.length === 0)
+          return;
+
+        var str_id = option.attr("value");
+        var query = loaded_saved_queries[str_id];
+        if("undefined" === typeof(query)) {
+          console.log("failed to find a loaded saved query with identifier " + str_id + "!");
+          return;
+        }
+
+        clear_query_parameters();
+        for(var i = 0; i < query.parameters.length; i++) {
+          var as_param = query2_parameters[query.parameters[i].param_name];
+          as_param.send_params(params, as_param.options);
+        }
+        $.get("https://redditloans.com/api/loans.php", params, function(data, stat) {
+          statusText.slideUp('fast');
+          load_results(data);
+        }).fail(function(xhr) {
+          var errMess = 'Unknown';
+          if("object" === typeof(xhr.responseJSON)) {
+            errMess = xhr.responseJSON.errors[0].error_message;
+          }else {
+            errMess = xhr.statusText;
+          }
+
+          statusText.slideUp('fast', function() {
+            statusText.removeClass('alert-info').removeClass('alert-success');
+            statusText.addClass('alert-danger');
+            statusText.html("<span class=\"glyphicon glyphicon-remove\"></span> " + errMess);
+            statusText.slideDown('fast');
+          });
+        });
       });
 
       $("#get-results-form").submit(function(e) {
