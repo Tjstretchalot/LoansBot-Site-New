@@ -562,6 +562,7 @@
           var as_param = query2_parameters[query.parameters[i].param_name];
           as_param.send_params(params, as_param.options);
         }
+        var statusText = $("#get-results-status-text");
         $.get("https://redditloans.com/api/loans.php", params, function(data, stat) {
           statusText.slideUp('fast');
           load_results(data);
