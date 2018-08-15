@@ -66,7 +66,7 @@
 
     public static function update_description($sql_conn, $id, $description) {
       $err_prefix = 'RedFlagSubredditMapping#update_description';
-      error_log('$id=' . strval($id) .'; description='.strval($description)) 
+      error_log('$id=' . strval($id) . '; description=' . strval($description));
       check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare('UPDATE red_flag_subreddits SET description=? WHERE id=?'));
       check_db_error($sql_conn, $err_prefix, $stmt->bind_param('si', $subreddit, $id));
       check_db_error($sql_conn, $err_prefix, $stmt->execute());
