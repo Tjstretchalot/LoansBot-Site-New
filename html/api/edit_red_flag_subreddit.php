@@ -51,7 +51,10 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   RedFlagSubredditsMapping::update_description($sql_conn, $id, $description);
 
-  echo_success('EDIT_RED_FLAG_SUBREDDIT_SUCCESS', array());
+  echo_success('EDIT_RED_FLAG_SUBREDDIT_SUCCESS', array(
+    'id' => $id,
+    'description' => $description
+  ));
   $sql_conn->close();
 }else {
   echo_fail(405, 'METHOD_NOT_ALLOWED', 'You must use a POST request at this endpoint');
