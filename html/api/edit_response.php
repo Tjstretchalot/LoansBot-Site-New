@@ -42,6 +42,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   if(($logged_in_user === null) || ($logged_in_user->auth < $MODERATOR_PERMISSION)) {
     echo_fail(403, 'NOT_AUTHORIZED', 'You do not have permission to do that');
+    $sql_conn->close();
     return;
   }
 
@@ -49,6 +50,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
   $response = DatabaseHelper::fetch_one($sql_conn, 'SELECT id, response_body FROM responses WHERE id=?', array(array('i', $id)));
   if($response === null) {
     echo_fail(400, 'RESPONSE_NOT_FOUND', 'Failed to find any response with given id');
+    $sql_conn->close();
     return;
   }
 
