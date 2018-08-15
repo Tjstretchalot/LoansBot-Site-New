@@ -45,6 +45,11 @@
         'link' => '/logs.php',
         'name' => 'Logs'
       );
+
+      $pages[] = array(
+        'link' => '/red_flag_subreddits.php',
+        'name' => 'Red Flag Subs'
+      );
     }
 
     $lender_perms = true;

@@ -41,7 +41,7 @@
         <h1>View / Edit Red Flag Subreddit</h1>
         <p>Moderators can use this page to view or edit a red flag subreddit. The form is prefilled with the existing values.</p>
 
-        <div class="container-fluid alert" id="statusText" style="display: none"></div>
+        <div class="container-fluid alert" id="status-text" style="display: none"></div>
         <form id="edit-red-flag-subreddit-form">
           <div class="form-group row">
             <input type="number" class="form-control" id="id" aria-label="ID" placeholder="ID" aria-describedby="idHelpBlock" value="<?= $id ?>">

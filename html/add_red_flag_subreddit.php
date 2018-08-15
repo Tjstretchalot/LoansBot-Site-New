@@ -23,7 +23,7 @@
         <h1>Add Red Flag Subreddit</h1>
         <p>Moderators can use this page to add a new red flag subreddit</p>
 
-        <div class="container-fluid alert" id="statusText" style="display: none"></div>
+        <div class="container-fluid alert" id="status-text" style="display: none"></div>
         <form id="add-red-flag-subreddit-form">
           <div class="form-group row">
             <input type="text" class="form-control" id="subreddit" aria-label="Subreddit" placeholder="Subreddit" aria-describedby="subredditHelpBlock"> 
