@@ -106,17 +106,17 @@
         tr.append(td);
 
         td = $("<td>");
-        td.text(moment(report.created_at).format());
+        td.text(moment(report.created_at).format('LLLL'));
         td.attr('data-th', 'Created At');
         tr.append(td);
 
         td = $("<td>");
-        td.text(moment(report.started_at).format());
+        td.text(moment(report.started_at).format('LLLL'));
         td.attr('data-th', 'Started At');
         tr.append(td);
 
         td = $("<td>");
-        td.text(moment(report.completed_at).format());
+        td.text(moment(report.completed_at).format('LLLL'));
         td.attr('data-th', 'Completed At');
         tr.append(td);
         tbody.append(tr);
