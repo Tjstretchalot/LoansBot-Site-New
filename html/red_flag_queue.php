@@ -7,7 +7,7 @@
     return;
   }
 
-  require_once('database/helper');
+  require_once('database/helper.php');
 
   $spots = DatabaseHelper::fetch_all($sql_conn, 'SELECT * FROM red_flag_queue_spots WHERE completed_at IS NULL ORDER BY created_at ASC', array());
 ?>
