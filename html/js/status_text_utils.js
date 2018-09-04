@@ -114,7 +114,7 @@ function __status_text_tick() {
     if(next.auto_fold) {
       active = {
         auto_fold: true,
-        finish_time: new Date(Date.now() + next.min_visible_duration),
+        finish_time: new Date(Date.now() + next.min_visible_duration + 800), // 800 is animation time
         resolve_finish_promise: outer_resolve,
         reject_finish_promise: outer_reject
       };
@@ -179,9 +179,12 @@ function set_status_text(st_div, new_text, new_alert_type, auto_fold, min_visibl
   }
 
   if(!auto_fold) {
-    // looks terrible on chrome if you actually don't give time to render
     auto_fold = true;
-    min_visible_duration = 500;
+    min_visible_duration = 800;
+  }
+
+  if(min_visible_duration < 800) {
+    min_visible_duration = 800;
   }
 
   var outer_resolve = null;
