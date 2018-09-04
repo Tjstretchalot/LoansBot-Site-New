@@ -82,7 +82,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     );
   }
 
-  $cleaned['flags'] = $cleaned_flags
+  $cleaned['flags'] = $cleaned_flags;
   echo_success('RED_FLAG_REPORT_SUCCESS', $cleaned);
   $sql_conn->close();
 }else {
