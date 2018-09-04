@@ -34,6 +34,9 @@
     <?php include('navigation.php'); ?>
     <div class="container px-2 py-5">
       <section>
+        <h1>Red Flag Report - Search</h1>
+        <p>Not sure why someone isn't showing up? Check the <a href="red_flag_queue.php">queue</a> to see if its being processed</p>
+
         <div class="container-fluid alert" id="statusText" style="display: none"></div>
         <form id="rfrs-username-form">
           <div class="form-group row">
