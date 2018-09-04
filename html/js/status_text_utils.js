@@ -105,7 +105,7 @@ function __status_text_tick() {
           __status_text_div.slideDown('fast', function() {
             __status_text_ready = true;
           });
-        }, 400);
+        }, 10);
       });
     })(next.alert_type, next.text);
     
