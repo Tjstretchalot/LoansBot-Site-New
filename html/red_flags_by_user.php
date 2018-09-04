@@ -197,10 +197,10 @@
         $.post("/api/red_flag_reports.php", { username: username }, function(data, stat) {
           set_status_text(status_text, SUCCESS_GLYPHICON + ' Found ' + data.reports.length + ' reports', 'success', true, 0);
           for(var i = 0; i < data.reports.length; i++) {
-            set_status_text(status_text, LOADING_GLYPHICON, ' Fetching report ' + (i + 1) + '...', 'info', true, 0);
+            set_status_text(status_text, LOADING_GLYPHICON + ' Fetching report ' + (i + 1) + '...', 'info', true, 0);
 
             $.post('/api/red_flag_report.php', { id: data.reports[i].id }, function(data, stat) {
-              set_status_text(status_text, SUCCESS_GLYPHICON, ' Successfully fetched report ' + (i + 1), 'success', true, 0);
+              set_status_text(status_text, SUCCESS_GLYPHICON + ' Successfully fetched report ' + (i + 1), 'success', true, 0);
               add_report(data);
             }).fail(function(xhr) {
               console.log(xhr.responseJSON);
