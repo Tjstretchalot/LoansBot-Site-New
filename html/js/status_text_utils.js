@@ -92,7 +92,7 @@ function __status_text_tick() {
     var promise = new Promise(function(resolve, reject) {
       outer_resolve = resolve;
       outer_reject = reject;
-    });
+    }).catch((e) => {}); // chrome spams console otherwise :/
 
     next.resolve_start_promise({ promise: promise });
     __status_text_ready = false;
@@ -177,15 +177,6 @@ function __status_text_tick() {
 function set_status_text(st_div, new_text, new_alert_type, auto_fold, min_visible_duration = 2000) {
   if(__status_text_div === null) {
     __status_text_div = st_div;
-  }
-
-  if(!auto_fold) {
-    auto_fold = true;
-    min_visible_duration = 800;
-  }
-
-  if(min_visible_duration < 800) {
-    min_visible_duration = 800;
   }
 
   if(new_alert_type !== 'info' && new_alert_type !== 'danger' && new_alert_type !== 'success') {
