@@ -32,7 +32,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     return;
   }
 
-  if (strpos($username, '/') >= 0) {
+  if (strpos($username, '/') !== false) {
     echo_fail(400, 'ARGUMENT_INVALID', 'username contains invalid character \'/\'');
     return;
   }
