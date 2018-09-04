@@ -64,7 +64,7 @@ function __status_text_tick() {
 
   if(active !== null) {
     if(active.auto_fold) {
-      if(active.finish_time < time) {
+      if(active.finish_time > time) {
         __status_text_started = true;
         setTimeout(__status_text_tick, active.finish_time - time);
         return;
@@ -99,7 +99,7 @@ function __status_text_tick() {
     (function(typ, tex) {
       __status_text_div.slideUp('fast', function() {
         __status_text_div.removeClass();
-        __status_text_div.addClass('container-fluid').addClass('alert-' + typ);
+        __status_text_div.addClass('container-fluid').addClass('alert').addClass('alert-' + typ);
         __status_text_div.html(tex);
         __status_text_div.slideDown('fast', function() {
           __status_text_ready = true;
