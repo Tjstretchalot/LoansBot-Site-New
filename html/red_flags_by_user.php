@@ -190,7 +190,7 @@
 
       $("#rfrs-username-form").on('submit', function(e) {
         e.preventDefault();
-        
+        clear_reports(); 
         var status_text = $("#statusText");
         var username = $("#username").val();
         set_status_text(status_text, LOADING_GLYPHICON + ' Fetching list of reports...', 'info', true); 
