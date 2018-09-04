@@ -70,7 +70,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   echo_success('RED_FLAG_REPORTS_SUCCESS', array(
     'reports' => $cleaned_reports
-  );
+  ));
   $sql_conn->close();
 }else {
   echo_fail(405, 'METHOD_NOT_ALLOWED', 'You must use a POST request at this endpoint');
