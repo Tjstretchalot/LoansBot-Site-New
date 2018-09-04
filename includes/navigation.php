@@ -69,6 +69,10 @@
         'link' => '/rechecks.php',
         'name' => 'Rechecks'
       );
+      $pages[] = array(
+        'link' => '/red_flags_by_user.php',
+        'name' => 'Red Flag Reports'
+      );
     }
 
     $pages[] = array(
