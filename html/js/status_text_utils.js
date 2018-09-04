@@ -178,6 +178,12 @@ function set_status_text(st_div, new_text, new_alert_type, auto_fold, min_visibl
     __status_text_div = st_div;
   }
 
+  if(!auto_fold) {
+    // looks terrible on chrome if you actually don't give time to render
+    auto_fold = true;
+    min_visible_duration = 500;
+  }
+
   var outer_resolve = null;
   var promise = new Promise(function(resolve, reject) {
     outer_resolve = resolve;
