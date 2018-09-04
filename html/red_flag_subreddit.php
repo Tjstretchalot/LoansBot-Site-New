@@ -53,7 +53,7 @@
           </div>
           <div class="form-group row">
             <input type="text" class="form-control" id="description" aria-label="Description" placeholder="Description" aria-describedby="descriptionHelpBlock" value="<?= $red_flag_subreddit->description ?>">
-            <small id="descriptionHelpBlock" class="form-text text-muted">This should describe why this subreddit should be a concern. It is displayed inside the table as raw markdown. Must include the subreddit name!</small>
+            <small id="descriptionHelpBlock" class="form-text text-muted">This should describe why this subreddit should be a concern. It is displayed inside the table as text.</small>
           </div>
           <div class="form-group row">
             <button id="submit-button" type="submit" class="col-auto btn btn-primary">Edit</button>
