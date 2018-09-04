@@ -39,7 +39,7 @@
           <?php foreach($spots as $spot): ?>
           <tr>
             <td data-th="Username"><?= DatabaseHelper::fetch_one($sql_conn, 'SELECT username FROM usernames WHERE id=?', array(array('i', $spot->username_id)))->username ?></td>
-            <td data-th="Created At" class="pretty-time"><?= $spot->created_at ?></td>
+            <td data-th="Created At" class="pretty-time"><?= strtotime($spot->created_at) * 1000 ?></td>
             <td data-th="Started?"><?= ($spot->started_at !== null ? 'Yes' : 'No') ?></td>
           </tr>
           <?php endforeach; ?>
