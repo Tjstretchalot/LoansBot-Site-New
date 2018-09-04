@@ -97,8 +97,6 @@ function __status_text_tick() {
     next.resolve_start_promise({ promise: promise });
     __status_text_ready = false;
     (function(typ, tex) {
-      console.log('typ = ' + typ);
-      console.log('text = ' + tex);
       __status_text_div.slideUp('fast', function() {
         __status_text_div.attr('class', 'container-fluid alert alert-' + typ);
         __status_text_div.html(tex);

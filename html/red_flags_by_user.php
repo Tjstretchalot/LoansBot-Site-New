@@ -193,15 +193,15 @@
         clear_reports(); 
         var status_text = $("#statusText");
         var username = $("#username").val();
-        set_status_text(status_text, LOADING_GLYPHICON + ' Fetching list of reports...', 'info', true, 0); 
+        set_status_text(status_text, LOADING_GLYPHICON + ' Fetching list of reports...', 'info', true, 200); 
         $.post("/api/red_flag_reports.php", { username: username }, function(data, stat) {
-          set_status_text(status_text, SUCCESS_GLYPHICON + ' Found ' + data.reports.length + ' reports', 'success', true, 0);
+          set_status_text(status_text, SUCCESS_GLYPHICON + ' Found ' + data.reports.length + ' reports', 'success', true, 200);
           for(var i = 0; i < data.reports.length; i++) {
-            set_status_text(status_text, LOADING_GLYPHICON + ' Fetching report ' + (i + 1) + '...', 'info', true, 0);
+            set_status_text(status_text, LOADING_GLYPHICON + ' Fetching report ' + (i + 1) + '...', 'info', true, 200);
             
             (function(i) {
               $.post('/api/red_flag_report.php', { id: data.reports[i].id }, function(data, stat) {
-                set_status_text(status_text, SUCCESS_GLYPHICON + ' Successfully fetched report ' + (i + 1), 'success', true, 0);
+                set_status_text(status_text, SUCCESS_GLYPHICON + ' Successfully fetched report ' + (i + 1), 'success', true, 200);
                 add_report(data);
               }).fail(function(xhr) {
                 console.log(xhr.responseJSON);
@@ -209,7 +209,7 @@
                 var err_type = json_resp.errors[0].error_type;
                 var err_mess = json_resp.errors[0].error_message;
                 console.log(err_type + ": " + err_mess);
-                set_status_text(status_text, FAILURE_GLYPHICON + ' Failed fetching report ' + (i + 1) + ': ' + err_mess, 'danger', true, 0);  
+                set_status_text(status_text, FAILURE_GLYPHICON + ' Failed fetching report ' + (i + 1) + ': ' + err_mess, 'danger', true, 200);  
                 add_report(xhr.responseJSON);
               });
             })(i);
@@ -220,7 +220,7 @@
           var err_type = json_resp.errors[0].error_type;
           var err_mess = json_resp.errors[0].error_message;
           console.log(err_type + ": " + err_mess);
-          set_status_text(status_text, FAILURE_GLYPHICON + " " + err_mess, 'danger', true, 0);  
+          set_status_text(status_text, FAILURE_GLYPHICON + " " + err_mess, 'danger', true, 20200);  
         });
       });
     </script>
