@@ -101,9 +101,12 @@ function __status_text_tick() {
         __status_text_div.removeClass();
         __status_text_div.addClass('container-fluid').addClass('alert').addClass('alert-' + typ);
         __status_text_div.html(tex);
-        __status_text_div.slideDown('fast', function() {
-          __status_text_ready = true;
-        });
+        // chrome needs a bit to render
+        setTimeout(function() {
+          __status_text_div.slideDown('fast', function() {
+            __status_text_ready = true;
+          });
+        }, 400);
       });
     })(next.alert_type, next.text);
     
