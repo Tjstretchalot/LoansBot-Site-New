@@ -71,7 +71,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     'completed_at' => ($report->completed_at === null) ? null : (strtotime($report->completed_at) * 1000)
   );
 
-  $cleaned_flags = array()
+  $cleaned_flags = array();
   foreach($flags as $flag) {
     $cleaned_flags[] = array(
       'id' => $flag->id,
