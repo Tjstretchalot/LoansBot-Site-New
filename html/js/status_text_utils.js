@@ -8,6 +8,130 @@ var LOADING_GLYPHICON = '<i class=\"far fa-sync fa-spin\"></i>';
  */
 var status_text_id_counter = 1;
 
+/* 
+ * the jquery wrapped div we're controlling.
+ */
+var __status_text_div = null;
+
+/*
+ * Contains objects that look like
+ *
+ * {
+ *    text: string,
+ *    alert_type: string,
+ *    auto_fold: boolean,
+ *    min_visible_duration: number,
+ *    resolve_start_promise: function
+ * }
+ */
+var __status_text_queue = [];
+
+/*
+ * The currently active status text
+ * {
+ *   auto_fold: boolean
+ *   finish_time: Date
+ *   resolve_finish_promise: function,
+ *   reject_finish_promise: function
+ * }
+ */
+var __status_text_active = null;
+
+/*
+ * If we are currently actively ticking
+ */
+var __status_text_started = false;
+
+/*
+ * If we can modify the status text yet
+ */
+var __status_text_ready = true;
+
+function __status_text_tick() {
+  __status_text_started = false;
+
+  if(!__status_text_ready) {
+    __status_text_started = true;
+    setTimeout(__status_text_tick, 100);
+    return;
+  }
+
+
+  var time = new Date();
+
+  var active = __status_text_active;
+  var queue = __status_text_queue;
+
+  if(active !== null) {
+    if(active.auto_fold) {
+      if(active.finish_time < time) {
+        __status_text_started = true;
+        setTimeout(__status_text_tick, active.finish_time - time);
+        return;
+      }
+
+      if(queue.length === 0) {
+        __status_text_div.slideUp();
+        active.resolve_finish_promise();
+        __status_text_active = null;
+        active = null;
+      }
+    }
+  }
+
+  if(queue.length > 0) {
+    if(active) {
+      active.reject_finish_promise();
+      active = null;
+      __status_text_active = null;
+    }
+
+    var next = queue.shift();
+    var outer_resolve = null;
+    var outer_reject = null;
+    var promise = new Promise(function(resolve, reject) {
+      outer_resolve = resolve;
+      outer_reject = reject;
+    });
+
+    next.resolve_start_promise({ promise: promise });
+    __status_text_ready = false;
+    (function(typ, tex) {
+      __status_text_div.slideUp().then(function() {
+        __status_text_div.removeClass();
+        __status_text_div.addClass('alert-' + typ);
+        __status_text_div.slideDown().then(function() {
+          __status_text_ready = true;
+        });
+      });
+    })(next.alert_type, next.text);
+    
+
+    if(next.auto_fold) {
+      active = {
+        auto_fold = true,
+        finish_time = new Date(Date.now() + next.min_visible_duration),
+        resolve_finish_promise = outer_resolve,
+        reject_finish_promise = outer_reject
+      };
+      __status_text_active = active;
+      __status_text_started = true;
+      setTimeout(__status_text_tick, next.min_visible_duration);
+      return;
+    }
+
+    active = {
+      auto_fold = false,
+      resolve_finish_promise = outer_resolve,
+      reject_finish_promise = outer_reject
+    }
+    __status_text_active = active;
+    __status_text_started = true;
+    setTimeout(__status_text_tick, 400);
+    return;
+  }
+}
+
 /*
 * Set the status text of st_div to the specified text. Returns
 * a promise for when the status text is completely visible. The
@@ -42,138 +166,30 @@ var status_text_id_counter = 1;
 * @param new_text the new text for the div
 * @param new_alert_type the new alert type (primary, secondary, danger, info, etc)
 * @param auto_fold if the div should auto minimize after some time
+* @param min_visible_duration minimum time to keep it visible
 * @return a promise resolving after visible, before auto fold, with a promise for after auto fold
 */
 function set_status_text(st_div, new_text, new_alert_type, auto_fold, min_visible_duration = 2000) {
- var my_id = (status_text_id_counter++);
- st_div.data("st-handled-by", my_id);
+  if(__status_text_div === null) {
+    __status_text_div = st_div;
+  }
 
- function actually_set_status_text() {
-   st_div.html(new_text);
-   st_div.removeClass();
-   st_div.addClass("container-fluid").addClass("alert").addClass("alert-" + new_alert_type);
+  var outer_resolve = null;
+  var promise = new Promise(function(resolve, reject) {
+    outer_resolve = resolve;
+  });
+
+  __status_text_queue.push({ 
+   text: new_text,
+   alert_type: new_alert_type,
+   auto_fold: auto_fold,
+   min_visible_duration: min_visible_duration,
+   resolve_start_promise: outer_resolve
+ });
+
+ if(!__status_text_started) {
+   __status_text_tick();
  }
 
- function setup_auto_fold() {
-   var me = new Promise(function(resolve, reject) {
-     if(st_div.data("st-handled-by") !== my_id) {
-       reject("there was a future call to set_status_text prior to auto folding");
-       return;
-     }
-     st_div.data("shown", false);
-     st_div.data("hiding", true);
-     st_div.slideUp('fast', function() {
-       st_div.data("hiding", false);
-       st_div.data("hidden", true);
-       st_div.data("current-promise", null);
-       resolve(true);
-     });
-   }).catch(e => {}); // this is to suppress the chrome spam
-   return me;
- }
-
- function resolve_with_auto_fold(resolve, reject) {
-   var prom2 = new Promise(function(resolve2, reject2) {
-     setTimeout(function() {
-       if(auto_fold)
-         resolve2(setup_auto_fold());
-       else
-         reject2("auto-folding not requested");
-     }, min_visible_duration);
-   }).catch(e => {}); // suppress chrome spam
-   resolve({ promise: prom2 });
- }
-
- var was_hiding = st_div.data("hiding") || false;
- var was_hidden = st_div.data("hidden") || false;
- var was_showing = st_div.data("showing") || false;
- var was_shown = st_div.data("shown") || false;
-
- if(!was_hiding && !was_hidden && !was_showing && !was_shown) {
-   // this hasnt been modified yet
-   was_hidden = st_div.is(":hidden");
-   was_shown = !was_hidden;
- }
-
- var latest_promise = st_div.data("current-promise");
- 
- if(was_hiding || was_showing) {
-   console.assert(latest_promise !== null, 'If status text was hiding or was showing we should have a promise for that to complete!');
-   
-   if(was_showing) {
-     // After the promise is down were visible, so this is still under "showing"
-     var me = new Promise(function(resolve, reject) {
-       latest_promise.then(function(b) {
-         b.promise.finally(function() {
-           st_div.data("showing", true); // after a "showing" promise finishes its now "shown", we undo that
-           st_div.data("shown", false);
-           st_div.fadeOut('fast', function() {
-             actually_set_status_text();
-             st_div.fadeIn('fast', function() {
-               st_div.data("shown", true);
-               st_div.data("showing", false);
-               st_div.data("current-promise", null);
-               resolve_with_auto_fold(resolve, reject);
-             });
-           });
-         });
-       }, function(reject_reason) {
-         reject(reject_reason);
-       });
-     });
-     st_div.data("current-promise", me);
-     return me;
-   }else if(was_hiding) {
-     var me = new Promise(function(resolve, reject) {
-       st_div.data("hidden", false); // after a "hiding" promise finishes its now "hidden" and we are going to show
-       st_div.data("showing", true);
-       latest_promise.then(function(b) {
-         b.promise.finally(function() {
-           actually_set_status_text();
-           st_div.slideDown('fast', function() {
-             st_div.data("showing", false);
-             st_div.data("shown", true);
-             st_div.data("current-promise", null);
-             resolve_with_auto_fold(resolve, reject);
-           });
-         });
-       }, function(reject_reason) {
-         reject(reject_reason)
-       });
-     });
-     st_div.data("current-promise", me);
-     return me;
-   }
- }
- if(was_hidden) {
-   var me = new Promise(function(resolve, reject) {
-     actually_set_status_text();
-     st_div.data("hidden", false);
-     st_div.data("showing", true);
-     st_div.slideDown('fast', function() {
-       st_div.data("showing", false);
-       st_div.data("shown", true);
-       st_div.data("current-promise", null);
-       resolve_with_auto_fold(resolve, reject);
-     });
-   });
-   st_div.data("current-promise", me);
-   return me;
- }else if(was_shown) {
-   var me = new Promise(function(resolve, reject) {
-     st_div.data("shown", false);
-     st_div.data("showing", true);
-     st_div.fadeOut('fast', function() {
-       actually_set_status_text();
-       st_div.fadeIn('fast', function() {
-         st_div.data("showing", false);
-         st_div.data("shown", true);
-         st_div.data("current-promise", null);
-         resolve_with_auto_fold(resolve, reject);
-       });
-     });
-   });
-   st_div.data("current-promise", me);
-   return me;
- }
+ return promise;
 }
