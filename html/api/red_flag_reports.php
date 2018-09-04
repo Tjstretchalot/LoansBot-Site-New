@@ -57,7 +57,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     return;
   }
 
-  $cleaned_reports = array()
+  $cleaned_reports = array();
   $reports = DatabaseHelper::fetch_all($sql_conn, 'SELECT * FROM red_flag_reports WHERE username_id=?', array(array('i', $username_obj->id)));
   foreach($reports as $report) {
     $cleaned_reports[] = {
@@ -65,7 +65,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
       'created_at' => strtotime($report->created_at) * 1000,
       'started_at' => ($report->started_at === null) ? null : (strtotime($report->started_at) * 1000),
       'completed_at' => ($report->completed_at === null) ? null : (strtotime($report->completed_at) * 1000)
-    }
+    };
   }
 
   echo_success('RED_FLAG_REPORTS_SUCCESS', array(
