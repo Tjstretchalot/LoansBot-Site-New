@@ -19,10 +19,13 @@
       .report {
         padding-top: 9px;
         padding-bottom: 9px;
-        background-color: #add8e6;
       }
 
       .red_flag_reports {
+        padding-top: 9px;
+      }
+
+      .report_flags_header {
         padding-top: 9px;
       }
     </style>
@@ -80,7 +83,10 @@
           return;
         }
         
-        my_div.append("<h2>Summary</h2>");
+        var header = $("<h2>");
+        header.text("Summary");
+        header.addClass('report-summary-header');
+        my_div.append(header);;
         var my_tabl = $("<table>");
 
         var thead = $("<thead>");
@@ -123,8 +129,12 @@
         my_tabl.addClass('w-100');
 
         my_div.append(my_tabl);
-
-        my_div.append("<h2>Flags</h2>");
+        
+        
+        var header = $("<h2>");
+        header.text("Flags");
+        header.addClass('report-flags-header');
+        my_div.append(header);;
 
         my_tabl = $("<table>");
         
