@@ -83,9 +83,9 @@
           return;
         }
         
-        var header = $("<h2>");
+        var header = $("<h3>");
         header.text("Summary");
-        header.addClass('report-summary-header');
+        header.addClass('report_summary_header');
         my_div.append(header);;
         var my_tabl = $("<table>");
 
@@ -131,9 +131,9 @@
         my_div.append(my_tabl);
         
         
-        var header = $("<h2>");
+        var header = $("<h3>");
         header.text("Flags");
-        header.addClass('report-flags-header');
+        header.addClass('report_flags_header');
         my_div.append(header);;
 
         my_tabl = $("<table>");
@@ -183,6 +183,7 @@
         my_tabl.addClass('w-100');
         
         my_div.append(my_tabl);
+        my_div.append("<hr>");
         $("#red_flag_reports").append(my_div);
         my_div.slideDown('fast');
       }
