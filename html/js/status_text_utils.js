@@ -98,7 +98,7 @@ function __status_text_tick() {
     __status_text_ready = false;
     (function(typ, tex) {
       __status_text_div.slideUp('fast', function() {
-        __status_text_div.removeClass();
+        __status_text_div.removeClass(function() { return true });
         __status_text_div.addClass('container-fluid').addClass('alert').addClass('alert-' + typ);
         __status_text_div.html(tex);
         // chrome needs a bit to render
