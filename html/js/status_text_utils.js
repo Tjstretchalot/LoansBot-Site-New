@@ -97,10 +97,10 @@ function __status_text_tick() {
     next.resolve_start_promise({ promise: promise });
     __status_text_ready = false;
     (function(typ, tex) {
-      __status_text_div.slideUp().then(function() {
+      __status_text_div.slideUp('fast', function() {
         __status_text_div.removeClass();
         __status_text_div.addClass('alert-' + typ);
-        __status_text_div.slideDown().then(function() {
+        __status_text_div.slideDown('fast', function() {
           __status_text_ready = true;
         });
       });
