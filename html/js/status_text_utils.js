@@ -99,7 +99,7 @@ function __status_text_tick() {
     (function(typ, tex) {
       __status_text_div.slideUp('fast', function() {
         __status_text_div.removeClass();
-        __status_text_div.addClass('alert-' + typ);
+        __status_text_div.addClass('container-fluid').addClass('alert-' + typ);
         __status_text_div.html(tex);
         __status_text_div.slideDown('fast', function() {
           __status_text_ready = true;
