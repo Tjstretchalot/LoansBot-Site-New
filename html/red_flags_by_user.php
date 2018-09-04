@@ -166,7 +166,7 @@
         }
 
         my_tabl.append(tbody);
-        my_tabl.basicTable({
+        my_tabl.basictable({
           tableWrap: true,
           breakpoint: 991
         });
