@@ -98,6 +98,7 @@ function __status_text_tick() {
     __status_text_ready = false;
     (function(typ, tex) {
       console.log('typ = ' + typ);
+      console.log('text = ' + tex);
       __status_text_div.slideUp('fast', function() {
         __status_text_div.attr('class', 'container-fluid alert alert-' + typ);
         __status_text_div.html(tex);
@@ -185,6 +186,10 @@ function set_status_text(st_div, new_text, new_alert_type, auto_fold, min_visibl
 
   if(min_visible_duration < 800) {
     min_visible_duration = 800;
+  }
+
+  if(new_alert_type !== 'info' && new_alert_type !== 'danger' && new_alert_type !== 'success') {
+    console.log('weird alert type: ' + new_alert_type);
   }
 
   var outer_resolve = null;
