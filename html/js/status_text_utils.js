@@ -109,10 +109,10 @@ function __status_text_tick() {
 
     if(next.auto_fold) {
       active = {
-        auto_fold = true,
-        finish_time = new Date(Date.now() + next.min_visible_duration),
-        resolve_finish_promise = outer_resolve,
-        reject_finish_promise = outer_reject
+        auto_fold: true,
+        finish_time: new Date(Date.now() + next.min_visible_duration),
+        resolve_finish_promise: outer_resolve,
+        reject_finish_promise: outer_reject
       };
       __status_text_active = active;
       __status_text_started = true;
@@ -121,9 +121,9 @@ function __status_text_tick() {
     }
 
     active = {
-      auto_fold = false,
-      resolve_finish_promise = outer_resolve,
-      reject_finish_promise = outer_reject
+      auto_fold: false,
+      resolve_finish_promise: outer_resolve,
+      reject_finish_promise: outer_reject
     }
     __status_text_active = active;
     __status_text_started = true;
