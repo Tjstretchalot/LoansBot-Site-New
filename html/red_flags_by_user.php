@@ -45,8 +45,8 @@
           </div>
           
           <div class="form-group row">
-            <button id="submit-button" type="submit" class="col-3 btn btn-primary">Search</button>
-            <button id="request-button" type="button" class="col-3 offset-1 btn btn-danger">Request Report</button>
+            <button id="submit-button" type="submit" class="col-5 btn btn-primary">Search</button>
+            <button id="request-button" type="button" class="col-5 offset-2 btn btn-danger">Request Report</button>
           </div>
         </form> 
       </section>
