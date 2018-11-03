@@ -43,8 +43,10 @@
             <input type="text" class="form-control" id="username" aria-label="Username" placeholder="Username" aria-describedby="usernameHelpBlock">
             <small id="usernameHelpBlock" class="form-text text-muted">The username you want to fetch reports for.</small>
           </div>
+          
           <div class="form-group row">
-            <button id="submit-button" type="submit" class="col-auto btn btn-primary">Submit</button>
+            <button id="submit-button" type="submit" class="col-auto btn btn-primary">Search</button>
+            <button id="request-button" type="button" class="col-auto btn btn-danger">Request Report</button>
           </div>
         </form> 
       </section>
@@ -229,6 +231,25 @@
               });
             })(i);
           }
+        }).fail(function(xhr) {
+          console.log(xhr.responseJSON);
+          var json_resp = xhr.responseJSON;
+          var err_type = json_resp.errors[0].error_type;
+          var err_mess = json_resp.errors[0].error_message;
+          console.log(err_type + ": " + err_mess);
+          set_status_text(status_text, FAILURE_GLYPHICON + " " + err_mess, 'danger', true, 20200);  
+        });
+      });
+
+      $("#request-button").on('click', function(e) {
+        e.preventDefault();
+        clear_reports();
+        var status_text = $("#statusText");
+        var username = $("#username").val();
+
+        set_status_text(status_text, LOADING_GLYPHICON + ' Requesting report...', 'info', true, 200);
+        $.post('/api/request_red_flag_report.php', { username: username }, function(data, stat) {
+          set_status_text(status_text, SUCCESS_GLYPHICON + ' Requested report. See the queue for progress. Recall that it will only generate reports at most once per month per user.', 'success', true, 20200); 
         }).fail(function(xhr) {
           console.log(xhr.responseJSON);
           var json_resp = xhr.responseJSON;
