@@ -58,7 +58,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   $cleaned_reports = array();
-  $reports = DatabaseHelper::fetch_all($sql_conn, 'SELECT * FROM red_flag_reports WHERE username_id=?', array(array('i', $username_obj->id)));
+  $reports = DatabaseHelper::fetch_all($sql_conn, 'SELECT * FROM red_flag_reports WHERE username_id=? ORDER BY created_at DESC', array(array('i', $username_obj->id)));
   foreach($reports as $report) {
     $cleaned_reports[] = array(
       'id' => $report->id,

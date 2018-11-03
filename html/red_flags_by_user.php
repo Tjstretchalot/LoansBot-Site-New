@@ -68,6 +68,19 @@
       function clear_reports() {
         $("#red_flag_reports").empty();
       }
+
+      /** 
+       * Adds a header that indicates reports past this point are old. It wasn't sufficiently
+       * obvious with just the hline. 
+       *
+       * The sort order is provided by the get API
+       */
+      function add_older_header() {
+        var my_div = $("<h2>Older Reports</h2>");
+        my_div.attr('style', 'display: none');
+        $("#red_flag_reports").append(my_div);
+        my_div.slideDown('fast');
+      }
       
       /**
        * Add the report to the list of reports.
@@ -201,6 +214,9 @@
           for(var i = 0; i < data.reports.length; i++) {
             (function(i) {
               $.post('/api/red_flag_report.php', { id: data.reports[i].id }, function(data, stat) {
+                if(i == 1) {
+                  add_older_header();
+                }
                 add_report(data);
               }).fail(function(xhr) {
                 console.log(xhr.responseJSON);
