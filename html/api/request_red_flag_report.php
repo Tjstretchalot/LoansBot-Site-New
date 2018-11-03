@@ -63,7 +63,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
   }
 
-  DatabaseHelper::execute($sql_conn, 'INSERT INTO red_flag_queue_spots (report_id, username_id, created_at, started_at, completed_at) VALUES (-1, ?, NOW(), NULL, NULL)', array(array('i', $username_obj->id)));
+  DatabaseHelper::execute($sql_conn, 'INSERT INTO red_flag_queue_spots (report_id, username_id, created_at, started_at, completed_at) VALUES (NULL, ?, NOW(), NULL, NULL)', array(array('i', $username_obj->id)));
   echo_success('REQUEST_RED_FLAG_REPORT_SUCCESS', array());
   $sql_conn->close();
 }else {
