@@ -6,6 +6,7 @@
  */
 
 include_once 'connect_and_get_loggedin.php';
+include_once 'database/helper.php';
 
 /*
  * Determine if the user is logged in
