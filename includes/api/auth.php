@@ -32,6 +32,11 @@ function is_trusted() {
     if($rel_loans_row->num_loans_as_lend < 5) {
       return false;
     }
+
+    $blacklist_row = DatabaseHelper::fetch_one($sql_conn, 'SELECT 1 as x FROM promo_blacklist_users WHERE user_id=? AND removed_at IS NULL LIMIT 1', array(array('i', $logged_in_user->id)));
+    if($blacklist_row !== null) {
+      return false;
+    }
   }
   return true;
 }
