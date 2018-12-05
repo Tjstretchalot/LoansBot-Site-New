@@ -112,7 +112,7 @@ var query2_parameters = {};
       limit = limit || 10;
       var container = generate_container(this.param_name);
       var label = generate_label(this.param_name, "Limit");
-      var help_block = generate_simple_help_block(this.param_name, "Restricts the number of results to no more than the specified amount. When not included, the server will assume a default limit of 10 to avoid accidentally making very large queries. Use '0' as the limit to remove this restriction. Note that the loans API only guarrantees sorted results when a limit is specified and it is between 1 and 99 (inclusive)");
+      var help_block = generate_simple_help_block(this.param_name, "Restricts the number of results to no more than the specified amount. When not included, the server will assume a default limit of 99 to avoid accidentally making very large queries. Use '0' as the limit to remove this restriction. Note that the loans API only guarrantees sorted results when a limit is specified and it is between 1 and 99 (inclusive)");
       var control = generate_input_control(this.param_name, "number", "Limit");
       control.attr("value", limit.toString());
       control.attr("min", "0");

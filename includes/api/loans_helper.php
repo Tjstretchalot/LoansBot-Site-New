@@ -21,7 +21,7 @@ class ParameterParser {
   }
 
   public static function parse_limit($helper, $params) {
-    $limit = 10;
+    $limit = 99;
     if(isset($params['limit']) && is_numeric($params['limit'])) {
       $_limit = intval($params['limit']);
       if($_limit >= 0 && $_limit <= 1000) {
