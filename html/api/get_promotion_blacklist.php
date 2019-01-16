@@ -56,7 +56,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   $query .= 'FROM promo_blacklist_users ';
   $query .= 'INNER JOIN usernames AS users_username ON users_username.user_id = promo_blacklist_users.user_id ';
   $query .= 'INNER JOIN usernames AS mods_username ON mods_username.user_id = promo_blacklist_users.mod_user_id ';
-  $query .= 'WHERE promo_blacklist.removed_at IS NULL';
+  $query .= 'WHERE promo_blacklist_users.removed_at IS NULL';
   $args = array();
   if($username !== null) {
     $query .= ' AND users_username LIKE ?';
