@@ -71,7 +71,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
   DatabaseHelper::execute($sql_conn, 'INSERT INTO promo_blacklist_users (user_id, mod_user_id, reason, added_at, removed_at) VALUES (?, ?, ?, NOW(), NULL)',
     array(array('i', $user->user_id), array('i', $logged_in_user->id), array('s', $reason)));
 
-  echo_success('ADD_TO_PROMO_BLACKLIST');
+  echo_success('ADD_TO_PROMO_BLACKLIST', array());
   $sql_conn->close();
 }else {
   echo_fail(405, 'METHOD_NOT_ALLOWED', 'You must use a POST request at this endpoint');
