@@ -66,6 +66,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   $result = DatabaseHelper::fetch_one($sql_conn, $query, $args);
 
   echo_success('PROMOTION_BLACKLIST', array('list' => $result));
+  $sql_conn->close();
 }else {
   echo_fail(405, 'METHOD_NOT_ALLOWED', 'You must use a GET request at this endpoint');
 }
