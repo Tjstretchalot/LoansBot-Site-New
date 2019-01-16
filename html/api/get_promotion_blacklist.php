@@ -52,7 +52,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
 
   $query = 'SELECT users_username.username as username, ';
   $query .= 'mods_username.username as mod_username, promo_blacklist_users.reason as reason, ';
-  $query .= 'UNIX_TIMESTAMP(promo_blacklist_users.added_at) * 1000 as added_at, ';
+  $query .= 'UNIX_TIMESTAMP(promo_blacklist_users.added_at) * 1000 as added_at ';
   $query .= 'FROM promo_blacklist_users ';
   $query .= 'INNER JOIN usernames AS users_username ON users_username.user_id = promo_blacklist_users.user_id ';
   $query .= 'INNER JOIN usernames AS mods_username ON mods_username.user_id = promo_blacklist_users.mod_user_id ';
