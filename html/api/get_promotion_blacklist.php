@@ -63,7 +63,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
     $args[] = array('s', $username);
   }
 
-  $result = DatabaseHelper::fetch_one($sql_conn, $query, $args);
+  $result = DatabaseHelper::fetch_all($sql_conn, $query, $args);
 
   echo_success('PROMOTION_BLACKLIST', array('list' => $result));
   $sql_conn->close();
