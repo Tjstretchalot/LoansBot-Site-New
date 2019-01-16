@@ -61,7 +61,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     return;
   }
 
-  $existing = DatabaseHelper::fetch_one($sql_conn, 'SELECT 1 FROM promo_blacklist_users WHERE user_id=? AND removed_at IS NOT NULL', array(array('i', $user->user_id)));
+  $existing = DatabaseHelper::fetch_one($sql_conn, 'SELECT 1 as one FROM promo_blacklist_users WHERE user_id=? AND removed_at IS NULL', array(array('i', $user->user_id)));
 
   if($existing !== null) {
       echo_fail(400, 'INVALID_ARGUMENT', 'that user is already on the promotion blacklist!');
