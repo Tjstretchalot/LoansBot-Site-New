@@ -59,7 +59,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   $query .= 'WHERE promo_blacklist.removed_at IS NULL';
   $args = array();
   if($username !== null) {
-    query .= ' AND users_username LIKE ?';
+    $query .= ' AND users_username LIKE ?';
     $args[] = array('s', $username);
   }
 
