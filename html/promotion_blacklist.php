@@ -34,7 +34,7 @@
         <label class="sr-only" for="search-limit">Maximum number of results</label>
         <input type="number" class="form-control mr-sm-2 mb-2" id="search-limit" placeholder="Maximum # results" value="10">
 
-        <button type="button" class="btn btn-primary mb-2 mr-sm-2" id="search-get">Fetch Page 1</button>
+        <button type="submit" class="btn btn-primary mb-2 mr-sm-2" id="search-get">Fetch Page 1</button>
         <button type="button" class="btn btn-secondary mb-2 mr-sm-2" id="search-get-prev" disabled>Prev Page</button>
         <button type="button" class="btn btn-secondary mb-2 mr-sm-2" id="search-get-next" disabled>Next Page</button>
       </form>
