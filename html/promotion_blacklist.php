@@ -39,7 +39,7 @@
         <button type="button" class="btn btn-secondary mb-2 mr-sm-2" id="search-get-next" disabled>Next Page</button>
       </form>
 
-      <div id="results-table-wrapper" style="display: none">
+      <div id="results-table-wrapper" class="mb-3" style="display: none">
         <table id="results-table">
         </table>
       </div>
