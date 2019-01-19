@@ -93,7 +93,13 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
     $query .= ' AND promo_blacklist_users.id <= ?';
     $args[] = array('i', $max_id);
   }
-  $query .= ' ORDER BY promo_blacklist_users.id';
+
+  if($max_id !== null && $min_id === null) {
+    $query .= ' ORDER BY promo_blacklist_users.id DESC';
+  }else {
+    $query .= ' ORDER BY promo_blacklist_users.id ASC';
+  }
+
   if($limit !== null) {
     $query .= ' LIMIT ?';
     $args[] = array('i', $limit);
