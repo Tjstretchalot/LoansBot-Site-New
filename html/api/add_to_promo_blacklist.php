@@ -68,6 +68,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
       return;
   }
 
+  $user_info = DatabaseHelper::fetch_one($sql_conn, 'SELECT auth FROM users WHERE id=?', array(array('i', $user->user_id)));
+
+  if($user_info->auth >= 1) {
+    echo_fail(400, 'INVALID_ARGUMENT', 'The user you are trying to add to the blacklist is protected');
+    return;
+  }
+
   DatabaseHelper::execute($sql_conn, 'INSERT INTO promo_blacklist_users (user_id, mod_user_id, reason, added_at, removed_at) VALUES (?, ?, ?, NOW(), NULL)',
     array(array('i', $user->user_id), array('i', $logged_in_user->id), array('s', $reason)));
 

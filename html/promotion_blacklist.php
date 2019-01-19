@@ -49,10 +49,20 @@
 
       <form class="form-inline" id="add-form">
         <label class="sr-only" for="add-username">Username to Add</label>
+        <input type="text" class="form-control mr-sm-2 mb-2" id="add-username" placeholder="Username">
+
+        <button type="submit" class="btn btn-primary mb-s mr-sm-2" id="add-btn">Add</button>
       </form>
 
       <h2>Remove</h2>
       <div class="container-fluid alert" id="status-text-remove" style="display: none"></div>
+
+      <form class="form-inline" id="add-form">
+        <label class="sr-only" for="remove-username">Username to Remove</label>
+        <input type="text" class="form-control mr-sm-2 mb-2" id="remove-username" placeholder="Username">
+
+        <button type="submit" class="btn btn-primary mb-s mr-sm-2" id="remove-btn">Remove</button>
+      </form>
     </div>
     <?php include('bootstrap_js.php') ?>
     <script src="js/jquery.basictable.min.js"></script>
@@ -187,6 +197,30 @@
         if(isNaN(limit)) { limit == null; }
 
         get_page(username, null, paginate_prev - 1, limit);
+      });
+
+      $("#add-btn").click(function(e) {
+        e.preventDefault();
+
+        var username = $("#add-username").val().trim();
+        var st_div = $("#status-text-add");
+        $.post('https://redditloans.com/api/add_to_promo_blacklist.php', { username: username }, function(data, succ) {
+          set_status_text(st_div, SUCCESS_GLYPHICON + ' User added to promotion blacklist', 'success', true);
+        }).fail(function(xhr) {
+          set_status_text_from_xhr(st_div, xhr);
+        });
+      });
+
+      $("#remove-btn").click(function(e) {
+        e.preventDefault();
+
+        var username = $("#remove-username").val().trim();
+        var st_div = $("#status-text-remove");
+        $.post('https://redditloans.com/api/delete_from_promo_blacklist.php', { username: username }, function(data, succ) {
+          set_status_text(st_div, SUCCESS_GLYPHICON + ' User removed from promotion blacklist', 'success', true);
+        }).fail(function(xhr) {
+          set_status_text_from_xhr(st_div, xhr);
+        });
       });
     </script>
   </body>
