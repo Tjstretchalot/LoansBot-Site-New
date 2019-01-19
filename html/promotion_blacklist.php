@@ -37,7 +37,7 @@
         <button type="button" class="btn btn-primary mb-2 mr-sm-2" id="search-get">Fetch Page 1</button>
         <button type="button" class="btn btn-secondary mb-2 mr-sm-2" id="search-get-prev" disabled>Prev Page</button>
         <button type="button" class="btn btn-secondary mb-2 mr-sm-2" id="search-get-next" disabled>Next Page</button>
-      </div>
+      </form>
 
       <div id="results-table-wrapper">
         <table id="results-table">
