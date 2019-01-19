@@ -61,7 +61,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   }
 
   if($username !== null) {
-    foreach($username as $c) {
+    foreach(str_split($username) as $c) {
       if(!ctype_alnum($c) && $c !== '_' && $c !== '-' && $c !== '%') {
         echo_fail(400, 'INVALID_ARGUMENT', 'username contains invalid character ' . $c);
         return;
