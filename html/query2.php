@@ -68,9 +68,9 @@
       var loaded_saved_queries = {};
 
       /*
-       * Accepts a list of saved queries (at least sufficient to include the 
+       * Accepts a list of saved queries (at least sufficient to include the
        * query name and query id), and then populates the saved-queries-select
-       * with them. 
+       * with them.
        *
        * @param saved_queries something of the form [ { str_id: "unique_string123", name: "Query 1" } ]
        */
@@ -144,9 +144,9 @@
       }
 
       /*
-       * Append a query parameter to the parameters form. 
+       * Append a query parameter to the parameters form.
        *
-       * The param_name must match a param name that is specified in 
+       * The param_name must match a param name that is specified in
        * /js/query2_query_parameters.js
        *
        * The options vary based on the parameter. It should be an array.
@@ -157,7 +157,7 @@
       function append_query_parameter(param_name, options) {
         for(var i = 0, len = existing_query_parameters.length; i < len; i++) {
           var existing_param = existing_query_parameters[i];
-          if(existing_param.param_name === param_name) 
+          if(existing_param.param_name === param_name)
             throw Error("Duplicate param name " + param_name + " (matches with existing param at index " + i + ")");
         }
 
@@ -198,11 +198,11 @@
       }
 
       /*
-       * Loads a saved query into the parameter list. Assumes that the 
+       * Loads a saved query into the parameter list. Assumes that the
        * query has already been fetched from the server.
        *
        * The saved query should be at least of the form
-       * 
+       *
        * { parameters: [ { param_name: "unique_param_name", options: [] } ] }
        */
       function load_saved_query(saved_query) {
@@ -218,7 +218,7 @@
 
       function format_money(cents) {
         var str = "$" + Math.floor(cents / 100) + ".";
-        
+
         var pennies = cents % 100;
         if(pennies !== 0) {
           if(pennies < 10)
@@ -233,7 +233,7 @@
       function format_time(time) {
         return new Date(time).toLocaleDateString();
       }
-      
+
       function resolve_thread(callingA, loan_id) {
         callingA = $(callingA);
         if(callingA.data("resolving") == 1)
@@ -294,7 +294,7 @@
           if(tab.parent().hasClass("bt-wrapper")) {
             tab.basictable('destroy');
           }
-          
+
           var thead = $("<thead>");
           var tr = $("<tr>");
           tr.append("<th>ID</th>");
@@ -313,7 +313,7 @@
           }
           if(have_modified_info)
             tr.append("<th>Refresh</th>");
-          
+
           thead.append(tr);
           tab.append(thead);
 
@@ -406,14 +406,14 @@
             var query = queries[i];
             loaded_saved_queries[query.str_id] = query;
           }
-          
+
           if(succ_callback)
             succ_callback();
         }).fail(function(xhr) {
           var statusText = $("#saved-queries-status-text");
           statusText.removeClass("alert-success").removeClass("alert-info");
           statusText.addClass("alert-danger");
-          
+
           var err_mess = "Unknown error";
           if(xhr.status < 400 || xhr.status >= 500 || xhr.status === 404) {
             err_mess = "Strange response status code: " + xhr.statusText;
@@ -423,7 +423,7 @@
 
           statusText.html("<span class=\"glyphicon glyphicon-remove\"></span> Error loading saved queries: " + err_mess);
 
-          if(fail_callback) 
+          if(fail_callback)
             fail_callback(err_mess);
         });
       }
@@ -432,24 +432,24 @@
 
       /*
        * Collects the query2_parameters into a format thats usable for
-       * setup_add_parameters and calls it 
+       * setup_add_parameters and calls it
        */
       function load_add_parameters() {
         params = [];
 
         for(var key in query2_parameters) {
           if(query2_parameters.hasOwnProperty(key)) {
-            params[params.length] = query2_parameters[key]; 
+            params[params.length] = query2_parameters[key];
           }
         }
 
         setup_add_parameters(params);
       }
-      
+
       load_add_parameters();
 
       /// EVENT LISTENERS
-      
+
       $("#saved-queries-form").submit(function(e) {
         e.preventDefault();
 
@@ -513,7 +513,7 @@
               statusText.fadeOut('fast', function() {
                 statusText.removeClass('alert-info');
                 statusText.addClass('alert-danger');
-                
+
                 var err_mess = 'Unknown';
                 if('object' === typeof(xhr.responseJSON))
                   err_mess = xhr.responseJSON.errors[0].error_message;
@@ -535,13 +535,13 @@
         if(option.length === 0)
           return;
 
-        if(option.attr('disabled')) 
+        if(option.attr('disabled'))
           return;
 
         var param_name = option.attr('value');
         append_query_parameter(param_name, []);
       });
-      
+
       $("#run-query-button").click(function(e) {
         e.preventDefault();
 
