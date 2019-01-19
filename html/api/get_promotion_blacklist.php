@@ -59,7 +59,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   if($username !== null && strlen($username) === 0) {
     $username = null;
   }
-  
+
   if($username !== null) {
     foreach($username as $c) {
       if(!ctype_alnum($c) && $c !== '_' && $c !== '-' && $c !== '%') {
@@ -86,7 +86,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   $query .= 'WHERE promo_blacklist_users.removed_at IS NULL';
   $args = array();
   if($username !== null) {
-    $query .= ' AND users_username LIKE ?';
+    $query .= ' AND users_username.username LIKE ?';
     $args[] = array('s', $username);
   }
   if($min_id !== null) {
