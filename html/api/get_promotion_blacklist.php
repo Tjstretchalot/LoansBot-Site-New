@@ -56,6 +56,10 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   }
 
   /* VALIDATING ARGUMENTS */
+  if($username !== null && strlen($username) === 0) {
+    $username = null;
+  }
+  
   if($username !== null) {
     foreach($username as $c) {
       if(!ctype_alnum($c) && $c !== '_' && $c !== '-' && $c !== '%') {
