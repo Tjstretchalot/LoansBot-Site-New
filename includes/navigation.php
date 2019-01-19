@@ -50,6 +50,11 @@
         'link' => '/red_flag_subreddits.php',
         'name' => 'Red Flag Subs'
       );
+
+      $pages[] = array(
+        'link' => '/promotion_blacklist.php',
+        'name' => 'Promo Blacklist'
+      )
     }
 
     $lender_perms = true;
@@ -94,7 +99,7 @@
       <ul class="navbar-nav mr-auto">
         <?php foreach($pages as $key=>$page): ?>
         <?php if ($_SERVER['REQUEST_URI'] == $page['link'] || ($_SERVER['REQUEST_URI'] == '/' && $page['link'] == '/index.php')): ?>
-          <li class="nav-item active"> 
+          <li class="nav-item active">
             <a class="nav-link" href="#"><?= $page['name'] ?> <span class="sr-only">(current)</span></a>
           </li>
         <?php else: ?>
