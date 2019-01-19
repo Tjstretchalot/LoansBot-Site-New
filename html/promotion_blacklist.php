@@ -118,7 +118,7 @@
 
                 td = $("<td>");
                 td.attr("data-th", "Added");
-                td.text(moment.unix(user.added_at).calendar());
+                td.text(moment.unix(user.added_at / 1000).calendar());
                 tr.append(td);
 
                 tbody.append(tr);
