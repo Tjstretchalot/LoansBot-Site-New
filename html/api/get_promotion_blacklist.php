@@ -2,6 +2,9 @@
 /*
   Parameters:
     username - (optional) the username to search for. Compared using LIKE
+    min_id - (optional) sets the minimum id to return, helpful for pagination
+    max_id - (optional) sets the maximum id to return, helpful for pagination
+    limit - (optional) sets the maximum number of results to return, helpful for pagination
 
   Result:
     {
@@ -27,9 +30,28 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   /* DEFAULT ARGUMENTS */
   $username = null;
 
+  $min_id = null;
+  $max_id = null;
+  $limit = null;
+
   /* PARSING ARGUMENTS */
   if(isset($_GET['username'])) {
     $username = $_GET['username'];
+  }
+
+  if(isset($_GET['min_id']) && is_numeric($_GET['min_id'])) {
+    $min_id = intval($_GET['min_id']);
+  }
+
+  if(isset($_GET['max_id']) && is_numeric($_GET['max_id'])) {
+    $max_id = intval($_GET['max_id']);
+  }
+
+  if(isset($_GET['limit']) && is_numeric($_GET['limit'])) {
+    $limit = intval($_GET['limit']);
+    if($limit <= 0) {
+      $limit = null;
+    }
   }
 
   /* VALIDATING ARGUMENTS */
@@ -61,6 +83,18 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   if($username !== null) {
     $query .= ' AND users_username LIKE ?';
     $args[] = array('s', $username);
+  }
+  if($min_id !== null) {
+    $query .= ' AND promo_blacklist_users.id >= ?';
+    $args[] = array('i', $min_id);
+  }
+  if($max_id !== null) {
+    $query .= ' AND promo_blacklist_users.id <= ?';
+    $args[] = array('i', $max_id);
+  }
+  if($limit !== null) {
+    $query .= ' LIMIT ?';
+    $args[] = array('i', $limit);
   }
 
   $result = DatabaseHelper::fetch_all($sql_conn, $query, $args);
