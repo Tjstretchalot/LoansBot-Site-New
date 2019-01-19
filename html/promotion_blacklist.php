@@ -28,7 +28,7 @@
       <div class="container-fluid alert" id="status-text-search" style="display: none"></div>
 
       <form class="form-inline" id="search-form">
-        <label class="sr-only" for="search-username">Username</label>
+        <label class="sr-only" for="search-username">Username to search</label>
         <input type="text" class="form-control mr-sm-2 mb-2" id="search-username" placeholder="Username">
 
         <label class="sr-only" for="search-limit">Maximum number of results</label>
@@ -46,6 +46,10 @@
 
       <h2>Add</h2>
       <div class="container-fluid alert" id="status-text-add" style="display: none"></div>
+
+      <form class="form-inline" id="add-form">
+        <label class="sr-only" for="add-username">Username to Add</label>
+      </form>
 
       <h2>Remove</h2>
       <div class="container-fluid alert" id="status-text-remove" style="display: none"></div>
