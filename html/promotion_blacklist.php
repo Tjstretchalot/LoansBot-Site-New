@@ -51,6 +51,9 @@
         <label class="sr-only" for="add-username">Username to Add</label>
         <input type="text" class="form-control mr-sm-2 mb-2" id="add-username" placeholder="Username">
 
+        <label class="sr-only" for="add-reason">Reason for adding</label>
+        <input type="text" class="form-control mr-sm-2 mb-2" id="add-reason" placeholder="Reason">
+
         <button type="submit" class="btn btn-primary mb-s mr-sm-2" id="add-btn">Add</button>
       </form>
 
@@ -203,8 +206,10 @@
         e.preventDefault();
 
         var username = $("#add-username").val().trim();
+        var reason = $("#add-reason").val().trim();
+
         var st_div = $("#status-text-add");
-        $.post('https://redditloans.com/api/add_to_promo_blacklist.php', { username: username }, function(data, succ) {
+        $.post('https://redditloans.com/api/add_to_promo_blacklist.php', { username: username, reason: reason }, function(data, succ) {
           set_status_text(st_div, SUCCESS_GLYPHICON + ' User added to promotion blacklist', 'success', true);
         }).fail(function(xhr) {
           set_status_text_from_xhr(st_div, xhr);
