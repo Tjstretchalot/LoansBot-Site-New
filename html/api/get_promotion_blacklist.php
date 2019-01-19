@@ -12,6 +12,7 @@
       'success': true,
       'list': {
           {
+              id: 1,
               username: 'johndoe',
               mod_username: 'Tjstretchalot',
               reason: 'some text here',
@@ -72,7 +73,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
     return;
   }
 
-  $query = 'SELECT users_username.username as username, ';
+  $query = 'SELECT promo_blacklist_users.id as id, users_username.username as username, ';
   $query .= 'mods_username.username as mod_username, promo_blacklist_users.reason as reason, ';
   $query .= 'UNIX_TIMESTAMP(promo_blacklist_users.added_at) * 1000 as added_at ';
   $query .= 'FROM promo_blacklist_users ';
