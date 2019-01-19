@@ -39,7 +39,7 @@
         <button type="button" class="btn btn-secondary mb-2 mr-sm-2" id="search-get-next" disabled>Next Page</button>
       </form>
 
-      <div id="results-table-wrapper">
+      <div id="results-table-wrapper" style="display: none">
         <table id="results-table">
         </table>
       </div>
@@ -68,7 +68,7 @@
         }
 
         var st_div = $('#status-text-search');
-        var tab = $("#result-table");
+        var tab = $("#results-table");
         hiddenPromise.then(function() {
           tab.empty();
           if(tab.parent().hasClass("bt-wrapper")) {
