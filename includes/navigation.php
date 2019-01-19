@@ -54,7 +54,7 @@
       $pages[] = array(
         'link' => '/promotion_blacklist.php',
         'name' => 'Promo Blacklist'
-      )
+      );
     }
 
     $lender_perms = true;
