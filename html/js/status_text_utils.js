@@ -201,11 +201,11 @@ function set_status_text(st_div, new_text, new_alert_type, auto_fold, min_visibl
 
 function set_status_text_from_xhr(st_div, xhr) {
   var json_resp = xhr.responseJSON;
-  if(json_resp !== null && json_resp !== undefined && json_resp.error_type !== null) {
+  if(json_resp !== null && json_resp !== undefined && json_resp.errors !== null) {
     console.log(json_resp);
 
-    var err_type = json_resp.error_type;
-    var err_mess = json_resp.error_message;
+    var err_type = json_resp.errors[0].error_type;
+    var err_mess = json_resp.errors[0].error_message;
     console.log(err_type + ": " + err_mess);
 
     set_status_text(st_div, FAILURE_GLYPHICON + err_mess, 'danger', true, 6000);
