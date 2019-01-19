@@ -160,6 +160,30 @@
 
         get_page(username, null, null, limit);
       });
+
+      $("#search-get-next").click(function(e) {
+        e.preventDefault();
+
+        username = $("#search-username").val().trim();
+        if(username.length === 0) { username = null; }
+
+        limit = parseInt($("#search-limit").val().trim());
+        if(isNaN(limit)) { limit == null; }
+
+        get_page(username, paginate_next + 1, null, limit);
+      });
+
+      $("#search-get-prev").click(function(e) {
+        e.preventDefault();
+
+        username = $("#search-username").val().trim();
+        if(username.length === 0) { username = null; }
+
+        limit = parseInt($("#search-limit").val().trim());
+        if(isNaN(limit)) { limit == null; }
+
+        get_page(username, null, paginate_prev - 1, limit);
+      });
     </script>
   </body>
 </html>
