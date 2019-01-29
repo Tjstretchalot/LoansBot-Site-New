@@ -72,7 +72,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   /* VALIDATING AUTHORIZATION */
   require_once 'api/auth.php';
 
-  if(!is_moderator()) {
+  if(!is_trusted()) {
     on_failed_auth();
     return;
   }
