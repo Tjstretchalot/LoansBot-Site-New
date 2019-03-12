@@ -27,10 +27,12 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   /* VALIDATING ARGUMENTS */
   if($thread === null) {
     echo_fail(400, 'INVALID_ARGUMENT', 'thread is required at this endpoint!');
+    return;
   }
 
   if(strlen($thread) < 3) {
     echo_fail(400, 'INVALID_ARGUMENT', 'thread must be a valid url');
+    return;
   }
 
   /* VALIDATING AUTHORIZATION */
