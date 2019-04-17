@@ -21,6 +21,19 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     return;
   }
 
+  if(strlen($username) < 3) {
+    echo_fail(400, 'ARGUMENT_INVALID', 'Username is too short');
+    return;
+  }
+
+  for($i = 0; $i < strlen($username); $i++) {
+    $ch = $username[$i];
+    if((!ctype_alnum($ch) && $ch !== '_' && $ch !== '-') || ctype_space($ch)) {
+      echo_fail(400, 'ARGUMENT_INVALID', "Invalid character in username (pos $i has '$ch')");
+      return;
+    }
+  }
+
   /* VALIDATING AUTHORIZATION */
   if(isset($_COOKIE['session_id'])) {
     echo_fail(403, 'ALREADY_LOGGED_IN', 'You must be logged out to do that!');
@@ -28,7 +41,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   /* PERFORMING REQUEST */
-  $conn = create_db_connection(); 
+  $conn = create_db_connection();
   $user = UserMapping::fetch_by_username($conn, $username);
 
   if($user !== null && $user->claimed !== 0) {
