@@ -25,8 +25,8 @@
   if(isset($_GET["checkname"])) {
     $checkname = $_GET["checkname"];
 
-    for($i = 0; $i < strlen($username); $i++) {
-      $ch = $username[$i];
+    for($i = 0; $i < strlen($checkname); $i++) {
+      $ch = $checkname[$i];
       if((!ctype_alnum($ch) && $ch !== '_' && $ch !== '-') || ctype_space($ch)) {
         $checkname = NULL;
         break;
