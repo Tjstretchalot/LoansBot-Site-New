@@ -11,7 +11,7 @@
   $cssSheets[] = 'css/footable.bootstrap.min.css';
 
   $pageTitle = 'RedditLoans - Mobile Query';
-  
+
   $checkid = NULL;
   if(isset($_GET["checkid"]) && is_numeric($_GET["checkid"])) {
     $_checkid = intval($_GET["checkid"]);
@@ -24,6 +24,14 @@
   $checkname = NULL;
   if(isset($_GET["checkname"])) {
     $checkname = $_GET["checkname"];
+
+    for($i = 0; $i < strlen($username); $i++) {
+      $ch = $username[$i];
+      if((!ctype_alnum($ch) && $ch !== '_' && $ch !== '-') || ctype_space($ch)) {
+        $checkname = NULL;
+        break;
+      }
+    }
   }
 
   $limit = 25;
@@ -49,7 +57,7 @@
     $outstanding = intval($_GET["outstanding"]) === 1;
   }
 
-  include_once 'connect_and_get_loggedin.php'; 
+  include_once 'connect_and_get_loggedin.php';
   if($checkname && !$checkid) {
     $query = 'select user_id from usernames where username=? limit 1';
     $stmt = $sql_conn->prepare($query);
@@ -71,15 +79,15 @@
       $checkid = $logged_in_user->id;
     }
   }
-  
+
   $checkUsername = NULL;
   $checkLoans = NULL;
-  if($checkid) { 
+  if($checkid) {
     $query = 'select username from usernames where user_id=? limit 1';
     $stmt = $sql_conn->prepare($query);
     $stmt->bind_param('i', $checkid);
 
-    $stmt->execute();    
+    $stmt->execute();
     $stmt->store_result();
     $stmt->bind_result($username);
     if(!$stmt->fetch()) {
@@ -108,7 +116,7 @@
         $query .= ' AND (loans.unpaid != 1 AND loans.principal_cents != loans.principal_repayment_cents) ';
       }
       $query .= 'ORDER BY loans.created_at ASC LIMIT ? OFFSET ?';
-      
+
       $stmt = $sql_conn->prepare($query);
       $stmt->bind_param('iiii', $checkid, $checkid, $limit, $offset);
       $stmt->execute();
@@ -216,7 +224,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src="js/moment.js"></script>
-    <script src="js/footable.min.js"></script> 
+    <script src="js/footable.min.js"></script>
     <script type="text/javascript">
     jQuery(function($){
       $('.table').footable();
