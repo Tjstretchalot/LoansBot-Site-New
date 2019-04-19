@@ -21,11 +21,11 @@
         <div class="container-fluid alert" id="statusText" style="display: none"></div>
         <form id="create-account-form">
           <div class="form-group row">
-            <input type="text" class="form-control" id="username" aria-label="Username" placeholder="Username" aria-describedby="usernameHelpBlock" <?php if(isset($_GET['username'])) { echo 'value="'.$_GET['username'].'"'; } ?> required>
+            <input type="text" class="form-control" id="username" aria-label="Username" placeholder="Username" aria-describedby="usernameHelpBlock" <?php if(isset($_GET['username'])) { echo 'value="'.htmlspecialchars($_GET['username']).'"'; } ?> required>
             <small id="usernameHelpBlock" class="form-text text-muted">What is the username of the reddit account you want to claim?</small>
           </div>
           <div class="form-group row">
-            <input type="text" class="form-control" id="token" aria-label="Token" placeholder="Token" aria-describedby="tokenHelpBlock" <?php if(isset($_GET['claim_code'])) { echo 'value="' . $_GET['claim_code'] . '"'; } ?> required>
+            <input type="text" class="form-control" id="token" aria-label="Token" placeholder="Token" aria-describedby="tokenHelpBlock" <?php if(isset($_GET['claim_code'])) { echo 'value="' . htmlspecialchars($_GET['claim_code']) . '"'; } ?> required>
             <small id="tokenHelpBlock" class="form-text text-muted">The long and random string that the LoansBot sent only to you, which proves you recieved its message.</small>
           </div>
           <div class="form-group row">
@@ -59,15 +59,15 @@
           <div class="form-group row">
             <input type="text" class="form-control" id="streetAddress" aria-label="Street address" placeholder="Street Address" aria-describedby="streetAddressHelpBlock" required>
             <small id="stateHelpBlock" class="form-text text-muted">Your street address - if ambiguous, use the smallest amount of information that a non-local could use to uniquely identify your house if they know your country, state, and city.</small>
-          </div> 
+          </div>
           <div class="form-group row">
             <input type="text" class="form-control" id="zipAddress" aria-label="ZIP" placeholder="ZIP" aria-describedby="zipHelpBlock" required>
             <small id="zipHelpBlock" class="form-text text-muted">Your zip code - If you live in the U.S. what is your 5 digit zip code (the 4 digit extension is not required but is allowed). Otherwise put N/A</small>
-          </div> 
+          </div>
           <div class="form-group row">
             <button id="submit-button" type="submit" class="col-auto btn btn-primary">Submit</button>
           </div>
-        </form> 
+        </form>
       </section>
     </div>
     <?php include('bootstrap_js.php') ?>
@@ -79,7 +79,7 @@
       var form = $("#create-account-form");
       form.on('submit', function(e) {
         e.preventDefault();
-        
+
         var username = $("#username").val();
         var password1 = $("#password-1").val();
         var password2 = $("#password-2").val();
@@ -119,7 +119,7 @@
             statusText.fadeIn('fast');
 
             setTimeout(function() {
-              window.location.href = "https://redditloans.com"; 
+              window.location.href = "https://redditloans.com";
             }, 5000);
           });
         }).fail(function(xhr) {
