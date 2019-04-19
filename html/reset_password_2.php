@@ -16,11 +16,11 @@
         <div class="container-fluid alert" id="statusText" style="display: none"></div>
         <form id="reset-password-form">
           <div class="form-group row">
-            <input type="number" class="form-control" id="user-id" aria-label="User ID" placeholder="User ID" aria-describedby="useridHelpBlock" step="1" min="1" <?php if(isset($_GET['user_id'])) { echo 'value="'.$_GET['user_id'].'"'; } ?> required>
+            <input type="number" class="form-control" id="user-id" aria-label="User ID" placeholder="User ID" aria-describedby="useridHelpBlock" step="1" min="1" <?php if(isset($_GET['user_id'])) { echo 'value="'.htmlspecialchars($_GET['user_id']).'"'; } ?> required>
             <small id="useridHelpBlock" class="form-text text-muted">What is the user ID of the reddit account? This should have been provided.</small>
           </div>
           <div class="form-group row">
-            <input type="text" class="form-control" id="token" aria-label="Token" placeholder="Token" aria-describedby="tokenHelpBlock" <?php if(isset($_GET['code'])) { echo 'value="' . $_GET['code'] . '"'; } ?> required>
+            <input type="text" class="form-control" id="token" aria-label="Token" placeholder="Token" aria-describedby="tokenHelpBlock" <?php if(isset($_GET['code'])) { echo 'value="' . htmlspecialchars($_GET['code']) . '"'; } ?> required>
             <small id="tokenHelpBlock" class="form-text text-muted">The long and random string that the LoansBot sent only to you, which proves you recieved its message.</small>
           </div>
           <div class="form-group row">
@@ -34,7 +34,7 @@
           <div class="form-group row">
             <button id="submit-button" type="submit" class="col-auto btn btn-primary">Submit</button>
           </div>
-        </form> 
+        </form>
       </section>
     </div>
     <?php include('bootstrap_js.php') ?>
@@ -46,7 +46,7 @@
       var form = $("#reset-password-form");
       form.on('submit', function(e) {
         e.preventDefault();
-        
+
         var userid = $("#user-id").val();
         var password1 = $("#password-1").val();
         var password2 = $("#password-2").val();
@@ -79,7 +79,7 @@
             statusText.fadeIn('fast');
 
             setTimeout(function() {
-              window.location.href = "https://redditloans.com/login.php"; 
+              window.location.href = "https://redditloans.com/login.php";
             }, 5000);
           });
         }).fail(function(xhr) {
