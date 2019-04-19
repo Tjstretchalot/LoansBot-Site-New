@@ -21,7 +21,7 @@
         directly. If you are not sure why you are receiving this message,
         <a href="/index.php"><b>click here to return to the index page</b></a></p>
 
-        <p>This website is covered under <a href="https://www.openbugbounty.org/bugbounty/mtimothy984/">this open bug bounty</a>
+        <p>This website is covered under <a href="https://www.openbugbounty.org/bugbounty/mtimothy984/">this open bug bounty</a>.
         You can access the source code for the website
         <a href="https://github.com/tjstretchalot/loansbot-site-new">on GitHub</a>.</p>
       </section>
