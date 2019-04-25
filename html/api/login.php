@@ -50,15 +50,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   /* BRUTE FORCE PREVENTION */
+  $conn = create_db_connection();
   if ($token === null) {
     $num_failed_recently = DatabaseHelper::fetch_one($conn, 'SELECT COUNT(*) FROM failed_login_attempts WHERE attempted_at > DATE_SUB(NOW(), INTERVAL 10 MINUTE)', array());
     if ($num_failed_recently > 10) {
       echo_fail(429, 'TOO_MANY_REQUESTS', 'There have been too many failed login attempts recently to service unauthenticated logins. Use a recaptcha or wait 10 minutes');
+      $conn->close();
       return;
     }
   } else {
     if ($_SERVER['LOANSSITE_RECAPTCHA_ENABLED'] !== 'true') {
       echo_fail(503, 'RECAPTCHA_UNSUPPORTED', 'ReCAPTCHA is only supported on the production server');
+      $conn->close();
       return;
     }
     $context = stream_context_create(
@@ -80,12 +83,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if(!$captcha_success->success) {
       echo_fail(403, 'RECAPTCHA_FAILED', 'The specified recaptcha token is invalid or expired');
+      $conn->close();
       return;
     }
   }
 
   /* PERFORMING REQUEST */
-  $conn = create_db_connection();
   $person = UserMapping::fetch_by_username($conn, $username);
   if ($person === null) {
     DatabaseHelper::execute($conn, 'INSERT INTO failed_login_attempts (username) VALUES (?)', array(array('s', $username)));

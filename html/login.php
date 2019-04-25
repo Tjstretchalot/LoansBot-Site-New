@@ -8,7 +8,7 @@
     <?php include('metatags.php'); ?>
 
     <?php include('bootstrap_css.php'); ?>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <?php if ($_SERVER['LOANSSITE_RECAPTCHA_ENABLED'] === 'true'): ?><script src="https://www.google.com/recaptcha/api.js" async defer></script><?php endif; ?>
   </head>
   <body>
     <?php include('navigation.php'); ?>
@@ -74,9 +74,7 @@
         $("#username").removeClass("is-invalid");
         $("#password").removeClass("is-invalid");
 
-        <?php if ($_SERVER['LOANSSITE_RECAPTCHA_ENABLED'] === 'true'): ?>
-        var token = grecaptcha.getResponse();
-        <?php endif; ?>
+        <?php if ($_SERVER['LOANSSITE_RECAPTCHA_ENABLED'] === 'true'): ?>var token = grecaptcha.getResponse();<?php endif; ?>
         if (username && password && duration <?php if ($_SERVER['LOANSSITE_RECAPTCHA_ENABLED'] === 'true'): ?> && token <?php endif; ?>) {
           var statusText = $("#statusText");
           statusText.fadeOut('fast', function() {
@@ -91,7 +89,7 @@
             window.location.href = "/index.php";
           }).fail(function(xhr) {
             console.log(xhr.responseJSON);
-            grecaptcha.reset();
+            <?php if ($_SERVER['LOANSSITE_RECAPTCHA_ENABLED'] === 'true'): ?>grecaptcha.reset();<?php endif; ?>
             var json_resp = xhr.responseJSON;
             var err_type = json_resp.errors[0].error_type;
             var err_mess = json_resp.errors[0].error_message;
@@ -112,7 +110,7 @@
             $("#password").addClass("is-invalid");
           }
 
-          grecaptcha.reset();
+          <?php if ($_SERVER['LOANSSITE_RECAPTCHA_ENABLED'] === 'true'): ?>grecaptcha.reset();<?php endif; ?>
         }
       });
     </script>
