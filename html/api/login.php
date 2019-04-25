@@ -68,6 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       array(
         'http' => array(
           'method' => 'POST',
+          'header' => 'Content-Type: application/x-www-form-urlencoded',
           'content' => http_build_query(array(
             'secret' => $_SERVER['LOANSSITE_RECAPTCHA_SECRET'],
             'response' => $token
@@ -86,6 +87,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $conn->close();
       return;
     }
+
+    error_log('User passed recaptcha (success=' . strval($captcha_success->success) . ')');
   }
 
   /* PERFORMING REQUEST */
