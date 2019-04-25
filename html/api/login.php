@@ -57,6 +57,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       return;
     }
   } else {
+    if ($_SERVER['LOANSSITE_RECAPTCHA_ENABLED'] !== 'true') {
+      echo_fail(503, 'RECAPTCHA_UNSUPPORTED', 'ReCAPTCHA is only supported on the production server');
+      return;
+    }
     $context = stream_context_create(
       array(
         'http' => array(

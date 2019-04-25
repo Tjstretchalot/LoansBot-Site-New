@@ -47,7 +47,9 @@
             </div>
           </div>
           <div class="form-group row">
+            <?php if ($_SERVER['LOANSSITE_RECAPTCHA_ENABLED'] === 'true'): ?>
             <div class="g-recaptcha" data-sitekey="<?= $_SERVER['LOANSSITE_RECAPTCHA_SITEKEY'] ?>"></div>
+            <?php endif; ?>
             <button id="submit-button" type="submit" class="col-auto btn btn-primary">Submit</button>
           </div>
         </form>
@@ -72,8 +74,10 @@
         $("#username").removeClass("is-invalid");
         $("#password").removeClass("is-invalid");
 
+        <?php if ($_SERVER['LOANSSITE_RECAPTCHA_ENABLED'] === 'true'): ?>
         var token = grecaptcha.getResponse();
-        if (username && password && duration && token) {
+        <?php endif; ?>
+        if (username && password && duration <?php if ($_SERVER['LOANSSITE_RECAPTCHA_ENABLED'] === 'true'): ?> && token <?php endif; ?>) {
           var statusText = $("#statusText");
           statusText.fadeOut('fast', function() {
             statusText.removeClass("alert-danger").removeClass("alert-success");
@@ -82,7 +86,8 @@
             statusText.fadeIn('fast');
           });
           $("#submit-button").attr('disabled', true);
-          $.post("/api/login.php", { username: username, password: password, duration: duration, token: token }, function(data, stat) {
+          $.post("/api/login.php", { username: username, password: password, duration: duration
+          <?php if ($_SERVER['LOANSSITE_RECAPTCHA_ENABLED'] === 'true'): ?>, token: token <?php endif; ?> }, function(data, stat) {
             window.location.href = "/index.php";
           }).fail(function(xhr) {
             console.log(xhr.responseJSON);
