@@ -10,7 +10,7 @@
  *     confidence ; number
  *     min        ; number
  *     max        ; number
- *    
+ *
  *     confidenceToString()      ; string
  *     intervalToStringPercent() ; string
  *     intervalToStringDollar()  ; string
@@ -28,7 +28,7 @@
  *     updatedAt               ; number
  *
  *     isComplete() ; boolean
- *     
+ *
  *   LBData():
  *     loans ; array (of Loans)
 
@@ -89,7 +89,7 @@ function implementToggleButtons() {
    * Calls slideToggle on the selector when the button is clicked
    **/
   $(".toggle").click(function(e) {
-    e.preventDefault(); 
+    e.preventDefault();
     $($(this).attr("for")).slideToggle();
   });
 }
@@ -107,7 +107,7 @@ function implementLoadDataButton() {
  */
 var ConfidenceInterval = function(c, min, max) {
   /**
-   * Constructs a confidence interval with confidence c (between 0 and 1, inclusive), with 
+   * Constructs a confidence interval with confidence c (between 0 and 1, inclusive), with
    * a lower interval of min (inclusive) and an upper interval of max (inclusive)
    **/
   this.confidence = c;
@@ -168,7 +168,7 @@ var LBData = function() { /** Prepares an LBData instance with no data */ }
 
 LBData.prototype.fetch = function(successCallback, failCallback) {
   /**
-   * Fetches the raw data from the server using the API exposed 
+   * Fetches the raw data from the server using the API exposed
    * in https://github.com/Tjstretchalot/LoansBot-Site, and calls
    * success callback once the data is ready for use, or the fail
    * callback if the data couldn't be loaded.
@@ -197,7 +197,7 @@ LBData.prototype.getLoans = function(predicate) {
  * LBDataAnalysis
  */
 var LBDataAnalysis = function(lbData) {
-  /** 
+  /**
    * Constructs the analysis object with the specified data. The data
    * should be ready for use by the time any functions are called
    **/
@@ -241,12 +241,12 @@ LBDataAnalysis.prototype.getFromLastXDays = function(loans, days, useUpdatedInst
    * Gets the loans from the last x days
    * @return array (of Loans)
    */
-  
+
   var currentServerTime = Date.now()
   var filterBefore = currentServerTime - 86400000 * days
   return loans.filter(function(ele, ind, arr) {
     if(!useUpdatedInsteadOfCreated) {
-      return ele.createdAt >= filterBefore; 
+      return ele.createdAt >= filterBefore;
     }else {
       return ele.updatedAt >= filterBefore;
     }
@@ -317,7 +317,7 @@ LBDataAnalysis.prototype.estimateSkewness = function(arr, dataFn) {
   /**
    * Estimates the skewness of the data using a natural method
    * of moments estimator.
-   * 
+   *
    * @param arr an array of things, such that
    * @param dataFn dataFn(arr[i]) returns a number
    * @see https://en.wikipedia.org/wiki/Skewness
@@ -333,23 +333,23 @@ LBDataAnalysis.prototype.estimateSkewness = function(arr, dataFn) {
      }
    });
    var mean = total.dividedBy(arr.length);
-   
+
    // step 2: sum of squared and cubed distance from mean
    var squaredDistToMeanTotal = new Decimal(0);
    var cubedDistToMeanTotal = new Decimal(0);
    arr.forEach(function(ele, ind, arr) {
      var data = dataFn(ele);
-     
+
      if(typeof(data) === 'number') {
        var dist = new Decimal(data).minus(mean);
        squaredDistToMeanTotal = squaredDistToMeanTotal.plus(dist.toPower(2));
        cubedDistToMeanTotal = cubedDistToMeanTotal.plus(dist.toPower(3));
      }
    })
-   
+
    // step 3: numerator
    var numerator = (new Decimal(1).dividedBy(arr.length)).times(cubedDistToMeanTotal);
-   
+
    // step 4: denominator
    var denominator = ((new Decimal(1).dividedBy(arr.length - 1)).times(squaredDistToMeanTotal)).toPower(1.5);
 
@@ -366,7 +366,7 @@ LBDataAnalysis.prototype.getBinSizeDoane = function(arr, dataFn, skewness) {
    * @param skewness the skewness of the data
    * @see https://en.wikipedia.org/wiki/Histogram
    */
-   
+
    // step 1: min and max
    var minVal = Number.MAX_VALUE;
    var maxVal = Number.MIN_VALUE;
@@ -379,18 +379,18 @@ LBDataAnalysis.prototype.getBinSizeDoane = function(arr, dataFn, skewness) {
      }
    });
 
-   // step 2: sigma 
+   // step 2: sigma
    var sigma = new Decimal(6).times(new Decimal(arr.length).minus(2)).dividedBy(new Decimal(arr.length).plus(1).times(new Decimal(arr.length).plus(3))).squareRoot();
 
-   // step 3: get k 
+   // step 3: get k
    var k = new Decimal(1).plus(new Decimal(arr.length).log(2)).plus(new Decimal(1).plus(new Decimal(skewness).absoluteValue().dividedBy(sigma)).log(2));
-   
+
    // step 4: done
    return new Decimal(maxVal).minus(minVal).dividedBy(k).toNumber();
 };
 
 LBDataAnalysis.prototype.groupBy = function(arr, dataFn, binSize, startAtFirst) {
-  /** 
+  /**
    * Generic function to group an array that can fetch
    * a value from each element with dataFn, into bins of
    * binSize
@@ -418,14 +418,14 @@ LBDataAnalysis.prototype.groupBy = function(arr, dataFn, binSize, startAtFirst) 
       result[i] = [];
     }
   }
-  
+
   return [result, start];
 };
 
 LBDataAnalysis.prototype.groupByPrincipal = function(loans, binSizeCents) {
   /**
-   * Groups the specified loans by their principal. Returns 
-   * an array of array of loans. The first index has loans 
+   * Groups the specified loans by their principal. Returns
+   * an array of array of loans. The first index has loans
    * with a principal between 0 and binSizeCents.
    *
    * @param loans array (of Loans)
@@ -437,7 +437,7 @@ LBDataAnalysis.prototype.groupByPrincipal = function(loans, binSizeCents) {
 
 LBDataAnalysis.prototype.groupByCreatedAt = function(loans, binSizeMS) {
   /**
-   * Groups the specified loans by their created at timestamp. Returns 
+   * Groups the specified loans by their created at timestamp. Returns
    * an array of array of loans. THe first index has loans with a created
    * at between the first loan the binSizeMS + first loan time
    *
@@ -457,11 +457,11 @@ LBDataAnalysis.prototype.getLoanDefaultRateCI = function() {
   var L = this.getAllLoans().length;
   var P = this.getOutstandingLoans().length;
   var D = this.getUnpaidLoans().length;
-  
+
   var Ls = L - P;
 
   var r = 1.96 * Math.sqrt( ((D / Ls) * (1 - (D / Ls))) / (Ls) );
-  return new ConfidenceInterval(0.95, (D / Ls) - r, (D / Ls) + r); 
+  return new ConfidenceInterval(0.95, (D / Ls) - r, (D / Ls) + r);
 };
 
 LBDataAnalysis.prototype.getUserDefaultRateCI = function() {
@@ -482,7 +482,7 @@ LBDataAnalysis.prototype.getRecurringUserRateCI = function() {
    **/
   var LRB = this.getIndistinctBorrowerIds(this.getCompletedLoans()).length;
   var LC = this.getCompletedLoans().length;
- 
+
   var r = 1.96 * Math.sqrt( ((LRB / LC) * (1 - (LRB / LC))) / LC );
   return new ConfidenceInterval(0.95, (LRB / LC) - r, (LRB / LC) + r);
 };
@@ -498,7 +498,7 @@ LBDataAnalysis.prototype.getRecurringUserDefaultRateCI = function() {
    var completedLoansWithBorrowersWithMultipleCompletedLoans = completedLoans.filter(function(ele, ind, arr) {
       return $.inArray(ele.borrowerId, borrowersWithMultipleCompletedLoans) !== -1;
    });
-   
+
    // Finding LDRB
    var loansRepaidInFull = this.lbData.getLoans(function(ele, ind, arr) {
      return ele.principalCents === ele.principalRepaymentCents;
@@ -527,7 +527,7 @@ LBDataAnalysis.prototype.getProjectedLoanValueCI = function() {
     meanCentsD = meanCentsD.plus(ele.principalCents);
   });
   meanCentsD = meanCentsD.div(allLoans.length);
-  
+
   // Step 2: Finding S^2
   var stdErrorSqD = new Decimal(0);
   allLoans.forEach(function(ele, ind, arr) {
@@ -536,7 +536,7 @@ LBDataAnalysis.prototype.getProjectedLoanValueCI = function() {
     var diffSqDivN = diffSq.div(allLoans.length);
     stdErrorSqD = stdErrorSqD.plus(diffSqDivN);
   });
- 
+
   // Step 3: Finding r
   var r = Math.ceil(1 * stdErrorSqD.squareRoot().toNumber());
   return new ConfidenceInterval(0.68, meanCentsD.toNumber() - r, meanCentsD.toNumber() + r);
@@ -557,13 +557,13 @@ function analyzeData(lbData) {
    * #loans-unpaid-total     : # ($)
    * #loans-unpaid-month     : # ($)
    * #loans-unpaid-week      : # ($)
-   * 
+   *
    * #loans-default-rate-confidence:          %  ;  #loans-default-rate-interval:          % - %
    * #users-default-rate-confidence:          %  ;  #users-default-rate-interval:          % - %
    * #recurring-user-rate-confidence:         %  ;  #recurring-user-rate-interval:         % - %
    * #recurring-user-default-rate-confidence: %  ;  #recurring-user-default-rate-interval: % - %
    * #projected-loan-value-confidence:        %  ;  #projected-loan-value-interval:        $ - $
-   * 
+   *
    * As well as the following graphs:
    * #loan-quantity-vs-principal
    * #loans-fulfilled-over-time
@@ -579,12 +579,12 @@ function analyzeData(lbData) {
    $("#loans-lent-total").html(allLoans.length + " ($" + (analysis.centValue(allLoans) / 100.).toLocaleString() + ")");
    $("#loans-lent-month").html(loansLastMonth.length + " ($" + (analysis.centValue(loansLastMonth) / 100.).toLocaleString() + ")");
    $("#loans-lent-week").html(loansLastWeek.length + " ($" + (analysis.centValue(loansLastWeek) / 100.).toLocaleString() + ")");
-   
+
    // #loans-outstanding-*
    var outstandingLoans = analysis.getOutstandingLoans();
    var outstandingLastMonth = analysis.getFromLastXDays(outstandingLoans, 30);
    var outstandingLastWeek = analysis.getFromLastXDays(outstandingLoans, 7);
-   $("#loans-outstanding-total").html(outstandingLoans.length + " ($" + (analysis.centValue(outstandingLoans) / 100.).toLocaleString() + ")"); 
+   $("#loans-outstanding-total").html(outstandingLoans.length + " ($" + (analysis.centValue(outstandingLoans) / 100.).toLocaleString() + ")");
    $("#loans-outstanding-month").html(outstandingLastMonth.length + " ($" + (analysis.centValue(outstandingLastMonth) / 100.).toLocaleString() + ")");
    $("#loans-outstanding-week").html(outstandingLastWeek.length + " ($" + (analysis.centValue(outstandingLastWeek) / 100.).toLocaleString() + ")");
 
@@ -596,7 +596,7 @@ function analyzeData(lbData) {
    $("#loans-unpaid-month").html(unpaidLastMonth.length + " ($" + (analysis.centValue(unpaidLastMonth) / 100.).toLocaleString() + ")");
    $("#loans-unpaid-week").html(unpaidLastWeek.length + " ($" + (analysis.centValue(unpaidLastWeek) / 100.).toLocaleString() + ")");
 
-     
+
    // #loans-default-rate-confidence, #loans-default-rate-interval
    var ldrCI = analysis.getLoanDefaultRateCI();
    $("#loans-default-rate-confidence").html(ldrCI.confidenceToString());
@@ -632,7 +632,7 @@ function analyzeData(lbData) {
    var getPrincipalOfLoan = function(loan) {
      return loan.principalCents;
    };
- 
+
    var skewnessPrincipal = analysis.estimateSkewness(loansNoOutliers, getPrincipalOfLoan);
    var binSizeCents = analysis.getBinSizeDoane(loansNoOutliers, getPrincipalOfLoan, skewnessPrincipal);
    var binSizeDollars = Math.round(binSizeCents / 100);
@@ -652,7 +652,7 @@ function analyzeData(lbData) {
        data[i] = 0;
      }
    }
-   
+
    new Chart($("#loan-quantity-vs-principal"), {
      type: 'bar',
      data: {
@@ -716,7 +716,7 @@ function loadData() {
    * In case this function takes a while, there is also a div that looks like:
    * <div id="fetch-data-status-text" hidden></div>
    *
-   * This div can be further styled using any of the bootstrap backgrounds. See 
+   * This div can be further styled using any of the bootstrap backgrounds. See
    * status_text_utils for information on how that works.
    *
    * Finally, in the event of failure, the user should be directed to contact me via
@@ -744,7 +744,7 @@ function loadData() {
   var successBackground = 'success';
 
   // Implementation
-  set_status_text(statusText, fetchingDataText, fetchingDataBackground, true); 
+  set_status_text(statusText, fetchingDataText, fetchingDataBackground, true);
 
   var lbData = new LBData();
   lbData.fetch(function() {

@@ -8,6 +8,7 @@
     <?php include('metatags.php'); ?>
 
     <?php include('bootstrap_css.php'); ?>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   </head>
   <body>
     <?php include('navigation.php'); ?>
@@ -27,28 +28,29 @@
             <label class="font-weight-bold col-sm pl-0" style="flex-grow: 1000">Session Duration <a href="#" data-toggle="tooltip" title="How long before your session automatically expires? Logging out will always expire your session." data-placement="top">&#x1f6c8;</a></label>
             <div style="flex-basis: 330px; flex-grow: 1">
               <div class="row justify-content-between">
-          <div class="form-check col-auto">
-            <label class="form-check-label">
-              <input class="form-check-input" type="radio" name="durationRadios" id="permanentRadio"> Permanent
-            </label>
-          </div>
-          <div class="form-check col-auto">
-            <label class="form-check-label">
-              <input class="form-check-input" type="radio" name="durationRadios" id="30daysRadio"> 30 Days
-            </label>
-          </div>
-          <div class="form-check col-auto">
-            <label class="form-check-label">
-              <input class="form-check-input" type="radio" name="durationRadios" id="1dayRadio" checked> 1 Day
-            </label>
-          </div>
+                <div class="form-check col-auto">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="durationRadios" id="permanentRadio"> Permanent
+                  </label>
+                </div>
+                <div class="form-check col-auto">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="durationRadios" id="30daysRadio"> 30 Days
+                  </label>
+                </div>
+                <div class="form-check col-auto">
+                  <label class="form-check-label">
+                    <input class="form-check-input" type="radio" name="durationRadios" id="1dayRadio" checked> 1 Day
+                  </label>
+                </div>
               </div>
             </div>
           </div>
           <div class="form-group row">
+            <div class="g-recaptcha" data-sitekey="<?= $_SERVER['LOANSSITE_RECAPTCHA_SITEKEY'] ?>"></div>
             <button id="submit-button" type="submit" class="col-auto btn btn-primary">Submit</button>
           </div>
-        </form> 
+        </form>
       </section>
     </div>
     <?php include('bootstrap_js.php') ?>
@@ -58,7 +60,7 @@
       });
       $("#login-form").on('submit', function(e) {
         e.preventDefault();
-        
+
         var username = $("#username").val();
         var password = $("#password").val();
         var duration = "forever";
@@ -69,7 +71,9 @@
         }
         $("#username").removeClass("is-invalid");
         $("#password").removeClass("is-invalid");
-        if (username && password && duration) {
+
+        var token = grecaptcha.getResponse();
+        if (username && password && duration && token) {
           var statusText = $("#statusText");
           statusText.fadeOut('fast', function() {
             statusText.removeClass("alert-danger").removeClass("alert-success");
@@ -78,10 +82,11 @@
             statusText.fadeIn('fast');
           });
           $("#submit-button").attr('disabled', true);
-          $.post("/api/login.php", { username: username, password: password, duration: duration }, function(data, stat) {
-            window.location.href = "https://redditloans.com";
+          $.post("/api/login.php", { username: username, password: password, duration: duration, token: token }, function(data, stat) {
+            window.location.href = "/index.php";
           }).fail(function(xhr) {
             console.log(xhr.responseJSON);
+            grecaptcha.reset();
             var json_resp = xhr.responseJSON;
             var err_type = json_resp.errors[0].error_type;
             var err_mess = json_resp.errors[0].error_message;
@@ -101,6 +106,8 @@
           if (!password) {
             $("#password").addClass("is-invalid");
           }
+
+          grecaptcha.reset();
         }
       });
     </script>

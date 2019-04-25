@@ -6,7 +6,7 @@
  * @param html the html for the status text
  */
 function set_status(type, html) {
-  return set_status_text($("#stats-status"), html, type, true);   
+  return set_status_text($("#stats-status"), html, type, true);
 }
 
 /*
@@ -142,7 +142,7 @@ function setup_most_active_overall(info) {
 /*
  * Sets up the most active recent table. This replaces the "Recent" in the
  * header for the section with "Since xx/xx/xx" to reduce ambiguity. It also
- * uses the given data to apply it to the table, ensuring that the table is 
+ * uses the given data to apply it to the table, ensuring that the table is
  * not visible while being modified.
  *
  * @param since a Date for after when we were focusing on
@@ -168,7 +168,7 @@ function setup_most_active_recent(since, data) {
 
   var tabl = $("#most-active-lenders-recent");
   tabl.attr("style", "display: none");
-  
+
   var thead = $("<thead>");
   var tr = $("<tr>");
   tr.append("<th>Username</th>");
@@ -222,13 +222,13 @@ function setup_most_active_recent(since, data) {
 }
 
 /*
- * Sets up the percent requests fulfilled table and related graphics using 
+ * Sets up the percent requests fulfilled table and related graphics using
  * the specified information which has been parsed in a convenient format.
  *
  * @param start - Date for when loans started being parsed at
- * @param stop  - Date for when loans stopped being parsed at 
+ * @param stop  - Date for when loans stopped being parsed at
  * @param data  - an array of objects, ordered from most requests fulfilled to least
- *                where each object is of the form 
+ *                where each object is of the form
  *                {
  *                  username: string,
  *                  number_loans: number,
@@ -241,9 +241,9 @@ function setup_perc_recent_requests(start, stop, data) {
   var tabl = $("#percent-requests-fulfilled");
   tabl.attr('style', 'display: none;');
   tabl.empty();
-  
+
   var thead = $("<thead>");
-  var tr = $("<tr>"); 
+  var tr = $("<tr>");
   tr.append("<th>Username</th>");
   tr.append("<th>Loans over Period</th>");
   tr.append("<th>Percent loans over Period</th>");
@@ -312,7 +312,7 @@ function setup_perc_recent_requests(start, stop, data) {
  * @param loans the loan information
  * @param cache the cache (search cache + ctrlf no spaces no +)
  * @param user_ids an array of user ids to fetch information on
- * @return a promise for the activity summaries for the specified user ids 
+ * @return a promise for the activity summaries for the specified user ids
  */
 function cfetch_or_calculate_activity_summaries(loans, cache, user_ids) {
   if(!cache.hasOwnProperty("activity_summary")) {
@@ -338,7 +338,7 @@ function cfetch_or_calculate_activity_summaries(loans, cache, user_ids) {
         if(loan[5]) {
           sum_unpaid += (loan[3] - loan[4]);
         }
-        
+
         var borrower_id = loan[2];
         if(!unique_borrowers.hasOwnProperty(borrower_id.toString())) {
           unique_borrowers[borrower_id.toString()] = true;
@@ -347,17 +347,17 @@ function cfetch_or_calculate_activity_summaries(loans, cache, user_ids) {
       }
     }
 
-    return { 
-      number_loans: num_loans, 
-      sum_loan_principal_cents: sum_principal, 
-      sum_loan_principal_repayment_cents: sum_repayment, 
+    return {
+      number_loans: num_loans,
+      sum_loan_principal_cents: sum_principal,
+      sum_loan_principal_repayment_cents: sum_repayment,
       sum_unpaid_cents: sum_unpaid,
-      sum_unique_borrowers: sum_unique_borrowers 
+      sum_unique_borrowers: sum_unique_borrowers
     };
   }
 
 
-  return new Promise(function(resolve, reject) { 
+  return new Promise(function(resolve, reject) {
     var result = {};
     var promises = [];
     for(var ind = 0, len = user_ids.length; ind < len; ind++) {
@@ -381,7 +381,7 @@ function cfetch_or_calculate_activity_summaries(loans, cache, user_ids) {
     }
 
     Promise.all(promises).then(function() {
-      resolve(result); 
+      resolve(result);
     }, function(reject_reason) {
       reject(reject_reason);
     });
@@ -390,8 +390,8 @@ function cfetch_or_calculate_activity_summaries(loans, cache, user_ids) {
 
 /*
  * Fetch the recetn activity summary for the specified user ids, as an object
- * with user ids as strings for keys and recent activity summaries for values, 
- * from the cache where possible. Otherwise, calculate them and place them in 
+ * with user ids as strings for keys and recent activity summaries for values,
+ * from the cache where possible. Otherwise, calculate them and place them in
  * the cache, as well as return them.
  *
  * @param loans the loan information
@@ -427,7 +427,7 @@ function cfetch_or_calculate_recent_activity_summaries(loans, cache, user_ids, s
       }
     }
 
-    return { 
+    return {
       number_new_loans: num_loans,
       new_principal_cents: new_principal,
       amount_outstanding_cents: outstanding_cents,
@@ -435,7 +435,7 @@ function cfetch_or_calculate_recent_activity_summaries(loans, cache, user_ids, s
     };
   }
 
-  return new Promise(function(resolve, reject) { 
+  return new Promise(function(resolve, reject) {
     var result = {};
     var promises = [];
     for(var ind = 0, len = user_ids.length; ind < len; ind++) {
@@ -459,7 +459,7 @@ function cfetch_or_calculate_recent_activity_summaries(loans, cache, user_ids, s
     }
 
     Promise.all(promises).then(function() {
-      resolve(result); 
+      resolve(result);
     }, function(reject_reason) {
       reject(reject_reason);
     });
@@ -468,8 +468,8 @@ function cfetch_or_calculate_recent_activity_summaries(loans, cache, user_ids, s
 
 /*
  * Fetch the usernames for the specified user ids, as an object with
- * user ids as strings for keys and usernames for values, from the 
- * cache where possible. Otherwise, fetch them from the server and 
+ * user ids as strings for keys and usernames for values, from the
+ * cache where possible. Otherwise, fetch them from the server and
  * place them in the cache, then return them.
  *
  * @param loans loans/compact
@@ -514,7 +514,7 @@ function cfetch_or_fetch_usernames(loans, cache, user_ids) {
 }
 
 /*
- * Calculates the lenders who are most active overall by 
+ * Calculates the lenders who are most active overall by
  * number of loans
  *
  * @param loans a list of loans/compact
@@ -538,7 +538,7 @@ function calculate_most_active_overall(loans, cache) {
       }
     }
 
-    // finding the top 5 
+    // finding the top 5
     var top_five = [];
     for(key in loan_count) {
       var num_loans = loan_count[key];
@@ -620,7 +620,7 @@ function calculate_most_active_recent(loans, cache, since) {
       }
     }
 
-    // finding the top 5 
+    // finding the top 5
     var top_five = [];
     for(key in loan_count) {
       var num_loans = loan_count[key];
@@ -683,7 +683,7 @@ function calculate_most_active_recent(loans, cache, since) {
 
 /**
  * A promise to calculate the percent-requests-fulfilled table, which is an array of
- * 
+ *
  *        {
  *          username: string,
  *          number_loans: number,
@@ -719,7 +719,7 @@ function calculate_perc_requests_fulfilled(loans, cache, topn, users, start, sto
         info = info_by_user_id.get(loan[1]);
         if(info !== undefined) {
           info.number_loans += 1;
-          info.principal += loan[3]; 
+          info.principal += loan[3];
         }else {
           info_by_user_id.set(loan[1], { number_loans: 1, principal: loan[3] });
         }
@@ -732,12 +732,12 @@ function calculate_perc_requests_fulfilled(loans, cache, topn, users, start, sto
       for(kv of info_by_user_id.entries()) {
         user_id = kv[0];
         info = kv[1];
-        
+
         if(result.length === topn && info.number_loans < result[topn - 1][1].number_loans)
           continue;
 
         for(ins_ind = 0; ins_ind < result.length && result[ins_ind][1].number_loans > info.number_loans; ins_ind++){}
-        
+
         result.splice(ins_ind, 0, [user_id, info]);
         if(result.length > topn) {
           result.pop();
@@ -779,9 +779,9 @@ function calculate_perc_requests_fulfilled(loans, cache, topn, users, start, sto
     var usernames_promise = cfetch_or_fetch_usernames(loans, cache, user_ids).then(function(usernames) {
       var result_reformatted = new Array(result.length);
       for(i = 0, len = result.length; i < len; i++) {
-        result_reformatted[i] = { 
-          username: usernames[result[i][0]], 
-          number_loans: result[i][1].number_loans, 
+        result_reformatted[i] = {
+          username: usernames[result[i][0]],
+          number_loans: result[i][1].number_loans,
           perc_loans: result[i][1].number_loans / sum_loans,
           principal: result[i][1].principal,
           perc_principal: result[i][1].principal / sum_princ
@@ -809,7 +809,7 @@ function do_everything() {
           setup_most_active_overall(data);
         }, function(reject_reason) {
           console.log("calculate_most_active_overall failed with reason " + reject_reason);
-          set_status('danger', FAILURE_GLYPHICON + " " + reject_reason); 
+          set_status('danger', FAILURE_GLYPHICON + " " + reject_reason);
         }));
 
         var now = new Date();
@@ -828,7 +828,7 @@ function do_everything() {
       });
     }, function(reject_reason) {
       console.log("fetch_all_loans failed with reason " + reject_reason);
-      set_status('danger', FAILURE_GLYPHICON + " " + reject_reason); 
+      set_status('danger', FAILURE_GLYPHICON + " " + reject_reason);
     });
   });
 };
@@ -845,7 +845,7 @@ $(function() {
     var v = $("#perc-req-fulfilled-add-person").val().trim();
     if(v.length === 0)
       return;
-    
+
     var opt = $("<option>");
     opt.attr('value', v);
     opt.text(v);
