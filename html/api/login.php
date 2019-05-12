@@ -119,7 +119,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $cookie_expires_at = $expires_at;
   }
   SiteSessionMapping::create_and_save($conn, $session_id, $person->id, time(), $expires_at);
-  setcookie('session_id', $session_id, $cookie_expires_at, '/');
+
+  if($_SERVER['LOANSSITE_STRONG_COOKIES_ENABLED'] !== 'true') {
+    setcookie('session_id', $session_id, $cookie_expires_at, '/');
+  }else {
+    setcookie('session_id', $session_id, $cookie_expires_at, '/', "", true, true);
+  }
   echo_success('LOGIN_SUCCESS', array('session_id' => $session_id));
   $conn->close();
 } else {
