@@ -6,7 +6,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $optout = null;
 
   /* PARSING ARGUMENTS */
-  if (isset($_POST['optout']) && isnumeric($_POST['optout'])) {
+  if (isset($_POST['optout']) && is_numeric($_POST['optout'])) {
     $optout = intval($_POST['optout']);
   }
 
