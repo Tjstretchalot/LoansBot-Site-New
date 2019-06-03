@@ -78,6 +78,10 @@
         'link' => '/red_flags_by_user.php',
         'name' => 'Red Flag Reports'
       );
+      $pages[] = array(
+        'link' => '/settings.php',
+        'name' => 'Settings'
+      );
     }
 
     $pages[] = array(
