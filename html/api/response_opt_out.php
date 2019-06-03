@@ -30,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if ($optout === 0) {
     DatabaseHelper::execute($sql_conn, 'DELETE FROM response_opt_outs WHERE user_id=?', array(array('i', $logged_in_user->id)));
   } else if ($optout === 1) {
+    $existing = DatabaseHelper::fetch_one($sql_conn, 'SELECT 1 FROM response_opt_outs WHERE user_id=?', array(array('i', $logged_in_user->id)));
     if (!$existing) {
       DatabaseHelper::execute($sql_conn, 'INSERT INTO response_opt_outs (user_id) VALUES (?)', array(array('i', $logged_in_user->id)));
     }
