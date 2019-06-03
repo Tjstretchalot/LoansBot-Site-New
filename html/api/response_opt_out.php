@@ -23,7 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $sql_conn->close();
     return;
   }
-  $sql_conn->close();
 
   /* PERFORMING REQUEST */
   require_once 'database/helper.php';
