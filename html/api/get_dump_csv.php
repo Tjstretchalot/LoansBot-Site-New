@@ -35,6 +35,8 @@ SQL
     check_db_error($sql_conn, $err_prefix, $stmt->execute());
     check_db_error($sql_conn, $err_prefix, $res = $stmt->get_result());
 
+    header('Content-Type: text/plain');
+    header('Content-Disposition: attachment; filename="loans.csv"');
     echo('id,lender_id,borrower_id,principal_cents,principal_repayment_cents,created_at,updated_at');
     echo(PHP_EOL);
     while(($row = $res->fetch_row()) !== null) {
