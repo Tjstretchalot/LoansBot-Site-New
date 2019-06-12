@@ -22,6 +22,7 @@ SELECT loans.id as id,
        loans.borrower_id as borrower_id,
        loans.principal_cents as principal_cents,
        loans.principal_repayment_cents as principal_repayment_cents,
+       loans.unpaid as unpaid,
        loans.created_at as created_at,
        loans.updated_at as updated_at
 FROM loans
@@ -37,10 +38,10 @@ SQL
 
     header('Content-Type: text/plain');
     header('Content-Disposition: attachment; filename="loans.csv"');
-    echo('id,lender_id,borrower_id,principal_cents,principal_repayment_cents,created_at,updated_at');
+    echo('id,lender_id,borrower_id,principal_cents,principal_repayment_cents,unpaid,created_at,updated_at');
     echo(PHP_EOL);
     while(($row = $res->fetch_row()) !== null) {
-        for($i = 0; $i < 7; $i++) {
+        for($i = 0; $i < 8; $i++) {
             if($i !== 0) { echo ','; }
             echo strval($row[$i]);
         }
