@@ -123,7 +123,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if($_SERVER['LOANSSITE_STRONG_COOKIES_ENABLED'] !== 'true') {
     setcookie('session_id', $session_id, $cookie_expires_at, '/');
   }else {
-    setcookie('session_id', $session_id, $cookie_expires_at, '/', "", true, true);
+    if (PHP_VERSION_ID < 70300) {
+      setcookie('session_id', $session_id, $cookie_expires_at, '/; SameSite=strict', "", true, true);
+    }else {
+      setcookie('session_id', $session_id, $cookie_expires_at, '/', '', true, true, 'strict');
+    }
   }
   echo_success('LOGIN_SUCCESS', array('session_id' => $session_id));
   $conn->close();
