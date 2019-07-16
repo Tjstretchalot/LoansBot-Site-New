@@ -4,6 +4,7 @@ require_once 'database/common.php';
 require_once 'database/users.php';
 require_once 'database/site_sessions.php';
 require_once 'database/reset_password_requests.php';
+require_once 'database/helper.php';
 
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
   /* DEFAULT ARGUMENTS */
@@ -52,7 +53,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   /* PERFORMING REQUEST */
-  $conn = create_db_connection(); 
+  $conn = create_db_connection();
   $user = UserMapping::fetch_by_id($conn, $userid);
 
   if($user === null || $user->claimed === 0) {
@@ -91,7 +92,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   $new_digest = password_hash($password, PASSWORD_DEFAULT);
   ResetPasswordRequestMapping::update_used($conn, $rpr->id);
-  UserMapping::update_password_by_id($conn, $user->id, $new_digest); 
+  UserMapping::update_password_by_id($conn, $user->id, $new_digest);
+  DatabaseHelper::execute($conn, 'DELETE FROM site_sessions WHERE user_id=?', array(array('i', $user->id)));
   echo_success('RESET_PASSWORD_2_SUCCESS', array());
   $conn->close();
 }else {
