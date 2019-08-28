@@ -47,10 +47,10 @@ $borrower_req_pm_opt_out = ($borrower_req_pm_opt_out !== null);
         <form id="response-opt-out-form">
           <div class="form-group">
             <div class="form-check">
+              <label class="form-check-label" for="response-opt-out">
               <input class="form-check-input" type="checkbox" value="" id="response-opt-out" <?php if ($response_opt_out) {
                                                                                                   echo (' checked');
                                                                                                 } ?>>
-              <label class="form-check-label" for="response-opt-out">
                 Response Opt-Out
               </label>
             </div>
@@ -68,10 +68,10 @@ $borrower_req_pm_opt_out = ($borrower_req_pm_opt_out !== null);
       <form id="borrower-req-pm-opt-out-form">
         <div class="form-group">
           <div class="form-check">
+            <label class="form-check-label" for="borrower-req-pm-opt-out">
             <input class="form-check-input" type="checkbox" value="" id="borrower-req-pm-opt-out" <?php if ($borrower_req_pm_opt_out) {
                                                                                                     echo (' checked');
                                                                                                   } ?>>
-            <label class="form-check-label" for="borrower-req-pm-opt-out">
               Borrower REQ PM Opt-Out
             </label>
           </div>
