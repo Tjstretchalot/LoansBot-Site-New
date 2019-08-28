@@ -119,7 +119,7 @@
             statusText.fadeIn('fast');
 
             setTimeout(function() {
-              window.location.href = "<?php include('urlroot.php'); ?>";
+              window.location.href = "<?php include('index.php'); ?>";
             }, 5000);
           });
         }).fail(function(xhr) {

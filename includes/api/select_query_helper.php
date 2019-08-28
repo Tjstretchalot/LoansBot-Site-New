@@ -32,9 +32,9 @@ class SelectQueryCallback {
   // may be null
   // 1 argument ($helper), returns a string to append with no leading or trailing spaces or commas
   public $where_callback;
-  
+
   // may be null
-  // accepts ($helper, $auth_level) and returns null if the command is valid, and an array('error_mess'=>'a string', 'error_ident' => 'another string') 
+  // accepts ($helper, $auth_level) and returns null if the command is valid, and an array('error_mess'=>'a string', 'error_ident' => 'another string')
   // if it is not valid
   public $authorization_callback;
 
@@ -60,7 +60,7 @@ class SelectQueryCallback {
   // is the output for the current row, and $format is the format that was requested (numeric)
   // may be null
   public $result_callback;
-  
+
   public function __construct($identifier, $parsed) {
     $this->identifier = $identifier;
     $this->parsed = $parsed;
@@ -118,7 +118,7 @@ class SelectQueryHelper {
   public function check_sanity($sql_conn) {
     foreach ($this->callbacks as $callback) {
       if($callback->sanity_callback !== null) {
-        $tmp = $callback->santiy_callback;
+        $tmp = $callback->sanity_callback;
         $res = $tmp($this, $sql_conn);
         if($res !== null) {
           return $res;
@@ -176,14 +176,14 @@ class SelectQueryHelper {
       if($callback->join_callback !== null) {
         if($first) {
           $first = false;
-        }else { 
+        }else {
           $query .= ' ';
         }
         $tmp = $callback->join_callback;
         $query .= $tmp($this);
       }
     }
-    
+
     $first = true;
     foreach ($this->callbacks as $callback) {
       if($callback->where_callback !== null) {
@@ -209,11 +209,11 @@ class SelectQueryHelper {
       $tmp = $this->limit_callback;
       $query .= $tmp($this);
     }
-    
+
     error_log($query);
     return $query;
   }
-  
+
   public function bind_params($sql_conn, $stmt) {
     $all_params = array();
     foreach ($this->callbacks as $callback) {
@@ -229,13 +229,13 @@ class SelectQueryHelper {
         $all_params = array_merge($all_params, $tmp($this));
       }
     }
-    
+
     QueryHelper::bind_params($sql_conn, $stmt, $all_params);
   }
 
   public function create_result_from_row($row) {
     $result = array();
-    
+
     foreach($this->callbacks as $callback) {
       if($callback->result_callback !== null) {
         $tmp = $callback->result_callback;
