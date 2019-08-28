@@ -33,30 +33,30 @@ $borrower_req_pm_opt_out = ($borrower_req_pm_opt_out !== null);
       <h1>Settings</h1>
       <p>This page allows you to configure various settings for interacting with the LoansBot.</p>
 
-      <?php if($is_trusted): ?>
-      <h2>Non-REQ Response Opt Out</h2>
-      <p>This configures if the LoansBot will respond to non-request submissions posted to /r/borrow with an automatic check. If you are not
-        opted out (i.e., this is not checked), then the LoansBot will respond with a check to any non-meta submission you post to /r/borrow. If
-        you are opted out (i.e., this is checked), the bot will not automatically respond with a check to any non-meta submission, unless that
-        submission is a request. </p>
+      <?php if ($is_trusted) : ?>
+        <h2>Non-REQ Response Opt Out</h2>
+        <p>This configures if the LoansBot will respond to non-request submissions posted to /r/borrow with an automatic check. If you are not
+          opted out (i.e., this is not checked), then the LoansBot will respond with a check to any non-meta submission you post to /r/borrow. If
+          you are opted out (i.e., this is checked), the bot will not automatically respond with a check to any non-meta submission, unless that
+          submission is a request. </p>
 
-      <p>Regardless of this setting, the bot will respond normally to comments.</p>
+        <p>Regardless of this setting, the bot will respond normally to comments.</p>
 
 
-      <div class="container-fluid alert" id="response-opt-out-status" style="display: none"></div>
-      <form id="response-opt-out-form">
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="response-opt-out" <?php if ($response_opt_out) {
-                                                                                            echo (' checked');
-                                                                                          } ?>>
-          <label class="form-check-label" for="response-opt-out">
-            Response Opt-Out
-          </label>
-        </div>
-        <div class="form-group row">
-          <button id="response-opt-out-submit-button" type="submit" class="col-auto btn btn-primary">Submit</button>
-        </div>
-      </form>
+        <div class="container-fluid alert" id="response-opt-out-status" style="display: none"></div>
+        <form id="response-opt-out-form">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="response-opt-out" <?php if ($response_opt_out) {
+                                                                                                echo (' checked');
+                                                                                              } ?>>
+            <label class="form-check-label" for="response-opt-out">
+              Response Opt-Out
+            </label>
+          </div>
+          <div class="form-group row">
+            <button id="response-opt-out-submit-button" type="submit" class="col-auto btn btn-primary">Submit</button>
+          </div>
+        </form>
       <?php endif; ?>
 
       <h2>Borrower REQ PM Opt Out</h2>
@@ -68,8 +68,8 @@ $borrower_req_pm_opt_out = ($borrower_req_pm_opt_out !== null);
       <form id="borrower-req-pm-out-form">
         <div class="form-check">
           <input class="form-check-input" type="checkbox" value="" id="borrower-req-pm-opt-out" <?php if ($borrower_req_pm_opt_out) {
-                                                                                            echo (' checked');
-                                                                                          } ?>>
+                                                                                                  echo (' checked');
+                                                                                                } ?>>
           <label class="form-check-label" for="borrower-req-pm-opt-out">
             Borrower REQ PM Opt-Out
           </label>
@@ -87,22 +87,22 @@ $borrower_req_pm_opt_out = ($borrower_req_pm_opt_out !== null);
       $('[data-toggle="tooltip"]').tooltip();
     });
 
-    <?php if ($is_trusted): ?>
-    $("#response-opt-out-form").on('submit', function(e) {
-      e.preventDefault();
+    <?php if ($is_trusted) : ?>
+      $("#response-opt-out-form").on('submit', function(e) {
+        e.preventDefault();
 
-      var optout = $("#response-opt-out").is(":checked");
-      var statusText = $("#response-opt-out-status");
-      set_status_text(statusText, LOADING_GLYPHICON + ' Saving...', 'info', true);
-      $("#response-opt-out-submit-button").attr('disabled', true);
-      $.post("/api/response_opt_out.php", {
-        optout: (optout ? 1 : 0)
-      }, function(data, stat) {
-        set_status_text(statusText, SUCCESS_GLYPHICON + ' Saved!', 'success', true);
-      }).fail(function(xhr) {
-        set_status_text_from_xhr(statusText, xhr);
+        var optout = $("#response-opt-out").is(":checked");
+        var statusText = $("#response-opt-out-status");
+        set_status_text(statusText, LOADING_GLYPHICON + ' Saving...', 'info', true);
+        $("#response-opt-out-submit-button").attr('disabled', true);
+        $.post("/api/response_opt_out.php", {
+          optout: (optout ? 1 : 0)
+        }, function(data, stat) {
+          set_status_text(statusText, SUCCESS_GLYPHICON + ' Saved!', 'success', true);
+        }).fail(function(xhr) {
+          set_status_text_from_xhr(statusText, xhr);
+        });
       });
-    });
     <?php endif; ?>
 
     $("#borrower-req-pm-opt-out-form").on('submit', function(e) {
