@@ -45,7 +45,7 @@ $borrower_req_pm_opt_out = ($borrower_req_pm_opt_out !== null);
 
         <div class="container-fluid alert" id="response-opt-out-status" style="display: none"></div>
         <form id="response-opt-out-form">
-          <div class="form-check">
+          <div class="form-check col-auto">
             <input class="form-check-input" type="checkbox" value="" id="response-opt-out" <?php if ($response_opt_out) {
                                                                                                 echo (' checked');
                                                                                               } ?>>
@@ -53,7 +53,7 @@ $borrower_req_pm_opt_out = ($borrower_req_pm_opt_out !== null);
               Response Opt-Out
             </label>
           </div>
-          <div class="form-group row">
+          <div class="form-groupcol-auto">
             <button id="response-opt-out-submit-button" type="submit" class="col-auto btn btn-primary">Submit</button>
           </div>
         </form>
@@ -66,7 +66,7 @@ $borrower_req_pm_opt_out = ($borrower_req_pm_opt_out !== null);
 
       <div class="container-fluid alert" id="borrower-req-pm-opt-out-status" style="display: none"></div>
       <form id="borrower-req-pm-opt-out-form">
-        <div class="form-check">
+        <div class="form-check col-auto">
           <input class="form-check-input" type="checkbox" value="" id="borrower-req-pm-opt-out" <?php if ($borrower_req_pm_opt_out) {
                                                                                                   echo (' checked');
                                                                                                 } ?>>
@@ -74,8 +74,8 @@ $borrower_req_pm_opt_out = ($borrower_req_pm_opt_out !== null);
             Borrower REQ PM Opt-Out
           </label>
         </div>
-        <div class="form-group row">
-          <button id="borrower-req-pm-opt-out-submit-button" type="submit" class="col-auto btn btn-primary">Submit</button>
+        <div class="form-group col-auto">
+          <button id="borrower-req-pm-opt-out-submit-button" type="submit" class="btn btn-primary">Submit</button>
         </div>
       </form>
     </section>
