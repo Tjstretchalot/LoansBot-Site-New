@@ -59,7 +59,7 @@ $borrower_req_pm_opt_out = ($borrower_req_pm_opt_out !== null);
         </form>
       <?php endif; ?>
 
-      <h2>Borrower REQ PM Opt Out</h2>
+      <h2 class="mt-3">Borrower REQ PM Opt Out</h2>
       <p>This configures if the LoansBot will send you a pm when a borrower you have an active loan with makes a REQ thread on /r/borrow.
         The default, unchecked, option is that the LoansBot sends you such a PM. If you check this, the LoansBot will no longer send you
         a PM in this circumstance.</p>
