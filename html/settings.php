@@ -65,7 +65,7 @@ $borrower_req_pm_opt_out = ($borrower_req_pm_opt_out !== null);
         a PM in this circumstance.</p>
 
       <div class="container-fluid alert" id="borrower-req-pm-opt-out-status" style="display: none"></div>
-      <form id="borrower-req-pm-out-form">
+      <form id="borrower-req-pm-opt-out-form">
         <div class="form-check">
           <input class="form-check-input" type="checkbox" value="" id="borrower-req-pm-opt-out" <?php if ($borrower_req_pm_opt_out) {
                                                                                                   echo (' checked');
