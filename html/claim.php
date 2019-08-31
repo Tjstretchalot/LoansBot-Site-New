@@ -136,7 +136,7 @@ include_once('connect_and_get_loggedin.php');
           statusText.fadeIn('fast');
 
           setTimeout(function() {
-            window.location.href = "<?php include('index.php'); ?>";
+            window.location.href = "index.php";
           }, 5000);
         });
       }).fail(function(xhr) {
