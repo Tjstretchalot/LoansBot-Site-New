@@ -1,6 +1,6 @@
 <?php
 /*
-   Parameters: 
+   Parameters:
      loan_id - either a loan id or a list of loan ids seperated by spaces
 
    Returns LOAN_CREATION_INFO, or FAILURE
@@ -21,7 +21,7 @@
          "user_id": 23 // this is the admin that created the loan (only provided if logged in as a moderator)
        },
        "125": {
-         "type": 2 // this is a loan that was created due to a paid summon when teh database was 
+         "type": 2 // this is a loan that was created due to a paid summon when the database was
                    // being regenerated in ~march 2016, but no $loan command was ever found.
        }
      }
@@ -56,7 +56,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
     return;
   }
 
-  /* VALIDATING AUTHORIZATION */ 
+  /* VALIDATING AUTHORIZATION */
   require_once 'connect_and_get_loggedin.php';
 
   $auth = 0;
@@ -105,7 +105,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET') {
   $res->close();
   $stmt->close();
   $sql_conn->close();
-  echo_success('LOAN_CREATION_INFO', array('results' => $results_to_return)); 
+  echo_success('LOAN_CREATION_INFO', array('results' => $results_to_return));
 }else {
   echo_fail(405, 'METHOD_NOT_ALLOWED', 'You must use a GET request at this endpoint');
 }
