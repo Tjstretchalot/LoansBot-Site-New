@@ -191,7 +191,13 @@
         </thead>
         <tbody>
           <?php foreach($checkLoans as $index=>$loan): ?>
-          <tr>
+          <?php if($loan["principal_repayment_cents"] == 0): ?>
+          <tr class="mobile-query-row-open">
+          <?php elseif($loan["principal_repayment_cents"] < $loan["principal_cents"]): ?>
+          <tr class="mobile-query-row-incomplete">
+          <?php else: ?>
+          <tr class="mobile-query-row-complete">
+          <?php endif; ?>
             <td><?php echo $loan["id"] ?></td>
             <td><?php echo $loan["lender_id"] ?></td>
             <td><?php echo $loan["lender_username"] ?></td>
