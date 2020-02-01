@@ -39,9 +39,9 @@
       $stmt->close();
       if($row === null) {
         error_log('no corresponding user for username=' . $username . ', user_id=' . $username_row['user_id']);
-        return null; 
+        return null;
       }
-      return new ArrayObject($row, ArrayObject::ARRAY_AS_PROPS); 
+      return new ArrayObject($row, ArrayObject::ARRAY_AS_PROPS);
     }
 
     public static function create_by_username($sql_conn, $username) {
@@ -66,7 +66,7 @@
 
     public static function update_user_claim_code($sql_conn, $user) {
       $err_prefix = 'UserMapping::update_user_claim_code';
-      
+
       $usable_claim_code = $user->claim_code;
       $usable_updated_at = date('Y-m-d H:i:s');
       $usable_user_id = $user->id;
@@ -95,6 +95,8 @@
     }
 
     public static function update_password_by_id($sql_conn, $user_id, $new_digest) {
+      $err_prefix = 'UserMapping::update_password_by_id';
+
       check_db_error($sql_conn, $err_prefix, $stmt = $sql_conn->prepare('UPDATE users SET password_digest=? WHERE id=?'));
       check_db_error($sql_conn, $err_prefix, $stmt->bind_param('si', $new_digest, $user_id));
       check_db_error($sql_conn, $err_prefix, $stmt->execute());
