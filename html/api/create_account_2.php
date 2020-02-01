@@ -15,7 +15,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
   $state = null;
   $zip = null;
   $country = null;
-  
+
   /* PARSING ARGUMENTS */
   if(isset($_POST['username'])) {
     $username = $_POST['username'];
@@ -32,23 +32,23 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
   if(isset($_POST['email'])) {
     $email = $_POST['email'];
   }
-  
+
   if(isset($_POST['name'])) {
     $name = $_POST['name'];
   }
-  
+
   if(isset($_POST['street_address'])) {
     $street_address = $_POST['street_address'];
   }
-  
+
   if(isset($_POST['city'])) {
     $city = $_POST['city'];
   }
-  
+
   if(isset($_POST['state'])) {
     $state = $_POST['state'];
   }
-  
+
   if(isset($_POST['zip'])) {
     $zip = $_POST['zip'];
   }
@@ -114,7 +114,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 
   /* PERFORMING REQUEST */
-  $conn = create_db_connection(); 
+  $conn = create_db_connection();
   $user = UserMapping::fetch_by_username($conn, $username);
 
   $bad_token_iden = 'BAD_TOKEN';
@@ -146,6 +146,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   $hashed_pass = password_hash($password, PASSWORD_DEFAULT);
   UserMapping::update_user_after_claimed($conn, $user, $email, $name, $street_address, $city, $state, $zip, $country);
+  UserMapping::update_password_by_id($conn, $user->id, $hashed_pass);
   echo_success('CLAIM_ACCOUNT_2_SUCCESS', array());
   $conn->close();
 }else {
