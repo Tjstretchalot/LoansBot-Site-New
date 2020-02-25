@@ -41,6 +41,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     return;
   }
 
+  if(strlen($password) > 255) {
+    echo_fail(400, 'ARGUMENT_INVALID', 'Password may not exceed 255 characters!');
+    return;
+  }
+
   if($token === null) {
     echo_fail(400, 'ARGUMENT_MISSING', 'Token cannot be empty!');
     return;
