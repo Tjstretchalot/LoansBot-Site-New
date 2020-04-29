@@ -203,7 +203,7 @@
                 <div class="restrictions-label text-sm-center text-sm-vcenter">
                   <label><a href="#" data-toggle="tooltip" data-placement="top" title="Only return loans who have either a lender or a borrower with the specified name.">Includes User Name</a></label>
                 </div>
-                <div class="restrictions-input input-group"> 
+                <div class="restrictions-input input-group">
                   <span class="input-group-addon">
                     <input type="checkbox" aria-label="Enable generic username filtering?" class="checkbox-inputtoggle" for="#loans-restrictions-includesusername" id="loans-restrictions-includesusername-checkbox">
                   </span>
@@ -222,7 +222,7 @@
                 <div class="restrictions-label text-sm-center text-sm-vcenter">
                   <label><a href="#" data-toggle="tooltip" data-placement="top" title="Only return loans who have exactly the specified principal.">Principal</a></label>
                 </div>
-                <div class="restrictions-input input-group"> 
+                <div class="restrictions-input input-group">
                   <span class="input-group-addon">
                     <input type="checkbox" aria-label="" class="checkbox-inputtoggle" for="#loans-restrictions-principal" id="loans-restrictions-principal-checkbox">
                   </span>
@@ -234,7 +234,7 @@
                 <div class="restrictions-label text-sm-center text-sm-vcenter">
                   <label><a href="#" data-toggle="tooltip" data-placement="top" title="Only return loans who have been repaid exactly the specified amount.">Principal Repayment</a></label>
                 </div>
-                <div class="restrictions-input input-group"> 
+                <div class="restrictions-input input-group">
                   <span class="input-group-addon">
                     <input type="checkbox" aria-label="" class="checkbox-inputtoggle" for="#loans-restrictions-principalrepayment" id="loans-restrictions-principalrepayment-checkbox">
                   </span>
@@ -436,7 +436,7 @@
     <script type="text/javascript">
       function layoutTheThings() {
         var dbButGrp = $("#database-button-group");
-       
+
         dbButGrp.removeAttr("style");
         dbButGrp.removeClass("btn-group-justified").removeClass("btn-group-vertical");
         if(dbButGrp.innerWidth() < 390) {
@@ -498,10 +498,10 @@
         layoutTheThings();
         $('[data-toggle="tooltip"]').tooltip();
         var checkboxInputToggles = $(".checkbox-inputtoggle");
- 
+
         for(var i = 0; i < checkboxInputToggles.length; i++) {
           var cInpToggleEle = $(checkboxInputToggles[i]);
-          cInpToggleEle.change(function() {  
+          cInpToggleEle.change(function() {
             var cInpToggleTarget = $($(this).attr("for"));
             cInpToggleTarget.prop("disabled", !this.checked);
           });
@@ -511,7 +511,7 @@
           var usRestr = $("#users-restrictions");
           var loRestr = $("#loans-restrictions");
           var nmRestr = $("#usernames-restrictions");
-          
+
           if($("#database-users").is(":checked")) {
             if(!usRestr.is(":visible")) {
               usRestr.slideToggle(500, layoutTheThings);
@@ -519,7 +519,7 @@
           }else if(usRestr.is(":visible")) {
             usRestr.slideToggle(400);
           }
-           
+
           if($("#database-loans").is(":checked")) {
             if(!loRestr.is(":visible")) {
               loRestr.slideToggle(500, layoutTheThings);
@@ -592,14 +592,6 @@
             $("#loans-restrictions-principal").attr("disabled", true);
             $("#loans-restrictions-principalrepayment-checkbox").removeAttr("checked");
             $("#loans-restrictions-principalrepayment").attr("disabled", true);
-            $("#loans-restrictions-unpaid-checkbox").removeAttr("checked");
-            $($("#loans-restrictions-unpaid-checkbox").attr("for")).attr("disabled", true);
-          }
-        });
-        $("#loans-restrictions-unpaid-checkbox").change(function() {
-          if(this.checked) {
-            $("#loans-restrictions-repaid-checkbox").removeAttr("checked");
-            $($("#loans-restrictions-repaid-checkbox").attr("for")).attr("disabled", true);
           }
         });
         $("#loans-restrictions-principalrepayment-checkbox,#loans-restrictions-principal-checkbox").change(function() {
@@ -684,7 +676,7 @@
         var result = {};
         var invalid = [ false ];
         result['format'] = 3;
-        
+
         handleParam(invalid, result, 'limit', $("#users-restrictions-limit"));
         handleParam(invalid, result, 'id', $("#users-restrictions-userid"));
         handleParam(invalid, result, 'username', $("#users-restrictions-username"));
@@ -698,12 +690,12 @@
         }
         return result;
       }
-      
+
       function getLoanParams() {
         var result = {};
         var invalid = [ false ];
         result['format'] = 3;
-        
+
         handleParam(invalid, result, 'limit', $("#loans-restrictions-limit"));
         handleParam(invalid, result, 'id', $("#loans-restrictions-loanid"));
         handleParam(invalid, result, 'after_time', $("#loans-restrictions-createdafter"));
@@ -721,14 +713,14 @@
         if(result['principal_cents']) { result['principal_cents'] = result['principal_cents'] * 100; }
         handleParam(invalid, result, 'principal_repayment_cents', $("#loans-restrictions-principalrepayment"));
         if(result['principal_repayment_cents']) { result['principal_repayment_cents'] = result['principal_repayment_cents'] * 100; }
-        
+
         if(!$("#loans-restrictions-unpaid-yes").is(":disabled")) {
           result['unpaid'] = $("#loans-restrictions-unpaid-yes").is(":checked") ? 1 : 0;
         }
         if(!$("#loans-restrictions-repaid-yes").is(":disabled")) {
           result['repaid'] = $("#loans-restrictions-repaid-yes").is(":checked") ? 1 : 0;
         }
-        
+
         if($("#loans-restrictions-modify-checkbox").is(":checked")) {
           result['modify'] = 1;
           handleParam(invalid, result, 'modify_reason', $("#loans-restrictions-modify-reason"));
@@ -740,7 +732,7 @@
           if(result['set_principal_cents']) { result['set_principal_cents'] = result['set_principal_cents'] * 100; }
           handleParam(invalid, result, 'set_principal_repayment_cents', $("#loans-restrictions-modify-principalrepayment"));
           if(result['set_principal_repayment_cents']) { result['set_principal_repayment_cents'] = result['set_principal_repayment_cents'] * 100; }
-          
+
           if(!$("#loans-restrictions-modify-unpaid-yes").is(":disabled")) {
             result['set_unpaid'] = $("#loans-restrictions-modify-unpaid-yes").is(":checked") ? 1 : 0;
           }
@@ -796,7 +788,7 @@
           resultsBody.append(toApp);
         }
       }
-      
+
       function resolveThread(callingA, loan_id) {
         callingA = $(callingA);
         if(callingA.data("resolving") == 1)
@@ -889,7 +881,7 @@
         var resultsTable = $("#results-table");
         var resultsHead = $("#results-table thead");
         var resultsBody = $("#results-table tbody");
-        
+
         if(results.result_type === "USERS_EXTENDED") {
           populateUsers(results, resultsTable, resultsHead, resultsBody);
         }else if(results.result_type === "LOANS_EXTENDED") {
